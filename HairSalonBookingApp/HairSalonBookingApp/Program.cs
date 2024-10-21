@@ -1,7 +1,14 @@
+using HairSalonBookingApp.DAO.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<ApplicationDbContext>(
+    options => options
+                .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty));
 
 var app = builder.Build();
 
