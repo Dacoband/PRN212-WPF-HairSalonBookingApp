@@ -1,4 +1,6 @@
+using HairSalonBookingApp.BusinessObjects.Entities;
 using HairSalonBookingApp.DAO.Data;
+using HairSalonBookingApp.DAO.DbInitializer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +12,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(
     options => options
                 .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty));
 
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
 var app = builder.Build();
+
+// Seed the database
+SeedDatabase();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -30,3 +37,12 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}
