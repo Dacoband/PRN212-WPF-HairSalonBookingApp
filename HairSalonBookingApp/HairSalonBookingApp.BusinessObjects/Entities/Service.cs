@@ -9,6 +9,7 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
 {
     public class Service : BaseEntity
     {
+        public Service() : base() { }
         //PK
         [Key]
         public Guid ServiceID { get; set; }

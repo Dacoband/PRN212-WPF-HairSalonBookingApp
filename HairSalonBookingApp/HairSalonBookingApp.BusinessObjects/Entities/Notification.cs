@@ -10,6 +10,7 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
 {
     public class Notification : BaseEntity
     {
+        public Notification() : base() { }
         //PK
         [Key]
         public Guid NotificationId { get; set; }

@@ -10,6 +10,7 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
 {
     public class Appointment : BaseEntity
     {
+        public Appointment() : base() { }
         //PK
         [Key]
         public Guid AppointmentId { get; set; }

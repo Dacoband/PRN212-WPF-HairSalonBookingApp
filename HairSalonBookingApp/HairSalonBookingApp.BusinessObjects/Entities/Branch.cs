@@ -10,6 +10,7 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
 {
     public class Branch : BaseEntity
     {
+        public Branch() : base() { }
         [Key]
         public Guid BranchID { get; set; }
         //FK from StaffManager
