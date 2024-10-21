@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HairSalonBookingApp.BusinessObjects.Entities
 {
-    public class Payment
+    public class Payment : BaseEntity
     {
         //PK
+        [Key]
         public int PaymentId { get; set; }
         //FK from Appointment
-        public int AppointmentId { get; set; }
+        public Guid AppointmentId { get; set; }
         public float Amount { get; set; }
         public DateTime PaymentDate { get; set; }
-        public int Status { get; set; } 
-        public DateTime InsDate { get; set; }
-        public DateTime UpdDate { get; set; }
-        public bool DelFlg { get; set; }
+        public string Status { get; set; } = string.Empty;
+
+        [ForeignKey("AppointmentId")]
+        public virtual Appointment Appointment { get; set; } = null!;
     }
 }
