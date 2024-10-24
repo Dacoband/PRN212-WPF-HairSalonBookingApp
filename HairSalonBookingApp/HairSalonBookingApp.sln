@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HairSalonBookingApp", "HairSalonBookingApp\HairSalonBookingApp.csproj", "{69B90634-740D-4B5D-A28C-F81182CE5A3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HairSalonBookingApp", "HairSalonBookingApp\HairSalonBookingApp.csproj", "{69B90634-740D-4B5D-A28C-F81182CE5A3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HairSalonBookingApp.BusinessObjects", "HairSalonBookingApp.BusinessObjects\HairSalonBookingApp.BusinessObjects.csproj", "{3B7D1E63-3329-4EAE-BA0C-ECB7437758C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HairSalonBookingApp.BusinessObjects", "HairSalonBookingApp.BusinessObjects\HairSalonBookingApp.BusinessObjects.csproj", "{3B7D1E63-3329-4EAE-BA0C-ECB7437758C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HairSalonBookingApp.DAO", "HairSalonBookingApp.DAO\HairSalonBookingApp.DAO.csproj", "{6C930471-E60D-4FBC-885C-5E2F59F6C626}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HairSalonBookingApp.DAO", "HairSalonBookingApp.DAO\HairSalonBookingApp.DAO.csproj", "{6C930471-E60D-4FBC-885C-5E2F59F6C626}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HairSalonBookingApp.Repositories", "HairSalonBookingApp.Repositories\HairSalonBookingApp.Repositories.csproj", "{E9456589-4AA0-4D52-A667-1044AAEE74D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HairSalonBookingApp.Repositories", "HairSalonBookingApp.Repositories\HairSalonBookingApp.Repositories.csproj", "{E9456589-4AA0-4D52-A667-1044AAEE74D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HairSalonBookingApp.Service", "HairSalonBookingApp.Service\HairSalonBookingApp.Service.csproj", "{E34DFFD7-C16B-4C00-A295-B6FB687AFA6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{E9456589-4AA0-4D52-A667-1044AAEE74D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9456589-4AA0-4D52-A667-1044AAEE74D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9456589-4AA0-4D52-A667-1044AAEE74D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E34DFFD7-C16B-4C00-A295-B6FB687AFA6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E34DFFD7-C16B-4C00-A295-B6FB687AFA6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E34DFFD7-C16B-4C00-A295-B6FB687AFA6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E34DFFD7-C16B-4C00-A295-B6FB687AFA6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
