@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HairSalonBookingApp.Repositories\HairSalonBookingApp.Repositories.csproj" />
+    <ProjectReference Include="..\HairSalonBookingApp.Service\HairSalonBookingApp.Service.csproj" />
   </ItemGroup>
 
 </Project>

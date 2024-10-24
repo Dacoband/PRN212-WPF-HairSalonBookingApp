@@ -45,6 +45,7 @@ namespace HairSalonBookingApp.DAO.Data
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(GetConnectionString() ?? string.Empty);
+                optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             }
         }
 
