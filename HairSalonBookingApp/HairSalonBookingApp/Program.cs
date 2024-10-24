@@ -1,6 +1,8 @@
 using HairSalonBookingApp.BusinessObjects.Entities;
 using HairSalonBookingApp.DAO.Data;
 using HairSalonBookingApp.DAO.DbInitializer;
+using HairSalonBookingApp.Repositories;
+using HairSalonBookingApp.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +14,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(
     options => options
                 .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty));
 
+#region Dependency Injection
+
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAppointmentCancellationRepository, AppointmentCancellationRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IAppointmentServiceRepository, AppointmentServiceRepository>();
+builder.Services.AddScoped<IBranchRepository, BranchRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+builder.Services.AddScoped<IStaffManagerRepository, StaffManagerRepository>();
+builder.Services.AddScoped<IStaffStylistRepository, StaffStylistRepository>();
+builder.Services.AddScoped<IStylistRepository, StylistRepository>();
+
+#endregion
 var app = builder.Build();
 
 // Seed the database
