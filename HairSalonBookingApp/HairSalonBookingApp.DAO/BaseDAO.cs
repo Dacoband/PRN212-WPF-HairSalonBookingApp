@@ -7,8 +7,8 @@ namespace HairSalonBookingApp.DAO
 {
     public class BaseDAO<T> where T : class
     {
-        protected ApplicationDbContext? _context;
-        internal DbSet<T>? _dbSet;
+        protected ApplicationDbContext _context;
+        internal DbSet<T> _dbSet;
 
         public BaseDAO(ApplicationDbContext context)
         {
@@ -24,6 +24,25 @@ namespace HairSalonBookingApp.DAO
                 if (entity != null)
                 {
                     _dbSet.Add(entity);
+                    _context.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return result;
+        }
+
+        public bool AddRange(IEnumerable<T> entities)
+        {
+            bool result = false;
+            try
+            {
+                if (entities != null)
+                {
+                    _dbSet.AddRange(entities);
                     _context.SaveChanges();
                     result = true;
                 }
@@ -54,6 +73,25 @@ namespace HairSalonBookingApp.DAO
             return result;
         }
 
+        public bool UpdateRange(IEnumerable<T> entities)
+        {
+            bool result = false;
+            try
+            {
+                if (entities != null)
+                {
+                    _dbSet.UpdateRange(entities);
+                    _context.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return result;
+        }
+
         public bool Delete(T entity)
         {
             bool result = false;
@@ -73,19 +111,29 @@ namespace HairSalonBookingApp.DAO
             return result;
         }
 
-        public T? Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
+        public bool DeleteRange(IEnumerable<T> entities)
         {
-            IQueryable<T> query;
-            if (tracked)
+            bool result = false;
+            try
             {
-                query = _dbSet;
+                if (entities != null)
+                {
+                    _dbSet.RemoveRange(entities);
+                    _context.SaveChanges();
+                    result = true;
+                }
             }
-            else
+            catch (Exception e)
             {
-                query = _dbSet.AsNoTracking();
-                //no tracking : Database will not be updated if the Update method is not called before the Save method                
+                Console.WriteLine(e.Message);
             }
-            query = query.Where(filter);
+            return result;
+        }
+
+        public T? Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        {
+            IQueryable<T> query = _dbSet.Where(filter);
+
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProp in includeProperties
@@ -115,6 +163,15 @@ namespace HairSalonBookingApp.DAO
                 }
             }
             return query.ToList();
+        }
+
+        public int Count(Expression<Func<T, bool>>? filter = null)
+        {
+            if (filter != null)
+            {
+                return _dbSet.Count(filter);
+            }
+            return _dbSet.Count();
         }
     }
 }
