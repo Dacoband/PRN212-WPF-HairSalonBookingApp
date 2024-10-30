@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HairSalonBookingApp.DAO", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HairSalonBookingApp.Repositories", "HairSalonBookingApp.Repositories\HairSalonBookingApp.Repositories.csproj", "{E9456589-4AA0-4D52-A667-1044AAEE74D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HairSalonBookingApp.Service", "HairSalonBookingApp.Service\HairSalonBookingApp.Service.csproj", "{E34DFFD7-C16B-4C00-A295-B6FB687AFA6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HairSalonBookingApp.Service", "HairSalonBookingApp.Service\HairSalonBookingApp.Service.csproj", "{E34DFFD7-C16B-4C00-A295-B6FB687AFA6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

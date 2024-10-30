@@ -11,8 +11,11 @@ namespace HairSalonBookingApp.Repositories
 {
     public class AccountRepository : Repository<Account>, IAccountRepository
     {
+        private readonly AccountDAO _accountDAO;
         public AccountRepository() : base(AccountDAO.Instance)
         {
+            _accountDAO = AccountDAO.Instance;
         }
+        public Account? GetByEmail(string email) => _accountDAO.GetByEmail(email);
     }
 }
