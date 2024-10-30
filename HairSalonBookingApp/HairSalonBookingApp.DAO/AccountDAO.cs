@@ -12,8 +12,10 @@ namespace HairSalonBookingApp.DAO
     {
         private static AccountDAO? _instance;
         public static AccountDAO Instance => _instance ??= new AccountDAO(new ApplicationDbContext());
-        public AccountDAO(ApplicationDbContext context) : base(context)
+        public AccountDAO(ApplicationDbContext context) : base(context) { }
+        public Account? GetByEmail(string email)
         {
+            return _dbSet.FirstOrDefault(a => a.Email == email);
         }
     }
 }

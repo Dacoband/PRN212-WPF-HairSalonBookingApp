@@ -9,5 +9,6 @@ namespace HairSalonBookingApp.Repositories.Interface
 {
     public interface IAccountRepository : IRepository<Account>
     {
+        Account? GetByEmail(string email);
     }
 }
