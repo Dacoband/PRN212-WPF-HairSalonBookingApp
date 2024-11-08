@@ -3,6 +3,8 @@ using HairSalonBookingApp.DAO.Data;
 using HairSalonBookingApp.DAO.DbInitializer;
 using HairSalonBookingApp.Repositories;
 using HairSalonBookingApp.Repositories.Interface;
+using HairSalonBookingApp.Service;
+using HairSalonBookingApp.Service.Interface;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(
                 .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty));
 
 #region Dependency Injection
+
+builder.Services.AddScoped<ApplicationDbContext, ApplicationDbContext>();
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
@@ -30,6 +34,11 @@ builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IStaffManagerRepository, StaffManagerRepository>();
 builder.Services.AddScoped<IStaffStylistRepository, StaffStylistRepository>();
 builder.Services.AddScoped<IStylistRepository, StylistRepository>();
+builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+
+
+builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+builder.Services.AddScoped<IStylistService, StylistService>();
 
 #endregion
 var app = builder.Build();

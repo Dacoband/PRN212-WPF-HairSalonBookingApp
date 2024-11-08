@@ -42,5 +42,38 @@ namespace HairSalonBookingApp.Repositories.Interface
         /// <param name="includeProperties"></param>
         /// <returns></returns>
         T? Get(Expression<Func<T, bool>> filter, string? includeProperties = null);
+        Task<bool> AddAsync(T entity);
+        Task<bool> AddRangeAsync(IEnumerable<T> entities);
+        Task<bool> UpdateAsync(T entity);
+        Task<bool> UpdateRangeAsync(IEnumerable<T> entities);
+        Task<bool> DeleteAsync(T entity);
+        Task<bool> DeleteRangeAsync(IEnumerable<T> entities);
+
+        /// <summary>
+        /// Count the number of entities in the database with optional filter
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        Task<int> CountAsync(Expression<Func<T, bool>>? filter);
+
+        /// <summary>
+        /// Get entities from database with filter and include properties
+        /// includeProperties is a string that contains the properties that you want to include such as "Property1,Property2"
+        /// includeProperties string is separated by comma without space
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="includeProperties"></param>
+        /// <returns></returns>
+        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
+
+        /// <summary>
+        /// Get a specific entity from database with filter and include properties
+        /// includeProperties is a string that contains the properties that you want to include such as "Property1,Property2"
+        /// includeProperties string is separated by comma without space
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="includeProperties"></param>
+        /// <returns></returns>
+        Task<T?> GetAsync(Expression<Func<T, bool>> filter, string? includeProperties = null);
     }
 }

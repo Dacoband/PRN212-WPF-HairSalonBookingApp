@@ -173,5 +173,152 @@ namespace HairSalonBookingApp.DAO
             }
             return _dbSet.Count();
         }
+
+        public async Task<bool> AddAsync(T entity)
+        {
+            try
+            {
+                if (entity != null)
+                {
+                    await _dbSet.AddAsync(entity);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return false;
+        }
+
+        public async Task<bool> AddRangeAsync(IEnumerable<T> entities)
+        {
+            try
+            {
+                if (entities != null)
+                {
+                    await _dbSet.AddRangeAsync(entities);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return false;
+        }
+
+        public async Task<bool> UpdateAsync(T entity)
+        {
+            try
+            {
+                if (entity != null)
+                {
+                    _dbSet.Update(entity);
+                    _context.Attach(entity).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return false;
+        }
+
+        public async Task<bool> UpdateRangeAsync(IEnumerable<T> entities)
+        {
+            try
+            {
+                if (entities != null)
+                {
+                    _dbSet.UpdateRange(entities);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return false;
+        }
+
+        public async Task<bool> DeleteAsync(T entity)
+        {
+            try
+            {
+                if (entity != null)
+                {
+                    _dbSet.Remove(entity);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return false;
+        }
+
+        public async Task<bool> DeleteRangeAsync(IEnumerable<T> entities)
+        {
+            try
+            {
+                if (entities != null)
+                {
+                    _dbSet.RemoveRange(entities);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return false;
+        }
+
+        public async Task<T?> GetAsync(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        {
+            IQueryable<T> query = _dbSet.Where(filter);
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+            return await query.ToListAsync();
+        }
+
+        public async Task<int> CountAsync(Expression<Func<T, bool>>? filter = null)
+        {
+            return filter != null ? await _dbSet.CountAsync(filter) : await _dbSet.CountAsync();
+        }
     }
 }

@@ -1,0 +1,66 @@
+﻿@page
+@model HairSalonBookingApp.Pages.Feedbacks.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Customer Name
+            </th>
+            <th>
+                Stylist Name
+            </th>
+            <th>
+                Rating
+            </th>
+            <th>
+                Comment
+            </th>
+            <th>
+                Create Date
+            </th>
+            <th>
+                Update Date
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Feedback) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stylist.StylistName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InsDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdDate)
+            </td>
+            <td>
+                 <a asp-page="./Edit" asp-route-id="@item.FeedbackID">Edit</a> | @*Only The Admin and The Customer can Edit*@
+                <a asp-page="./Details" asp-route-id="@item.FeedbackID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.FeedbackID">Delete</a> @*Only The Customer can Delete*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

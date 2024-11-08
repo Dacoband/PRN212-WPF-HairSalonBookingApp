@@ -26,6 +26,7 @@ namespace HairSalonBookingApp.DAO.Data
         public DbSet<Notification> Notifications { get; set; } = null!;
         public DbSet<Payment> Payments { get; set; } = null!;
         public DbSet<Service> Services { get; set; } = null!;
+        public DbSet<Feedback> Feedbacks { get; set; } = null!;
         public DbSet<StaffManager> StaffManagers { get; set; } = null!;
         public DbSet<StaffStylist> StaffStylists { get; set; } = null!;
         public DbSet<Stylist> Stylists { get; set; } = null!;

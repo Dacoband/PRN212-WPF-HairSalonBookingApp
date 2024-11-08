@@ -326,6 +326,47 @@ namespace HairSalonBookingApp.DAO.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Feedback",
+                columns: table => new
+                {
+                    FeedbackID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StylistID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Rating = table.Column<int>(type: "int", nullable: true),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InsDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DelFlg = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Feedback", x => x.FeedbackID);
+                    table.ForeignKey(
+                        name: "FK_Feedback_Customers_CustomerID",
+                        column: x => x.CustomerID,
+                        principalTable: "Customers",
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Feedback_Stylists_StylistID",
+                        column: x => x.StylistID,
+                        principalTable: "Stylists",
+                        principalColumn: "StylistId",
+                        onDelete: ReferentialAction.SetNull);
+                }
+            );
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedback_CustomerID",
+                table: "Feedback",
+                column: "CustomerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedback_StylistID",
+                table: "Feedback",
+                column: "StylistID");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AppointmentCancellations_AppointmentId",
                 table: "AppointmentCancellations",

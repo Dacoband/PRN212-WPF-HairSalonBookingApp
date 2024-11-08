@@ -31,5 +31,25 @@ namespace HairSalonBookingApp.Repositories
         public bool Update(T entity) => _dao.Update(entity);
 
         public bool UpdateRange(IEnumerable<T> entities) => _dao.UpdateRange(entities);
+
+        public async Task<bool> AddAsync(T entity) => await _dao.AddAsync(entity);
+
+        public async Task<bool> AddRangeAsync(IEnumerable<T> entities) => await _dao.AddRangeAsync(entities);
+
+        public async Task<int> CountAsync(Expression<Func<T, bool>>? filter) => await _dao.CountAsync(filter);
+
+        public async Task<bool> DeleteAsync(T entity) => await _dao.DeleteAsync(entity);
+
+        public async Task<bool> DeleteRangeAsync(IEnumerable<T> entities) => await _dao.DeleteRangeAsync(entities);
+
+        public async Task<T?> GetAsync(Expression<Func<T, bool>> filter, string? includeProperties = null)
+            => await _dao.GetAsync(filter, includeProperties);
+
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
+            => await _dao.GetAllAsync(filter, includeProperties);
+
+        public async Task<bool> UpdateAsync(T entity) => await _dao.UpdateAsync(entity);
+
+        public async Task<bool> UpdateRangeAsync(IEnumerable<T> entities) => await _dao.UpdateRangeAsync(entities);
     }
 }

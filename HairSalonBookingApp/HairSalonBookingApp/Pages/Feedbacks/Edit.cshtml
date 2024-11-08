@@ -1,0 +1,69 @@
+﻿@page
+@model HairSalonBookingApp.Pages.Feedbacks.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Feedback</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Feedback.FeedbackID" />
+            <div class="form-group">
+                <label class="control-label font-weight-bold">Customer Name: </label>
+                <span>@Model.Feedback.Customer.CustomerName</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label font-weight-bold">Stylist Name: </label>
+                <span>@Model.Feedback.Stylist.StylistName</span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Feedback.Rating" class="control-label font-weight-bold"></label>
+                <input asp-for="Feedback.Rating" class="form-control" type="number" min="1" max="5"/>
+                <span asp-validation-for="Feedback.Rating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label font-weight-bold">Comment</label>
+                <input asp-for="Feedback.Comment" class="form-control" />
+                <span asp-validation-for="Feedback.Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label font-weight-bold">Create Time</label>
+                <input asp-for="Feedback.InsDate" class="form-control" readonly/>
+                <span asp-validation-for="Feedback.InsDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label font-weight-bold">Update Time</label>
+                <input asp-for="Feedback.UpdDate" class="form-control" readonly/>
+                <span asp-validation-for="Feedback.UpdDate" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                @if (Model.Feedback.DelFlg)
+                {
+                    <label class="form-check-label text-danger">Deleted</label>
+                }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<style>
+    .bold-label {
+        font-weight: bold;
+    }
+</style>

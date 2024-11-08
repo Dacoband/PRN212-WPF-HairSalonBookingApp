@@ -1,10 +1,7 @@
-﻿using HairSalonBookingApp.Repositories.Interface;
+﻿using HairSalonBookingApp.BusinessObjects.Entities;
+using HairSalonBookingApp.Repositories.Interface;
 using HairSalonBookingApp.Service.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace HairSalonBookingApp.Service
 {
@@ -15,6 +12,12 @@ namespace HairSalonBookingApp.Service
         public StylistService(IStylistRepository stylistRepository)
         {
             _stylistRepository = stylistRepository;
+        }
+
+        public async Task<List<Stylist>> getAllStylistAsync(Expression<Func<Stylist, bool>>? filter = null, string? include = null)
+        {
+            var query = await _stylistRepository.GetAllAsync(filter ?? (ft => true), include);
+            return query.ToList();
         }
     }
 }

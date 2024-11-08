@@ -1,0 +1,123 @@
+﻿@page
+@model HairSalonBookingApp.Pages.Feedbacks.CreateModel
+
+@{
+    ViewData["Title"] = "Create Feedback";
+}
+
+<h1>Create Feedback</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Stylist Selection -->
+            <div class="form-group">
+                <label asp-for="Feedback.StylistId" class="control-label">Select Stylist</label>
+                <select asp-for="Feedback.StylistId" class="form-control">
+                    <option value="">-- Select Stylist --</option>
+                    @foreach (var stylist in Model.Stylists)
+                    {
+                        <option value="@stylist.StylistId">@stylist.StylistName</option>
+                    }
+                </select>
+                <span asp-validation-for="Feedback.StylistId" class="text-danger"></span>
+            </div>
+
+            <!-- Star Rating -->
+            <div class="form-group">
+                <label asp-for="Feedback.Rating" class="control-label">Rating</label>
+                <div id="star-rating" class="star-rating">
+                    <span class="star" data-value="1">&#9733;</span>
+                    <span class="star" data-value="2">&#9733;</span>
+                    <span class="star" data-value="3">&#9733;</span>
+                    <span class="star" data-value="4">&#9733;</span>
+                    <span class="star" data-value="5">&#9733;</span>
+                </div>
+                <input type="hidden" asp-for="Feedback.Rating" />
+                <span asp-validation-for="Feedback.Rating" class="text-danger"></span>
+            </div>
+
+            <!-- Comment Field -->
+            <div class="form-group">
+                <label asp-for="Feedback.Comment" class="control-label"></label>
+                <input asp-for="Feedback.Comment" class="form-control" />
+                <span asp-validation-for="Feedback.Comment" class="text-danger"></span>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+        <!-- Script to Handle Star Rating -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const stars = document.querySelectorAll('#star-rating .star');
+                const ratingInput = document.querySelector('input[name="Feedback.Rating"]');
+
+                stars.forEach(star => {
+                    star.addEventListener('click', function() {
+                        const rating = this.getAttribute('data-value');
+
+                        // Set the value of the hidden input
+                        ratingInput.value = rating;
+
+                        // Update the star appearance based on the selected rating
+                        stars.forEach(s => s.classList.remove('selected'));
+                        this.classList.add('selected');
+                        let currentStar = this.previousElementSibling;
+                        while (currentStar) {
+                            currentStar.classList.add('selected');
+                            currentStar = currentStar.previousElementSibling;
+                        }
+                    });
+
+                    star.addEventListener('mouseover', function() {
+                        stars.forEach(s => s.classList.remove('hover'));
+                        this.classList.add('hover');
+                        let currentStar = this.previousElementSibling;
+                        while (currentStar) {
+                            currentStar.classList.add('hover');
+                            currentStar = currentStar.previousElementSibling;
+                        }
+                    });
+
+                    star.addEventListener('mouseout', function() {
+                        stars.forEach(s => s.classList.remove('hover'));
+                    });
+                });
+            });
+        </script>
+}
+
+<style>
+    .star-rating {
+        display: flex;
+        gap: 5px;
+        cursor: pointer;
+    }
+    .star {
+        font-size: 2rem;
+        color: #ddd; /* Default color */
+        transition: color 0.2s;
+    }
+    .star.selected,
+    .star:hover,
+    .star:hover ~ .star {
+        color: gold;
+    }
+</style>
