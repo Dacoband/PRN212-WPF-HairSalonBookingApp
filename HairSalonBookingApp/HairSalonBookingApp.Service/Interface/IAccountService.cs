@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HairSalonBookingApp.BusinessObjects.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace HairSalonBookingApp.Service.Interface
 {
     public interface IAccountService
     {
+        public bool RegisterAccount(string email, string password, string? name = null, string? phoneNumber = null);
+        Account? Login(string email, string password);
     }
 }

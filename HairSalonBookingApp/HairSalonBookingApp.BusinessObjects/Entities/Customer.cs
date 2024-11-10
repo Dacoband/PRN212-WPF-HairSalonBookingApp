@@ -17,10 +17,10 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
         //FK from Account
         public Guid AccountId { get; set; }
         public string CustomerName { get; set; } = string.Empty;
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string PhoneNumber { get; set; } = string.Empty;
-        public string Address { get; set; } = string.Empty;
-        public string AvatarImage { get; set; } = string.Empty;
+        public string? Address { get; set; } = string.Empty;
+        public string? AvatarImage { get; set; } = string.Empty;
 
         [ForeignKey("AccountId")]
         public virtual Account Account { get; set; } = null!;

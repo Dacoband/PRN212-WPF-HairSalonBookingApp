@@ -4,7 +4,333 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+    <style>
+        .hero-img {
+            object-fit: cover;
+            width: 100px; /* Giảm kích thước ảnh hero */
+            height: auto; /* Giữ tỷ lệ ảnh */
+            position: absolute; /* Đưa ảnh ra khỏi layout dòng chảy */
+            top: 10px; /* Đặt khoảng cách từ trên cùng */
+            left: 10px; /* Đặt khoảng cách từ bên trái */
+        }
+
+
+        .hero-container {
+            position: relative;
+            text-align: center;
+            margin-top: 20px; /* Để tránh ảnh đè lên phần dưới */
+        }
+
+        .hero-button {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #8e7424;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.25rem;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .hero-button:hover {
+                background-color: #74601d;
+            }
+
+        /* Tiêu đề "Dịch Vụ" */
+        h2.highlight {
+            font-family: 'Arial', sans-serif; /* Font dễ đọc */
+            font-size: 4rem; /* Tăng kích thước chữ lớn hơn */
+            font-weight: bold; /* Làm chữ đậm */
+            color: #333; /* Màu chữ tối để dễ đọc */
+            text-transform: uppercase; /* Chữ in hoa để làm nổi bật */
+            letter-spacing: 3px; /* Tăng khoảng cách giữa các chữ */
+            transition: color 0.3s ease-in-out; /* Hiệu ứng chuyển màu khi hover */
+            margin-bottom: 50px; /* Tăng khoảng cách dưới tiêu đề */
+        }
+
+
+            /* Hiệu ứng khi hover vào chữ */
+            h2.highlight:hover {
+                color: #007bff; /* Đổi màu khi hover */
+                text-shadow: 2px 2px 10px rgba(0, 123, 255, 0.6); /* Tạo hiệu ứng bóng đổ */
+            }
+
+        section.bg-light {
+            background-color: #f8f9fa; /* Màu nền sáng cho section */
+            padding: 80px 0; /* Tăng khoảng cách trên và dưới */
+        }
+
+        .slick-slider {
+            display: flex;
+            justify-content: center; /* Căn giữa slider */
+            align-items: center; /* Căn giữa các card theo chiều dọc */
+            flex-wrap: wrap; /* Cho phép card tự động xuống dòng khi hết không gian */
+        }
+
+        .service-card {
+            position: relative;
+            transition: transform 0.3s;
+            margin: 20px;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 400px; /* Tăng chiều rộng card */
+            height: 500px; /* Tăng chiều cao card */
+            box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ để làm nổi bật card */
+        }
+
+        .service-img-small {
+            max-width: 70%; /* Ảnh nhỏ có kích thước rộng hơn */
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .service-img-large {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 140%; /* Ảnh phóng to */
+            height: 140%;
+            object-fit: cover;
+            opacity: 0; /* Ảnh lớn ẩn ban đầu */
+            transition: opacity 0.3s ease;
+        }
+
+        .service-card:hover .service-img-small {
+            transform: scale(0.8); /* Phóng nhỏ ảnh nhỏ khi hover */
+        }
+
+        .service-card:hover .service-img-large {
+            opacity: 1; /* Hiện ảnh lớn khi hover */
+            transform: scale(1.1); /* Phóng to ảnh lớn */
+        }
+
+        .service-card:hover {
+            transform: scale(1.05); /* Tạo hiệu ứng phóng to nhẹ khi hover */
+        }
+
+
+        .service-card {
+            position: relative;
+            transition: transform 0.3s;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 350px; /* Tăng kích thước của card */
+            height: 450px; /* Tăng chiều cao card */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ để làm nổi bật card */
+        }
+
+        .service-img-small {
+            max-width: 50%; /* Ảnh nhỏ */
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .service-img-large {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120%; /* Ảnh phóng to */
+            height: 120%;
+            object-fit: cover;
+            opacity: 0; /* Ảnh lớn ẩn ban đầu */
+            transition: opacity 0.3s ease;
+        }
+
+        .service-card:hover .service-img-small {
+            transform: scale(0.8); /* Phóng nhỏ ảnh nhỏ khi hover */
+        }
+
+        .service-card:hover .service-img-large {
+            opacity: 1; /* Hiện ảnh lớn khi hover */
+            transform: scale(1.1); /* Phóng to ảnh lớn */
+        }
+
+        .service-card:hover {
+            transform: scale(1.05); /* Tạo hiệu ứng phóng to nhẹ khi hover */
+        }
+
+        .slick-slider .slick-slide {
+            outline: none; /* Loại bỏ đường viền của slide */
+        }
+
+
+
+
+
+        .highlight {
+            color: #8e7424;
+        }
+
+        .btn-custom {
+            background-color: #8e7424;
+            color: white;
+        }
+
+            .btn-custom:hover {
+                background-color: #74601d;
+            }
+
+        .slick-slider .slick-slide {
+            outline: none;
+        }
+
+        .slick-slider {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .slick-slider .service-card {
+            width: 30%; /* Mỗi dịch vụ chiếm 30% bề rộng */
+            margin: 0 10px; /* Khoảng cách giữa các dịch vụ */
+        }
+
+        /* Căn chỉnh hình ảnh và nút dịch vụ ngang nhau */
+        .service-card img {
+            max-width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid p-0">
+        <!-- Hero Section -->
+        <div class="hero-container">
+            <img src="~/images/Logo.jpg" class="hero-img" alt="Salon Hero Image">
+        </div>
+
+        <!-- Dịch Vụ Section -->
+        <section class="py-5 text-center bg-light">
+            <h2 class="display-4 highlight mb-4">Dịch Vụ</h2>
+            <div class="container">
+                <div class="slick-slider">
+                    <div class="service-card">
+                        <!-- Ảnh nhỏ -->
+                        <img src="~/images/image.jpg" alt="Service Image" class="img-fluid rounded mb-2 service-img-small">
+                        <!-- Ảnh phóng to phía sau -->
+                        <img src="~/images/image.jpg" alt="Service Image" class="img-fluid rounded mb-2 service-img-large">
+                        <div class="bg-highlight p-2">
+                            <span class="text-white font-weight-bold">Service Name</span>
+                        </div>
+                        <button onclick="navigateToService()" class="hero-button">Đặt Lịch Hẹn Ngay!</button>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       
+    </div>
+
+
+
+
+
+        <section class="py-5 bg-white text-center">
+            <div class="container">
+                <h2 class="display-4 highlight mb-4">Gói Dịch Vụ</h2>
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="service-card">
+                            <img src="~/images/Cắt tóc và tạo kiểu.jpg" alt="Cắt Tóc Và Tạo Kiểu" class="img-fluid rounded mb-3">
+                            <button class="btn btn-custom w-100">Cắt Tóc Và Tạo Kiểu</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="service-card">
+                            <img src="~/images/Nhuom toc va uon toc.jpg" alt="Nhuộm Tóc và Uốn Tóc" class="img-fluid rounded mb-3">
+                            <button class="btn btn-custom w-100">Nhuộm Tóc và Uốn Tóc</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="service-card">
+                            <img src="~/images/combo hot.jpg" alt="Combo Hot" class="img-fluid rounded mb-3">
+                            <button class="btn btn-custom w-100">Combo Hot</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-light py-5">
+            <div class="container d-flex flex-wrap align-items-center">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <img src="~/images/about-img.jpg" alt="Salon Experience" class="img-fluid rounded shadow-lg">
+                </div>
+                <div class="col-md-6">
+                    <h2 class="display-4 font-weight-bold">HAIR SALON</h2>
+                    <h3 class="text-muted mb-4">Sự hài lòng của quý khách là ưu tiên hàng đầu của <span class="highlight">Hair Salon</span></h3>
+                    <ul class="list-unstyled text-lg">
+                        <li><span class="highlight">✔</span> Đúng dịch vụ - Không kèo kéo khách hay phí ẩn</li>
+                        <li><span class="highlight">✔</span> Ưu tiên trải nghiệm khách hàng</li>
+                        <li><span class="highlight">✔</span> Luôn đưa ra các giải pháp phù hợp và chỉ bắt đầu khi khách hàng đồng ý</li>
+                        <li><span class="highlight">✔</span> Thấu hiểu nhu cầu, hỗ trợ nhiệt tình</li>
+                        <li><span class="highlight">✔</span> Lắng nghe cẩn thận và đảm bảo dịch vụ tận tâm, nhiệt tình</li>
+                    </ul>
+                    <button onclick="navigateToBranch()" class="btn btn-custom mt-4 px-5">Tìm Hiểu Thêm Về Chúng Tôi</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script>
+        function navigateToService() {
+            const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+            if (userData && userData.role === "MB") {
+                window.location.href = "/service";
+            } else {
+                window.location.href = "/LoginPage/LoginPage";
+            }
+        }
+
+        function navigateToBranch() {
+            window.location.href = "/BranchPage/BranchPage";
+        }
+
+        $(document).ready(function () {
+            $('.slick-slider').slick({
+                dots: true,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                responsive: [
+                    { breakpoint: 768, settings: { slidesToShow: 2 } },
+                    { breakpoint: 576, settings: { slidesToShow: 1 } }
+                ]
+            });
+        });
+    </script>
+</body>
+</html>

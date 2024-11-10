@@ -1,4 +1,5 @@
-﻿using HairSalonBookingApp.Repositories.Interface;
+﻿using HairSalonBookingApp.BusinessObjects.Entities;
+using HairSalonBookingApp.Repositories.Interface;
 using HairSalonBookingApp.Service.Interface;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,38 @@ namespace HairSalonBookingApp.Service
         {
             _accountRepository = accountRepository;
         }
+        public bool RegisterAccount(string email, string password, string? name = null, string? phoneNumber = null)
+        {
+            var existingAccount = _accountRepository.GetByEmail(email);
+            if (existingAccount != null)
+            {
+                return false;
+            }
+            var newAccount = new Account
+            {
+                AccountId = Guid.NewGuid(),
+                Email = email,
+                Password = BCrypt.Net.BCrypt.HashPassword(password),
+                RoleName = "Customer"
+            };
+            var newCustomer = new Customer
+            {
+                CustomerId = Guid.NewGuid(),
+                AccountId = newAccount.AccountId,
+                CustomerName = name,
+                PhoneNumber = phoneNumber
+            };
+            return _accountRepository.Add(newAccount);
+        }
 
+        public Account? Login(string email, string password)
+        {
+            var account = _accountRepository.GetByEmail(email);
+            if (account != null && BCrypt.Net.BCrypt.Verify(password, account.Password))
+            {
+                return account;
+            }
+            return null;
+        }
     }
 }
