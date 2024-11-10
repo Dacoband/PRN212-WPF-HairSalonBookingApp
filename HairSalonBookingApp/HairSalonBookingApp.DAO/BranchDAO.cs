@@ -15,5 +15,9 @@ namespace HairSalonBookingApp.DAO
         public BranchDAO(ApplicationDbContext context) : base(context)
         {
         }
+        public async Task<List<Branch>> GetBranchesByManagerID(Guid staffManagerID)
+        {
+            return await Task.Run(() => _context.Branches.Where(b => b.StaffManagerID == staffManagerID).ToList());
+        }
     }
 }
