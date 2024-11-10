@@ -17,7 +17,7 @@ namespace HairSalonBookingApp.Service
         {
             _accountRepository = accountRepository;
         }
-        public bool RegisterAccount(string email, string password, string name, string phoneNumber)
+        public bool RegisterAccount(string email, string password, string? name = null, string? phoneNumber = null)
         {
             var existingAccount = _accountRepository.GetByEmail(email);
             if (existingAccount != null)

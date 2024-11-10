@@ -9,7 +9,7 @@ namespace HairSalonBookingApp.Service.Interface
 {
     public interface IAccountService
     {
-        public bool RegisterAccount(string email, string password, string name, string phoneNumber);
+        public bool RegisterAccount(string email, string password, string? name = null, string? phoneNumber = null);
         Account? Login(string email, string password);
     }
 }
