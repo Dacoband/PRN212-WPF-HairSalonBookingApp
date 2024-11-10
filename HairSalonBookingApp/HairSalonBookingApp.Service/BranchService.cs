@@ -26,22 +26,22 @@ namespace HairSalonBookingApp.Service
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> AddBranch(CreateBracnhRequest createBracnh, HttpContext httpContext)
         {
-            var branch = new Branch
-            {
-                BranchID = Guid.NewGuid(),
-                StaffManagerID = createBracnh.StaffManagerID,
-                SalonBranches = createBracnh.SalonBranches,
-                Address = createBracnh.Address,
-                Phone = createBracnh.Phone
+            //var branch = new Branch
+            //{
+            //    BranchID = Guid.NewGuid(),
+            //    StaffManagerID = createBracnh.StaffManagerID,
+            //    SalonBranches = createBracnh.SalonBranches,
+            //    Address = createBracnh.Address,
+            //    Phone = createBracnh.Phone
                 
-            };
+            //};
            
-            var result = await _branchRepository.Add(branch);
+            //var result = await _branchRepository.Add(branch);
 
-            if (result == null)
-            {
-                return new BadRequestObjectResult("Branch not created");
-            }
+            //if (result == null)
+            //{
+            //    return new BadRequestObjectResult("Branch not created");
+            //}
 
             return new OkObjectResult("Branch created successfully");
         }
