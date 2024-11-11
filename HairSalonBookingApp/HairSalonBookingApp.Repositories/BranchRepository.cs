@@ -14,9 +14,9 @@ namespace HairSalonBookingApp.Repositories
         public BranchRepository() : base(BranchDAO.Instance)
         {
         }
-        public async Task<List<Branch>> GetBranchByStaffManagerID(Guid staffManagerID)
+        public async Task<Branch?> GetBranchByStaffManagerID(Guid staffManagerID)
         {
-            return await BranchDAO.Instance.GetBranchesByManagerID(staffManagerID);
+            return await BranchDAO.Instance.GetAsync(x => x.StaffManagerID == staffManagerID);
         }
     }
 }
