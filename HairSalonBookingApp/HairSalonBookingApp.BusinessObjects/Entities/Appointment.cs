@@ -13,7 +13,8 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
         public Appointment() : base() { }
         //PK
         [Key]
-        public Guid AppointmentId { get; set; }
+        [Column("AppointmentId")]
+        public override Guid Id { get; set; }
         //FK from Customer
         public Guid CustomerId { get; set; }
         //FK from Stylist

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HairSalonBookingApp.DAO.Migrations
 {
-    public partial class InitializrDb : Migration
+    public partial class InitialDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,10 +52,10 @@ namespace HairSalonBookingApp.DAO.Migrations
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AvatarImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AvatarImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InsDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DelFlg = table.Column<bool>(type: "bit", nullable: false)
@@ -305,8 +305,7 @@ namespace HairSalonBookingApp.DAO.Migrations
                 name: "Payments",
                 columns: table => new
                 {
-                    PaymentId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PaymentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AppointmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Amount = table.Column<float>(type: "real", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
