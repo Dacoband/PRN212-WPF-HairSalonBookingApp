@@ -28,5 +28,8 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
 
         [ForeignKey("AccountID")]
         public virtual Account Account { get; set; } = null!;
+
+        [ForeignKey("BranchID")]
+        public virtual Branch? Branch { get; set; }
     }
 }
