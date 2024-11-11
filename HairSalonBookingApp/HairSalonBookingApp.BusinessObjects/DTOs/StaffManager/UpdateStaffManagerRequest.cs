@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,6 @@ namespace HairSalonBookingApp.BusinessObjects.DTOs.StaffManager
         public DateTime DateOfBirth { get; set; }
         public string? PhoneNumber { get; set; } 
         public string? Address { get; set; }
-        public string? AvatarImage { get; set; }
+        public IFormFile? AvatarImage { get; set; }
     }
 }
