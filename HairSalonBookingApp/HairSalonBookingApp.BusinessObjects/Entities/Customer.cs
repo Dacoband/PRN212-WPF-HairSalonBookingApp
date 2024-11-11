@@ -13,7 +13,8 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
         public Customer() : base() { }
         //PK
         [Key]
-        public Guid CustomerId { get; set; }
+        [Column("CustomerId")]
+        public override Guid Id { get; set; }
         //FK from Account
         public Guid AccountId { get; set; }
         public string CustomerName { get; set; } = string.Empty;

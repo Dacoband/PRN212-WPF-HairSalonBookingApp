@@ -13,7 +13,8 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
         public Notification() : base() { }
         //PK
         [Key]
-        public Guid NotificationId { get; set; }
+        [Column("NotificationId")]
+        public override Guid Id { get; set; }
         //FK from Member
         public Guid MemberId { get; set; }
         public string Message { get; set; } = string.Empty;

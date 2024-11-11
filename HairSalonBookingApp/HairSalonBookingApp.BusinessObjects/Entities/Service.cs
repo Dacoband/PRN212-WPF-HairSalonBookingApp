@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,8 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
         public Service() : base() { }
         //PK
         [Key]
-        public Guid ServiceID { get; set; }
+        [Column("ServiceID")]
+        public override Guid Id { get; set; }
         public string ServiceName { get; set; } = string.Empty;
         public int Type = 1;
         public float Price { get; set; }

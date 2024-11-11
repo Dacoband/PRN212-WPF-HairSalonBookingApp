@@ -17,7 +17,7 @@ namespace HairSalonBookingApp.Service
         {
             _accountRepository = accountRepository;
         }
-        public bool RegisterAccount(string email, string password, string name, string phoneNumber)
+        public async Task<bool> RegisterAccount(string email, string password, string? name = null, string? phoneNumber = null)
         {
             var existingAccount = _accountRepository.GetByEmail(email);
             if (existingAccount != null)
@@ -26,19 +26,19 @@ namespace HairSalonBookingApp.Service
             }
             var newAccount = new Account
             {
-                AccountId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 Email = email,
                 Password = BCrypt.Net.BCrypt.HashPassword(password),
                 RoleName = "Customer"
             };
             var newCustomer = new Customer
             {
-                CustomerId = Guid.NewGuid(),
-                AccountId = newAccount.AccountId,
+                Id = Guid.NewGuid(),
+                AccountId = newAccount.Id,
                 CustomerName = name,
                 PhoneNumber = phoneNumber
             };
-            return _accountRepository.Add(newAccount);
+            return await _accountRepository.AddAsync(newAccount);
         }
 
         public Account? Login(string email, string password)

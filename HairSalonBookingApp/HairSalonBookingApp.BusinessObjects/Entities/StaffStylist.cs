@@ -12,7 +12,8 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
     {
         public StaffStylist() : base() { }
         [Key]
-        public Guid StaffStylistId { get; set; }
+        [Column("StaffStylistId")]
+        public override Guid Id { get; set; }
         //FK from Branch
         public Guid BranchID { get; set; }
         //FK from Account

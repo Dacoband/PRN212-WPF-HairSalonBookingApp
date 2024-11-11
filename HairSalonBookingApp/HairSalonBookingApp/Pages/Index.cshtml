@@ -1,10 +1,104 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Trang Chủ";
+    Layout = "_Layout";  // Sử dụng Layout chung
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="bg-gradient-to-br from-blue-400 to-purple-800 to-pink-500 p-10">
+    
+ 
+    <section class="py-10 text-center">
+        <h2 class="text-4xl font-bold text-gray-800 uppercase tracking-wider hover:text-purple-800 mb-10">
+            Dịch Vụ
+        </h2>
+        <div class="container mx-auto">
+            <div class="slick-slider flex justify-center flex-wrap">
+                <div class="service-card bg-white shadow-lg p-6 rounded-lg flex flex-col items-center text-center">
+                    <img src="~/images/image.jpg" alt="Service Image" class="w-1/2 rounded mb-4">
+                    <button onclick="navigateToService()" class="mt-4 bg-yellow-800 text-white py-2 px-4 rounded-full text-lg transition transform hover:scale-105 hover:bg-yellow-700">
+                        Đặt Lịch Hẹn Ngay!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <h2 class="text-center text-4xl font-bold text-gray-800 uppercase tracking-wider hover:text-purple-800 mb-10">Gói Dịch Vụ</h2>
+    <section class="bg-white shadow-lg p-6 rounded-lg flex-col">
+        <section class="py-10 bg-white text-center">
+
+            <div class="container mx-auto">
+               
+                <div class="flex flex-wrap justify-center space-x-4">
+                    <div class="bg-gradient-to-br from-blue-400 to-purple-400 to-pink-500e p-6 shadow-lg rounded-lg text-center w-80 mb-4 transition transform hover:scale-105">
+                        <img src="~/images/Cắt tóc và tạo kiểu.jpg" alt="Cắt Tóc Và Tạo Kiểu" class="w-full h-48 object-cover rounded mb-4">
+                        <button class="w-full bg-purple-800 text-white py-2 rounded hover:bg-gray-800">Cắt Tóc Và Tạo Kiểu</button>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-400 to-purple-800 to-pink-500 p-6 shadow-lg rounded-lg text-center w-80 mb-4 transition transform hover:scale-105">
+                        <img src="~/images/Nhuom toc va uon toc.jpg" alt="Nhuộm Tóc và Uốn Tóc" class="w-full h-48 object-cover rounded mb-4">
+                        <button class="w-full bg-purple-800 text-white py-2 rounded hover:bg-gray-800">Nhuộm Tóc và Uốn Tóc</button>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-400 to-purple-500 to-pink-400 p-6 shadow-lg rounded-lg text-center w-80 mb-4 transition transform hover:scale-105">
+                        <img src="~/images/combo hot.jpg" alt="Combo Hot" class="w-full h-48 object-cover rounded mb-4">
+                        <button class="w-full bg-purple-800 text-white py-2 rounded hover:bg-gray-800">Combo Hot</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="bg-white py-10">
+            <div class="container mx-auto flex flex-wrap items-center">
+                <div class="w-full md:w-1/2 mb-4">
+                    <img src="~/images/about-img.jpg" alt="Salon Experience" class="w-full rounded-lg shadow-lg">
+                </div>
+                <div class="w-full md:w-1/2 px-4">
+                    <h2 class="text-4xl font-bold">HAIR SALON</h2>
+                    <h3 class="text-lg text-gray-700 mt-2">Sự hài lòng của quý khách là ưu tiên hàng đầu của <span class="text-yellow-800 font-bold">Hair Salon</span></h3>
+                    <ul class="list-none text-lg text-gray-600 mt-4 space-y-2">
+                        <li><span class="text-yellow-800 font-bold">✔</span> Đúng dịch vụ - Không kéo khách hay phí ẩn</li>
+                        <li><span class="text-yellow-800 font-bold">✔</span> Ưu tiên trải nghiệm khách hàng</li>
+                        <li><span class="text-yellow-800 font-bold">✔</span> Luôn đưa ra giải pháp phù hợp và chỉ bắt đầu khi đồng ý</li>
+                        <li><span class="text-yellow-800 font-bold">✔</span> Thấu hiểu nhu cầu, hỗ trợ nhiệt tình</li>
+                        <li><span class="text-yellow-800 font-bold">✔</span> Lắng nghe cẩn thận và đảm bảo dịch vụ tận tâm</li>
+                    </ul>
+                    <button onclick="navigateToBranch()" class="bg-yellow-800 text-white py-2 px-4 rounded-full mt-6 transition hover:bg-yellow-700">Tìm Hiểu Thêm Về Chúng Tôi</button>
+                </div>
+            </div>
+        </section>
+    </section>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.slick-slider').slick({
+                dots: true,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                responsive: [
+                    { breakpoint: 768, settings: { slidesToShow: 2 } },
+                    { breakpoint: 576, settings: { slidesToShow: 1 } }
+                ]
+            });
+        });
+
+        function navigateToService() {
+            const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+            if (userData && userData.role === "Member") {
+                window.location.href = "/service";
+            } else {
+                window.location.href = "/LoginPage/LoginPage";
+            }
+        }
+
+        function navigateToBranch() {
+            window.location.href = "/BranchPage/BranchPage";
+        }
+    </script>
+}

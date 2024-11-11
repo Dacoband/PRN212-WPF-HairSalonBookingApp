@@ -12,7 +12,8 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
     {
         public AppointmentCancellation() : base() { }
         [Key]
-        public Guid CancellationId { get; set; }
+        [Column("CancellationId")]
+        public override Guid Id { get; set; }
         //FK from Appointment
         public Guid AppointmentId { get; set; }
         public string Reason { get; set; } = null!;
