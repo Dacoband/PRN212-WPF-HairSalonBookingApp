@@ -1,4 +1,5 @@
-﻿using HairSalonBookingApp.Repositories.Interface;
+﻿using HairSalonBookingApp.BusinessObjects.Entities;
+using HairSalonBookingApp.Repositories.Interface;
 using HairSalonBookingApp.Services.Interface;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,18 @@ namespace HairSalonBookingApp.Services
         public StylistService(IStylistRepository stylistRepository)
         {
             _stylistRepository = stylistRepository;
+        }
+        public async Task<List<Stylist>> GetAllStlistByBranchId(Guid id)
+        {
+            try
+            {
+                var stylists = await _stylistRepository.GetAllAsync(s => s.BranchID == id);
+                return stylists.ToList();
+            }
+            catch (Exception)
+            {
+                return new List<Stylist>();
+            }
         }
     }
 }
