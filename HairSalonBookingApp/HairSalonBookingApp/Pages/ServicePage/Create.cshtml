@@ -1,0 +1,38 @@
+﻿@page
+@model HairSalonBookingApp.Pages.ServicePage.CreateModel
+@{
+    ViewData["Title"] = "Create Service";
+}
+
+<h2>Create Service</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <div>
+        <label>Service Name</label>
+        <input type="text" asp-for="ServiceModel.ServiceName" required />
+    </div>
+    <div>
+        <label>Type</label>
+        <input type="number" asp-for="ServiceModel.Type" required />
+    </div>
+    <div>
+        <label>Price</label>
+        <input type="number" asp-for="ServiceModel.Price" required />
+    </div>
+    <div>
+        <label>Description</label>
+        <textarea asp-for="ServiceModel.Description"></textarea>
+    </div>
+    <div>
+        <label>Duration (mins)</label>
+        <input type="number" asp-for="ServiceModel.Duration" required />
+    </div>
+    <div>
+        <label>Avatar Image</label>
+        <input type="file" asp-for="ServiceModel.AvatarImage" required />
+    </div>
+    <button type="submit">Create Service</button>
+</form>
+
+<div asp-validation-summary="ModelOnly"></div>
+

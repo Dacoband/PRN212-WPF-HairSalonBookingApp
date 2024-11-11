@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HairSalonBookingApp.Services.Interface
+namespace HairSalonBookingApp.BusinessObjects.DTOs.Service
 {
-    public interface IAppointmentServiceService
+    internal class UpdateNewServiceRequest
     {
     }
 }

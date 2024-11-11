@@ -3,8 +3,8 @@ using HairSalonBookingApp.DAO.Data;
 using HairSalonBookingApp.DAO.DbInitializer;
 using HairSalonBookingApp.Repositories;
 using HairSalonBookingApp.Repositories.Interface;
-using HairSalonBookingApp.Service.Interface;
-using HairSalonBookingApp.Service;
+using HairSalonBookingApp.Services.Interface;
+using HairSalonBookingApp.Services;
 using Microsoft.EntityFrameworkCore;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
@@ -14,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IServiceService, ServiceService>();
+
 
 
 
