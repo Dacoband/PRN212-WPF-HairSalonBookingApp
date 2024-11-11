@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HairSalonBookingApp.Service.Interface
+namespace HairSalonBookingApp.Services.Interface
 {
     public interface IFirebaseService
     {

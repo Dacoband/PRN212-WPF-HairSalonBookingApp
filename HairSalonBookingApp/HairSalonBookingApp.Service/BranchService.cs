@@ -1,7 +1,7 @@
 ﻿using HairSalonBookingApp.BusinessObjects.DTOs.Branch;
 using HairSalonBookingApp.BusinessObjects.Entities;
 using HairSalonBookingApp.Repositories.Interface;
-using HairSalonBookingApp.Service.Interface;
+using HairSalonBookingApp.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HairSalonBookingApp.Service
+namespace HairSalonBookingApp.Services
 {
     public class BranchService : IBranchService
     {
@@ -44,7 +44,7 @@ namespace HairSalonBookingApp.Service
                 Phone = createBracnh.Phone
 
             };
-           
+
             await _branchRepository.AddAsync(branch);
 
 
@@ -105,8 +105,8 @@ namespace HairSalonBookingApp.Service
                 message = "Staff Manager not found";
                 return (false, message);
             }
-            
-            if(staffManager.BranchID != null)
+
+            if (staffManager.BranchID != null)
             {
                 message = "Staff Manager was assigned to other branch";
                 return (false, message);

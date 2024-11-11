@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HairSalonBookingApp.Service\HairSalonBookingApp.Service.csproj" />
+    <ProjectReference Include="..\HairSalonBookingApp.Service\HairSalonBookingApp.Services.csproj" />
   </ItemGroup>
 
 </Project>

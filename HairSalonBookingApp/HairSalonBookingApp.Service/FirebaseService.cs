@@ -1,7 +1,7 @@
 ﻿using Firebase.Storage;
 using FirebaseAdmin;
 using HairSalonBookingApp.BusinessObjects.DTOs;
-using HairSalonBookingApp.Service.Interface;
+using HairSalonBookingApp.Services.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HairSalonBookingApp.Service
+namespace HairSalonBookingApp.Services
 {
     public class FirebaseService : IFirebaseService
     {
