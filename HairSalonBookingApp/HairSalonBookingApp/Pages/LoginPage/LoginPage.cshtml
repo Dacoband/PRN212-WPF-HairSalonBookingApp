@@ -1,113 +1,43 @@
 ﻿@page
 @model HairSalonBookingApp.Pages.LoginPage.LoginPageModel
 @{
-    ViewData["Title"] = "Login page";
+    ViewData["Title"] = "Trang Đăng Nhập";
+    Layout = "_Layout";
 }
+<div class="flex items-center justify-center h-screen bg-gray-100 
+            bg-gradient-to-br from-blue-400 to-purple-800 to-pink-500">
+    <div class="w-full max-w-md h-auto bg-white p-8 rounded-lg shadow-lg overflow-auto bg-gradient-to-br from-blue-900 to-gray-800 to-pink-300 border border-purple-700">
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Đăng Nhập</h2>
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f9;
-        justify-content: center;
-        min-height: 100vh;
-        margin: 0;
-    }
-    .main-container{
-        display: flex;
-        align-content:center;
-        align-items: center;
-        justify-content: center;
-        justify-items: center;
-    }
-    .login-container {
-        width: 100%;
-        max-width: 400px;
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
+        <form method="post" class="space-y-4 ">
+            <div>
+                <label class="block text-white font-semibold mb-1">Email:</label>
+                <input type="email" asp-for="Email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                <span asp-validation-for="Email" class="text-red-500 text-sm"></span>
+            </div>
 
-    h2 {
-        text-align: center;
-        color: #333333;
-        margin-bottom: 20px;
-    }
+            <div>
+                <label class="block text-white font-semibold mb-1">Mật khẩu:</label>
+                <input type="password" asp-for="Password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                <span asp-validation-for="Password" class="text-red-500 text-sm"></span>
+            </div>
 
-    form div {
-        margin-bottom: 15px;
-    }
+            <div>
+                <button type="submit" class="w-full py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-700 transition duration-300 transform hover:scale-95">Đăng Nhập</button>
+            </div>
 
-    label {
-        display: block;
-        font-weight: bold;
-        color: #333333;
-    }
+            <div>
+                <button type="submit" name="handler" value="register" class="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300 transform hover:scale-95 mt-2">Đăng Ký</button>
+            </div>
 
-    input[type="email"],
-    input[type="password"] {
-        width: 100%;
-        padding: 8px;
-        margin-top: 5px;
-        border: 1px solid #cccccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    button[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        border: none;
-        border-radius: 4px;
-        background-color: #4CAF50;
-        color: #ffffff;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    button[type="submit"]:hover {
-        background-color: #45a049;
-    }
-
-    .register-btn {
-        background-color: #007BFF;
-        margin-top: 10px;
-    }
-
-    .register-btn:hover {
-        background-color: #0056b3;
-    }
-
-    .error-message {
-        color: red;
-        font-size: 14px;
-    }
-</style>
-<div class="main-container">
-<div class="login-container">
-    <h2>Login</h2>
-    <form method="post">
-        <div>
-            <label>Email:</label>
-            <input type="email" asp-for="Email" />
-            <span asp-validation-for="Email" class="error-message"></span>
-        </div>
-        <div>
-            <label>Password:</label>
-            <input type="password" asp-for="Password" />
-            <span asp-validation-for="Password" class="error-message"></span>
-        </div>
-        <div>
-            <button type="submit">Login</button>
-        </div>
-        <div>
-            <button type="submit" name="handler" value="register" class="register-btn">Register</button>
-        </div>
-        <span class="error-message">@Model.ErrorMessage</span>
-    </form>
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <span class="text-red-500 text-sm">@Model.ErrorMessage</span>
+            }
+        </form>
+    </div>
 </div>
-</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
