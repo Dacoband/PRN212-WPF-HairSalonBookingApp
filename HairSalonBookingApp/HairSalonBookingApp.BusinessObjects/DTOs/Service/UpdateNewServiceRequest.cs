@@ -19,7 +19,5 @@ namespace HairSalonBookingApp.BusinessObjects.DTOs.Service
         public int? Duration { get; set; }
 
         public IFormFile? AvatarImage { get; set; }
-
-        public DateTime? UpdDate = DateTime.Now;
     }
 }

@@ -94,29 +94,15 @@ namespace HairSalonBookingApp.Services
 
             return new OkObjectResult(resList);
         }
-        public async Task<ActionResult<Service>> GetServiceById(Guid serviceId)
+        public async Task<Service?> GetServiceById(Guid serviceId)
         {
             var service = await _serviceRepository.GetAsync(serviceId);
             if (service == null)
             {
-                return new ObjectResult("Không tìm thấy dịch vụ")
-                {
-                    StatusCode = StatusCodes.Status404NotFound
-                };
+                return null;
             }
-            var serviceResponse = new Service
-            {
-                Id = service.Id,
-                ServiceName = service.ServiceName,
-                Price = service.Price,
-                Description = service.Description,
-                Duration = service.Duration,
-                AvatarImage = service.AvatarImage,
-                InsDate = service.InsDate,
-                UpdDate = service.UpdDate,
-                DelFlg = service.DelFlg,
-            };
-            return new OkObjectResult(serviceResponse);
+            
+            return service;
         }
         public async Task<ActionResult> DeleteService(Guid serviceId)
         {
