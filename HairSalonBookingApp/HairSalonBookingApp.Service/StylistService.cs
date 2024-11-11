@@ -18,13 +18,15 @@ namespace HairSalonBookingApp.Services
         private readonly IAccountRepository _accountRepository;
         private readonly IBranchRepository _branchRepository;
         private readonly IFirebaseService _firebaseService;
+        private readonly IStaffStylistRepository _staffStylistRepository;
 
-        public StylistService(IStylistRepository stylistRepository, IAccountRepository accountRepository, IBranchRepository branchRepository, IFirebaseService firebaseService)
+        public StylistService(IStylistRepository stylistRepository, IAccountRepository accountRepository, IBranchRepository branchRepository, IFirebaseService firebaseService, IStaffStylistRepository staffStylistRepository)
         {
             _stylistRepository = stylistRepository;
             _accountRepository = accountRepository;
             _branchRepository = branchRepository;
             _firebaseService = firebaseService;
+            _staffStylistRepository = staffStylistRepository;
         }
 
         public async Task<bool> CreateStylist(CreateStylistRequest createStylistRequest)
@@ -40,11 +42,21 @@ namespace HairSalonBookingApp.Services
                 };
                 await _accountRepository.AddAsync(account);
                 var url = await _firebaseService.UploadFile(createStylistRequest.AvatarImage);
+                var branch = await _branchRepository.GetAsync(createStylistRequest.BranchID);
+                if (branch == null)
+                {
+                    return false;
+                }
+                var staffStylist = await _staffStylistRepository.GetAsync(createStylistRequest.StaffStylistId);
+                if (staffStylist == null)
+                {
+                    return false;
+                }
                 var stylist = new Stylist
                 {
                     Id = Guid.NewGuid(),
                     AccountId = account.Id,
-                    BranchID = createStylistRequest.BranchID,
+                    BranchID = createStylistRequest.BranchID,                  
                     StaffStylistId = createStylistRequest.StaffStylistId,
                     StylistName = createStylistRequest.StylistName,
                     PhoneNumber = createStylistRequest.PhoneNumber,
@@ -83,7 +95,7 @@ namespace HairSalonBookingApp.Services
 
         public async Task<List<Stylist>> GetAllStylists()
         {
-            var stylists = await _stylistRepository.GetAllAsync();
+            var stylists = await _stylistRepository.GetAllAsync(includeProperties:"Account,Branch,StaffStylist");
             return stylists.ToList();
         }
 
@@ -106,6 +118,18 @@ namespace HairSalonBookingApp.Services
                 if(stylist == null)
                 {
                     message = "Stylist not found";
+                    return (false, message);
+                }
+                var branch = await _branchRepository.GetAsync(updateStylistRequest.BranchID ?? default);
+                if (branch == null)
+                {
+                    message = "Branch not found";
+                    return (false, message);
+                }
+                var staffStylist = await _staffStylistRepository.GetAsync(updateStylistRequest.StaffStylistId ?? default);
+                if (staffStylist == null)
+                {
+                    message = "Staff Stylist not found";
                     return (false, message);
                 }
                 var url = "";

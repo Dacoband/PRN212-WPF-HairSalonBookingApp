@@ -14,7 +14,7 @@ namespace HairSalonBookingApp.BusinessObjects.DTOs.Stylist
         [Required(ErrorMessage ="Vui lòng nhập Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Vui lòng nhập Password")]
         public string Password { get; set; }
         public Guid BranchID { get; set; }
         public Guid StaffStylistId { get; set; }

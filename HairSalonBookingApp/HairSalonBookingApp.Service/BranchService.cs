@@ -77,7 +77,7 @@ namespace HairSalonBookingApp.Services
 
         public async Task<List<Branch>> GetAllBranches()
         {
-            var branches = await _branchRepository.GetAllAsync();
+            var branches = await _branchRepository.GetAllAsync(includeProperties:"StaffManager");
             return branches.ToList();
         }
 

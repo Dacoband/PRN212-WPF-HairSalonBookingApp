@@ -19,12 +19,14 @@ namespace HairSalonBookingApp.Services
         private readonly IStaffManagerRepository _staffManagerRepository;
         private readonly IFirebaseService _firebaseService;
         private readonly IAccountRepository _accountRepository;
+        private readonly IBranchRepository _branchRepository;
 
-        public StaffManagerService(IStaffManagerRepository staffManagerRepository, IFirebaseService firebaseService, IAccountRepository accountRepository)
+        public StaffManagerService(IStaffManagerRepository staffManagerRepository, IFirebaseService firebaseService, IAccountRepository accountRepository, IBranchRepository branchRepository)
         {
             _staffManagerRepository = staffManagerRepository;
             _firebaseService = firebaseService;
             _accountRepository = accountRepository;
+            _branchRepository = branchRepository;
         }
 
         public async Task<bool> CreateStaffManager(CreateStaffManagerRequest createStaffManagerRequest)
@@ -40,6 +42,7 @@ namespace HairSalonBookingApp.Services
                 };
                 await _accountRepository.AddAsync(account);
                 var url = await _firebaseService.UploadFile(createStaffManagerRequest.AvatarImage);
+                var branch = await _branchRepository.GetAsync(createStaffManagerRequest.BranchID ?? default);
                 var staffManager = new StaffManager
                 {
                     Id = Guid.NewGuid(),
@@ -84,7 +87,7 @@ namespace HairSalonBookingApp.Services
 
         public async Task<List<StaffManager>> GetAllStaffManager()
         {
-            var staffManagers = await _staffManagerRepository.GetAllAsync(includeProperties: "Account");
+            var staffManagers = await _staffManagerRepository.GetAllAsync(includeProperties: "Account,Branch");
             return staffManagers.ToList();
         }
 
@@ -114,6 +117,12 @@ namespace HairSalonBookingApp.Services
                 if (updateStaffManagerRequest.AvatarImage != null)
                 {
                     url = await _firebaseService.UploadFile(updateStaffManagerRequest.AvatarImage);
+                }
+                var branch = await _branchRepository.GetAsync(updateStaffManagerRequest.BranchID ?? default);
+                if (branch == null)
+                {
+                    message = "Branch not found";
+                    return (false, message);
                 }
 
                 staffManager.BranchID = updateStaffManagerRequest.BranchID ?? staffManager.BranchID;

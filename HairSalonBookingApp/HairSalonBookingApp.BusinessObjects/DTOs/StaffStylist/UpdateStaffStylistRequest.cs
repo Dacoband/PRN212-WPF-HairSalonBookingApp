@@ -6,17 +6,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HairSalonBookingApp.BusinessObjects.DTOs.Stylist
+namespace HairSalonBookingApp.BusinessObjects.DTOs.StaffStylist
 {
-    public class UpdateStylistRequest
+    public class UpdateStaffStylistRequest
     {
         public Guid Id { get; set; }
-        public string? StylistName { get; set; }
-        public Guid? StaffStylistId { get; set; }
+        [Required(ErrorMessage = "BranchId is required.")]
         public Guid? BranchID { get; set; }
-        public string? Email { get; set; }  
+
+        [EmailAddress] 
+        public string? Email { get; set; }
+
+        public string? Password { get; set; }
+
+        public string? StaffStylistName { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
         public string? PhoneNumber { get; set; }
+
         public string? Address { get; set; }
+
         public IFormFile? AvatarImage { get; set; }
     }
 }
