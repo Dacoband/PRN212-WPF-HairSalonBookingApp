@@ -105,7 +105,7 @@ namespace HairSalonBookingApp.Services
                 message = "Staff Manager not found";
                 return (false, message);
             }
-
+                
             if (staffManager.BranchID != null)
             {
                 message = "Staff Manager was assigned to other branch";

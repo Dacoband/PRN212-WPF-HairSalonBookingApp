@@ -1,0 +1,41 @@
+﻿@page
+@model HairSalonBookingApp.Pages.StaffManagerPage.IndexModel
+@{
+    ViewData["Title"] = "Staff Manager List";
+}
+<h1>Staff Manager List</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">Create New Staff</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Staff Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>DateOfBirth</th>
+            <th>Address</th>
+            <th>AvatarImage</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var staff in Model.StaffManagers)
+        {
+            <tr>
+                <td>@staff.StaffManagerName</td>
+                <td>@staff.PhoneNumber</td>
+                <td>@staff.Account.Email</td>
+                <td>@staff.DateOfBirth</td>
+                <td>@staff.Address</td>
+                <td>
+                    <img src="~/@staff.AvatarImage" alt="@staff.StaffManagerName" style="width: 100px; height: 100px;" />
+                <td>
+                    <a asp-page="Details" asp-route-id="@staff.Id" class="btn btn-info">Details</a> |
+                    <a asp-page="Edit" asp-route-id="@staff.Id" class="btn btn-warning">Edit</a> |
+                    <form method="post" asp-page="Delete" asp-route-id="@staff.Id" class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this staff?');">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
