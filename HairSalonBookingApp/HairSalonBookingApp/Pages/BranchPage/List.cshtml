@@ -1,0 +1,114 @@
+﻿@page
+@model HairSalonBookingApp.Pages.BranchPage.ListModel
+
+
+@{
+    ViewData["Title"] = "Branch List";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4">Our Salon Branches</h2>
+
+    <div class="row">
+        <!-- Left Side: Branch List -->
+        <div class="col-md-5 border-end">
+            <div class="d-flex justify-content-end mb-4">
+                <a asp-page="./AddBranch" class="btn btn-outline-success shadow-sm">
+                    <i class="bi bi-plus-circle"></i> Add New Branch
+                </a>
+            </div>
+
+            <div class="table-responsive shadow-sm">
+                <table class="table table-hover align-middle text-center">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Select</th>
+                            <th>Branch ID</th>
+                            <th>Salon Branches</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var branch in Model.Branches)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="radio" name="selectedBranch" value="@branch.Id" />
+                                </td>
+                                <td>@branch.Id</td>
+                                <td>@branch.SalonBranches</td>
+                                <td>@branch.Address</td>
+                                <td>@branch.Phone</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Button to view selected branch's stylists -->
+            <div class="text-center mt-4">
+                <button id="viewStylistsButton" class="btn btn-primary">
+                    <i class="bi bi-person-lines-fill"></i> View Stylists
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Side: Stylist List -->
+        <div class="col-md-7">
+            <h4 class="text-center text-secondary">Stylists for Selected Branch</h4>
+            <div id="stylistList" class="table-responsive shadow-sm">
+                <!-- This is where the stylist list will be displayed dynamically -->
+                <table class="table table-striped align-middle text-center">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>Stylist ID</th>
+                            <th>Name</th>
+                            <th>Experience</th>
+                            <th>Specialty</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stylistTableBody">
+                        <!-- JavaScript will populate this section with the stylist data -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("viewStylistsButton").addEventListener("click", async function() {
+        const selectedBranch = document.querySelector('input[name="selectedBranch"]:checked');
+        if (selectedBranch) {
+            const branchId = selectedBranch.value;
+
+            try {
+                const response = await fetch(`/api/stylists?branchId=${branchId}`);
+                const stylists = await response.json();
+
+                const stylistTableBody = document.getElementById("stylistTableBody");
+                stylistTableBody.innerHTML = ""; // Clear any existing rows
+
+                stylists.forEach(stylist => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${stylist.id}</td>
+                        <td>${stylist.name}</td>
+                        <td>${stylist.experience}</td>
+                        <td>${stylist.specialty}</td>
+                    `;
+                    stylistTableBody.appendChild(row);
+                });
+            } catch (error) {
+                alert("Failed to load stylists. Please try again.");
+            }
+        } else {
+            alert("Please select a branch to view its stylists.");
+        }
+    });
+</script>
+
+
+
+
