@@ -1,4 +1,5 @@
-﻿using HairSalonBookingApp.BusinessObjects.Entities;
+﻿using FirebaseAdmin.Messaging;
+using HairSalonBookingApp.BusinessObjects.Entities;
 using HairSalonBookingApp.Repositories.Interface;
 using HairSalonBookingApp.Services.Interface;
 using System;
@@ -41,14 +42,36 @@ namespace HairSalonBookingApp.Services
             return await _accountRepository.AddAsync(newAccount);
         }
 
-        public Account? Login(string email, string password)
+        public async Task<(Account?, string)> Login(string email, string password)
         {
-            var account = _accountRepository.GetByEmail(email);
-            if (account != null && BCrypt.Net.BCrypt.Verify(password, account.Password))
+            string message = "Login failed";
+
+            var account = await _accountRepository.GetAsync(a => a.Email == email);
+
+            if (account == null)
             {
-                return account;
+                message = "Email not found";
             }
-            return null;
+            else if (!BCrypt.Net.BCrypt.Verify(password, account.Password))
+            {
+                message = "Invalid Password";
+            }
+            else if (account.DelFlg == true)
+            {
+                message = "Account is banned";
+            }
+            else
+            {
+                message = "Login successful";
+                return (account, message);
+            }
+
+            return (null, message);
+        }
+
+        public Account? Register(string email, string password, string? name, out string message)
+        {
+            throw new NotImplementedException();
         }
     }
 }

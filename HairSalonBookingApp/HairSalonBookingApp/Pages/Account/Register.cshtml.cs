@@ -1,4 +1,4 @@
-using HairSalonBookingApp.Services.Interface;
+﻿using HairSalonBookingApp.Services.Interface;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -19,15 +19,23 @@ namespace HairSalonBookingApp.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Vui lòng nhập email")]
             [EmailAddress]
             public string Email { get; set; } = string.Empty;
 
-            [Required]
+            [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
             [DataType(DataType.Password)]
             public string Password { get; set; } = string.Empty;
 
             public string? Name { get; set; }
+            public DateTime? DateOfBirth { get; set; }
+
+            [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
+            [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải có chính xác 10 số")]
+            [RegularExpression(@"^(03|05|07|08|09)\d{8}$", ErrorMessage = "Số điện thoại phải là số điện thoại Viet Nam")]
+            public string PhoneNumber { get; set; } = string.Empty;
+            public string? Address { get; set; } = string.Empty;
+            public string? AvatarImage { get; set; } = string.Empty;
         }
 
         public RegisterPageModel(IAccountService accountService)
@@ -44,13 +52,12 @@ namespace HairSalonBookingApp.Pages.Account
             }
         }
 
-        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string? returnUrl = null, IFormFile? file = null)
         {
             returnUrl ??= Url.Content("~/");
 
             if (ModelState.IsValid)
             {
-                // Check if the user already exists
                 var account = _accountService.Register(Input.Email, Input.Password, Input.Name, out string message);
                 if (account == null)
                 {
