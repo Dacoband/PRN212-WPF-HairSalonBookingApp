@@ -18,27 +18,25 @@ namespace HairSalonBookingApp.Pages.ServicePage
             _firebaseService = firebaseService;
         }
         [BindProperty]
-        public UpdateNewServiceRequest Service { get; set; }
+        public UpdateNewServiceRequest Service { get; set; } = new UpdateNewServiceRequest();
 
         public Guid ServiceId { get; set; }
-        public async Task<IActionResult> OnGetAsync(Guid serviceId)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
-            ServiceId = serviceId;
-            var service = await _serviceService.GetServiceById(serviceId);
+            ServiceId = Guid.Parse(id);  
+            var service = await _serviceService.GetServiceById(ServiceId);
 
-            if (service.Value == null)
+            if (service == null)
             {
-                return NotFound();
+                TempData["error"] = "Không tìm thấy dịch vụ!";
+                return RedirectToPage("/Services/ServiceList");
             }
 
-            Service = new UpdateNewServiceRequest
-            {
-                ServiceName = service.Value.ServiceName,
-                Price = service.Value.Price,
-                Description = service.Value.Description,
-                Duration = service.Value.Duration,
-                AvatarImage = null // Không hiển thị ảnh khi update, chỉ tải lên mới
-            };
+            Service.Duration = service.Duration;
+            Service.ServiceName = service.ServiceName;
+            Service.Price = service.Price;
+            Service.Description = service.Description;
+            Service.AvatarImage = null;
 
             return Page();
         }
