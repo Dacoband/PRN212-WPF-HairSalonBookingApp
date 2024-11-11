@@ -30,6 +30,7 @@ namespace HairSalonBookingApp.Services
 
         public async Task<bool> CreateStaffStylist(CreateStaffStylistRequest createStaffStylistRequest)
         {
+            string message;
             try
             {
                 var account = new Account
@@ -43,6 +44,7 @@ namespace HairSalonBookingApp.Services
                 var branch = await _branchRepository.GetAsync(createStaffStylistRequest.BranchID);
                 if (branch == null)
                 {
+                    message = "Branch not found";
                     return false;
                 }
                 var staffStylist = new StaffStylist
@@ -59,6 +61,7 @@ namespace HairSalonBookingApp.Services
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                message = ex.Message;
                 return false;
             }
             return true;
@@ -66,11 +69,13 @@ namespace HairSalonBookingApp.Services
 
         public async Task<bool> DeleteStaffStylist(Guid staffId)
         {
+            string message;
             try
             {
                 var staffStylist = await _staffStylistRepository.GetAsync(staffId);
                 if (staffStylist == null)
                 {
+                    message = "StaffStylist not found";
                     return false;
                 }
                 staffStylist.DelFlg = true;
@@ -79,6 +84,7 @@ namespace HairSalonBookingApp.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                message = ex.Message;
                 return false;
             }
             return true;

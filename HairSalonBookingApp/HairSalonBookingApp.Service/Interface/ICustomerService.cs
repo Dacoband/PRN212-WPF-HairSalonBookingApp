@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HairSalonBookingApp.BusinessObjects.DTOs.Customer;
+using HairSalonBookingApp.BusinessObjects.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,10 @@ namespace HairSalonBookingApp.Services.Interface
 {
     public interface ICustomerService
     {
+        Task<Customer?> GetCustomerById(Guid customerId);
+        Task<List<Customer>> GetAllCustomers();
+        Task<bool> CreateCustomer(CreateCustomerRequest createCustomerRequest);
+        Task<(bool, string)> UpdateCustomer(UpdateCustomerRequest updateCustomerRequest);
+        Task<bool> DeleteCustomer(Guid customerId);
     }
 }
