@@ -13,7 +13,7 @@ namespace HairSalonBookingApp.Services.Interface
         Task<List<StaffStylist>> GetStaffStylists();
         Task<StaffStylist?> GetStaffStylistById(Guid staffId);
         Task<bool> CreateStaffStylist(CreateStaffStylistRequest createStaffStylistRequest);
-        Task<(bool,string)> DeleteStaffStylist(Guid staffId);
-        Task<bool> UpdateStaffStylist(UpdateStaffStylistRequest updateStaffStylistRequest);
+        Task<bool> DeleteStaffStylist(Guid staffId);
+        Task<(bool, string)> UpdateStaffStylist(UpdateStaffStylistRequest updateStaffStylistRequest);
     }
 }
