@@ -12,10 +12,6 @@
         <input type="text" asp-for="ServiceModel.ServiceName" required />
     </div>
     <div>
-        <label>Type</label>
-        <input type="number" asp-for="ServiceModel.Type" required />
-    </div>
-    <div>
         <label>Price</label>
         <input type="number" asp-for="ServiceModel.Price" required />
     </div>
@@ -29,7 +25,7 @@
     </div>
     <div>
         <label>Avatar Image</label>
-        <input type="file" asp-for="ServiceModel.AvatarImage" required />
+        <input type="file" asp-for="ServiceModel.AvatarImage" />
     </div>
     <button type="submit">Create Service</button>
 </form>
