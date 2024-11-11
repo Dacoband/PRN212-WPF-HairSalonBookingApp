@@ -9,6 +9,7 @@ namespace HairSalonBookingApp.BusinessObjects.DTOs.StaffManager
 {
     public class UpdateStaffManagerRequest
     {
+        public Guid Id { get; set; }
         public Guid? BranchID { get; set; }
         public string? StaffManagerName { get; set; } 
         public DateTime DateOfBirth { get; set; }

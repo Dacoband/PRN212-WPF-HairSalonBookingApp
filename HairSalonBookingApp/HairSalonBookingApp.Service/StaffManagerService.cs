@@ -65,10 +65,10 @@ namespace HairSalonBookingApp.Services
             return true;
         }
 
-        public async Task<ActionResult<List<StaffManager>>> GetAllStaffManager()
+        public async Task<List<StaffManager>> GetAllStaffManager()
         {
-            var staffManagers = await _staffManagerRepository.GetAllAsync();
-            return new OkObjectResult(staffManagers);
+            var staffManagers = await _staffManagerRepository.GetAllAsync(includeProperties: "Account");
+            return staffManagers.ToList();
         }
 
         public async Task<ActionResult<StaffManager>> GetStaffManagerById(Guid managerId)
@@ -102,10 +102,10 @@ namespace HairSalonBookingApp.Services
 
             staffManager.BranchID = updateStaffManagerRequest.BranchID ?? staffManager.BranchID;
             staffManager.StaffManagerName = updateStaffManagerRequest.StaffManagerName ?? staffManager.StaffManagerName;
-            staffManager.DateOfBirth = updateStaffManagerRequest.DateOfBirth ?? staffManager.DateOfBirth;
+            staffManager.DateOfBirth = updateStaffManagerRequest.DateOfBirth;
             staffManager.PhoneNumber = updateStaffManagerRequest.PhoneNumber ?? staffManager.PhoneNumber;
             staffManager.Address = updateStaffManagerRequest.Address ?? staffManager.Address;
-            staffManager.AvatartImage = updateStaffManagerRequest.AvatarImage != null ? url :staffManager.AvatarImage;
+            staffManager.AvatarImage = updateStaffManagerRequest.AvatarImage != null ? url :staffManager.AvatarImage;
 
             if (_staffManagerRepository.Update(staffManager))
             {
