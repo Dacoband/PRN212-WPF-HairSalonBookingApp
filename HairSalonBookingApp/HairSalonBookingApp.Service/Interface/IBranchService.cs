@@ -15,8 +15,9 @@ namespace HairSalonBookingApp.Services.Interface
         Task<ActionResult> AddBranch(CreateBracnhRequest createBracnh, HttpContext httpContext);
         Task<(bool, string)> UpdateBranch(Guid branchId, UpdateBranchRequest updateBranchRequest);
         Task<bool> DeleteBranch(Guid branchId);
-        Task<ActionResult<List<Branch>>> GetAllBranches();
-        Task<ActionResult<Branch>> GetBranchById(Guid branch);
+        Task<List<Branch>> GetAllBranches();
+        Task<Branch> GetBranchById(Guid branch);
         Task<List<Branch>> GetBranchesByStaffManager(Guid staffManagerId);
+       
     }
 }
