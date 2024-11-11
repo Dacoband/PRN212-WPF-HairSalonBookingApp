@@ -6,11 +6,39 @@ using HairSalonBookingApp.Repositories.Interface;
 using HairSalonBookingApp.Service.Interface;
 using HairSalonBookingApp.Service;
 using Microsoft.EntityFrameworkCore;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using HairSalonBookingApp.BusinessObjects.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+
+
+// Load Firebase settings from configuration
+var firebaseSettings = builder.Configuration.GetSection("Firebase").Get<FirebaseSetting>();
+
+if (firebaseSettings == null)
+{
+    throw new Exception("Firebase settings not found in configuration.");
+}
+
+builder.Configuration.GetSection("Firebase").Get<FirebaseSetting>();
+
+// Combine the base path with the relative path
+var credentialPath = Path.Combine(builder.Environment.ContentRootPath, firebaseSettings.CredentialPath);
+
+// Initialize FirebaseApp and register it as a singleton service
+var firebaseApp = FirebaseApp.Create(new AppOptions
+{
+    Credential = GoogleCredential.FromFile(credentialPath)
+});
+
+builder.Services.AddSingleton(firebaseApp);
+
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options
