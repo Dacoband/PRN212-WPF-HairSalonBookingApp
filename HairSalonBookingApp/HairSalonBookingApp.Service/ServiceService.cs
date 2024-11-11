@@ -17,54 +17,56 @@ namespace HairSalonBookingApp.Services
     public class ServiceService : IServiceService
     {
         private readonly IServiceRepository _serviceRepository;
+        private readonly IFirebaseService _firebaseService;
 
-        public ServiceService(IServiceRepository serviceRepository)
+        public ServiceService(IServiceRepository serviceRepository, IFirebaseService firebaseService)
         {
             _serviceRepository = serviceRepository;
+            _firebaseService = firebaseService;
         }
 
         public async Task<bool> AddService(CreateNewServiceRequest service)
         {
-            // var url = await _serviceRepository.UploadImage(service.AvatarImage);
+           var url = await _firebaseService.UploadFile(service.AvatarImage);
             var newService = new Service
             {
                 Id = Guid.NewGuid(),
                 ServiceName = service.ServiceName,
-                Type = service.Type,
                 Price = service.Price,
                 Description = service.Description,
                 Duration = service.Duration,
-                AvatarImage = null
+                AvatarImage = url,
             };
 
             return await _serviceRepository.AddAsync(newService);
         }
-        public async Task<bool> UpdateService(Service service)
+        public async Task<bool> UpdateService(Guid id, UpdateNewServiceRequest service)
         {
-            var oldService = await _serviceRepository.GetAsync(service.Id);
+            var oldService = await _serviceRepository.GetAsync(id);
             if (oldService == null)
             {
                 return false;
             }
+
             if (service.AvatarImage != null)
             {
-                // var url = await _serviceRepository.UploadImage(service.AvatarImage);
-                // oldService.AvatarImage = url;
+                var url = await _firebaseService.UploadFile(service.AvatarImage); 
+                oldService.AvatarImage = url; 
             }
+
             oldService.ServiceName = service.ServiceName ?? oldService.ServiceName;
-            oldService.Type = service.Type != 0 ? service.Type : oldService.Type;
-            oldService.Price = service.Price != 0 ? service.Price : oldService.Price;
+            oldService.Price = (float)(service.Price != 0 ? service.Price : oldService.Price);
             oldService.Description = service.Description ?? oldService.Description;
-            oldService.Duration = service.Duration != 0 ? service.Duration : oldService.Duration;
+            oldService.Duration = (int)(service.Duration != 0 ? service.Duration : oldService.Duration);
             oldService.UpdDate = DateTime.Now;
 
-            return _serviceRepository.Update(oldService);
+            return _serviceRepository.Update(oldService); 
         }
+
         public async Task<ActionResult<List<Service>>> GetServiceList(QueryService query)
         {
             Expression<Func<Service, bool>> filter = s =>
                 (string.IsNullOrEmpty(query.ServiceName) || s.ServiceName.ToLower() == query.ServiceName.ToLower()) &&
-                (!query.Type.HasValue || s.Type == query.Type) &&
                 (!query.MaxPrice.HasValue || s.Price <= query.MaxPrice) &&
                 (!query.DelFig.HasValue || s.DelFlg == query.DelFig);
             var services = await _serviceRepository.GetWithPaginationAsync(
@@ -83,42 +85,23 @@ namespace HairSalonBookingApp.Services
             {
                 Id = service.Id,
                 ServiceName = service.ServiceName,
-                Type = service.Type,
                 Price = service.Price,
                 Description = service.Description,
                 Duration = service.Duration,
                 AvatarImage = service.AvatarImage,
-                InsDate = service.InsDate,
-                UpdDate = service.UpdDate,
-                DelFlg = service.DelFlg,
-            }).ToList();
+                }).ToList();
 
             return new OkObjectResult(resList);
         }
-        public async Task<ActionResult<Service>> GetServiceById(Guid serviceId)
+        public async Task<Service?> GetServiceById(Guid serviceId)
         {
             var service = await _serviceRepository.GetAsync(serviceId);
             if (service == null)
             {
-                return new ObjectResult("Không tìm thấy dịch vụ")
-                {
-                    StatusCode = StatusCodes.Status404NotFound
-                };
+                return null;
             }
-            var serviceResponse = new Service
-            {
-                Id = service.Id,
-                ServiceName = service.ServiceName,
-                Type = service.Type,
-                Price = service.Price,
-                Description = service.Description,
-                Duration = service.Duration,
-                AvatarImage = service.AvatarImage,
-                InsDate = service.InsDate,
-                UpdDate = service.UpdDate,
-                DelFlg = service.DelFlg,
-            };
-            return new OkObjectResult(serviceResponse);
+            
+            return service;
         }
         public async Task<ActionResult> DeleteService(Guid serviceId)
         {

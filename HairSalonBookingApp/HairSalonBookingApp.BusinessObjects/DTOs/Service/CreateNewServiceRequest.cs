@@ -17,11 +17,6 @@ namespace HairSalonBookingApp.BusinessObjects.DTOs.Service
         [Range(1, 3, ErrorMessage = "Dịch vụ phải thuộc kiểu 1, 2 hoặc 3")]
         //1 thuong - 2 combo
         [Required(ErrorMessage = "Bạn phải nhập loại dịch vụ")]
-
-        public int Type { get; set; }
-        [Range(10000, double.MaxValue, ErrorMessage = "Giá dịch vụ phải lớn hơn 10.0000")]
-        [Required(ErrorMessage = "Bạn phải nhập giá dịch vụ")]
-
         public float Price { get; set; }
 
         public string? Description { get; set; }

@@ -13,9 +13,9 @@ namespace HairSalonBookingApp.Services.Interface
     {
 
         Task<bool> AddService(CreateNewServiceRequest service);
-        Task<bool> UpdateService(Service service);
+        Task<bool> UpdateService(Guid id, UpdateNewServiceRequest service);
         Task<ActionResult<List<Service>>> GetServiceList(QueryService query);
-        Task<ActionResult<Service>> GetServiceById(Guid serviceId);
+        Task<Service?> GetServiceById(Guid serviceId);
         Task<ActionResult> DeleteService(Guid serviceId);
 
     }

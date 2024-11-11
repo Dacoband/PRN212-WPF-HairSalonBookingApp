@@ -35,6 +35,7 @@ builder.Services.AddSession(options =>
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IFirebaseService, FirebaseService>();
 
 
 

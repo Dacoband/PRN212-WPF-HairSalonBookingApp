@@ -9,7 +9,7 @@ namespace HairSalonBookingApp.Repositories.Interface
 {
     public interface IBranchRepository : IRepository<Branch>
     {
-        Task<List<Branch>> GetBranchByStaffManagerID(Guid staffManagerID);
+        Task<Branch?> GetBranchByStaffManagerID(Guid staffManagerID);
     }
 
 }

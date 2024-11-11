@@ -11,14 +11,16 @@
 <a asp-page="Create" class="btn btn-primary mb-3">Create New Service</a>
 
 <!-- Service List Table -->
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>Service Name</th>
-            <th>Type</th>
+            <th>Description</th>
             <th>Price</th>
             <th>Duration</th>
             <th>AvatarImage</th>
+            <th>Actions</th>
+            <th>Add Service</th> <!-- Thêm cột để thêm dịch vụ vào danh sách -->
         </tr>
     </thead>
     <tbody>
@@ -26,24 +28,161 @@
         {
             <tr>
                 <td>@service.ServiceName</td>
-                <td>@service.Type</td>
+                <td>@service.Description</td>
                 <td>@service.Price</td>
                 <td>@service.Duration</td>
                 <td>
-                    <img src="~/@service.AvatarImage" alt="@service.ServiceName" style="width: 100px; height: 100px;" />
+                    <!-- Display Image from Firebase URL -->
+                    <img src="@service.AvatarImage" alt="@service.ServiceName" style="width: 100px; height: 100px; object-fit: cover;" />
+                </td>
                 <td>
                     <!-- View Button -->
-                    <a asp-page="Details" asp-route-id="@service.Id" class="btn btn-info">Details</a> |
+                    <a asp-page="Details" asp-route-id="@service.Id" class="btn btn-info">View</a> |
 
                     <!-- Edit Button -->
-                    <a asp-page="Edit" asp-route-id="@service.Id" class="btn btn-warning">Edit</a> |
+                    <a asp-page="./Edit" asp-route-id="@service.Id" class="btn btn-warning">Edit</a>
+
 
                     <!-- Delete Button -->
                     <form method="post" asp-page="Delete" asp-route-id="@service.Id" class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this service?');">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
+                <td>
+                    <!-- Add Button for each service -->
+                    <button class="btn btn-success add-service" data-service-name="@service.ServiceName" data-service-id="@service.Id" data-service-description="@service.Description" data-service-price="@service.Price" data-service-duration="@service.Duration" data-service-avatar="@service.AvatarImage" onclick="addServiceToList(this)">Add</button>
+                </td>
             </tr>
         }
     </tbody>
 </table>
+
+<!-- Container to show selected services -->
+<div id="selectedServicesContainer" class="mt-5">
+    <h4>Selected Services</h4>
+    <div id="selectedServicesList" class="row"></div>
+</div>
+
+<script>
+    // Array to keep track of added services to prevent duplicates
+    let selectedServices = [];
+
+    // Function to add a service to the selected services list
+    function addServiceToList(button) {
+        const serviceName = button.getAttribute('data-service-name');
+        const serviceId = button.getAttribute('data-service-id');
+        const serviceDescription = button.getAttribute('data-service-description');
+        const servicePrice = button.getAttribute('data-service-price');
+        const serviceDuration = button.getAttribute('data-service-duration');
+        const serviceAvatar = button.getAttribute('data-service-avatar');
+
+        // Check if service has already been added
+        if (selectedServices.some(service => service.id === serviceId)) {
+            alert('This service has already been added!');
+            return;
+        }
+
+        // Add service to selectedServices array
+        selectedServices.push({ id: serviceId, name: serviceName, description: serviceDescription, price: servicePrice, duration: serviceDuration, avatar: serviceAvatar });
+
+        // Create a new div to hold the service details
+        const serviceDiv = document.createElement("div");
+        serviceDiv.classList.add("col-md-4", "service-item", "mb-3");
+
+        // Add service details inside the div
+        serviceDiv.innerHTML = `
+                <div class="card">
+                    <img src="${serviceAvatar}" alt="${serviceName}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">${serviceName}</h5>
+                        <p class="card-text"><strong>Description:</strong> ${serviceDescription}</p>
+                        <p class="card-text"><strong>Price:</strong> $${servicePrice}</p>
+                        <p class="card-text"><strong>Duration:</strong> ${serviceDuration} minutes</p>
+                        <button class="btn btn-danger" onclick="removeServiceFromList(this)">Remove</button>
+                    </div>
+                </div>
+            `;
+
+        // Append the new service div to the selected services list
+        document.getElementById("selectedServicesList").appendChild(serviceDiv);
+
+        // Disable the Add button for the already added service
+        button.disabled = true;
+        button.classList.add('btn-secondary');
+        button.classList.remove('btn-success');
+        button.innerText = 'Added';
+    }
+
+    // Function to remove a service from the selected services list
+    function removeServiceFromList(button) {
+        const serviceDiv = button.closest(".service-item");
+        const serviceId = serviceDiv.querySelector('.card-title').innerText;
+
+        // Remove the service from selectedServices array
+        selectedServices = selectedServices.filter(service => service.name !== serviceId);
+
+        serviceDiv.remove();
+
+        // Enable the Add button for this service again
+        const addButton = document.querySelector(`button[data-service-name='${serviceId}']`);
+        addButton.disabled = false;
+        addButton.classList.remove('btn-secondary');
+        addButton.classList.add('btn-success');
+        addButton.innerText = 'Add';
+    }
+</script>
+
+<style>
+    /* Style for the selected services container */
+    #selectedServicesContainer {
+        border: 2px solid #ddd;
+        padding: 15px;
+        background-color: #f9f9f9;
+    }
+
+        #selectedServicesContainer h4 {
+            font-weight: bold;
+        }
+
+    /* Style for each service card */
+    .service-item {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .btn-danger {
+        width: 100%;
+    }
+
+    /* Style for the Add button */
+    .add-service {
+        margin-top: 10px;
+    }
+
+    /* Disabled Add button style */
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+</style>

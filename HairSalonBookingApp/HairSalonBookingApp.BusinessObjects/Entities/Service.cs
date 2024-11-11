@@ -16,7 +16,6 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
         [Column("ServiceID")]
         public override Guid Id { get; set; }
         public string ServiceName { get; set; } = string.Empty;
-        public int Type = 1;
         public float Price { get; set; }
         public string? Description { get; set; }
         public int Duration { get; set; } // minutes

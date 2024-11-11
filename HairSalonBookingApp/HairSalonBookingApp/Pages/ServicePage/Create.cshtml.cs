@@ -19,10 +19,7 @@ namespace HairSalonBookingApp.Pages.ServicePage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+           
 
             var result = await _serviceService.AddService(ServiceModel);
             if (result)
@@ -31,7 +28,7 @@ namespace HairSalonBookingApp.Pages.ServicePage
             }
 
             ModelState.AddModelError(string.Empty, "Error creating service.");
-            return Page();
+            return RedirectToPage("List");
         }
         
     }
