@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HairSalonBookingApp.BusinessObjects.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,6 @@ namespace HairSalonBookingApp.Services.Interface
 {
     public interface IStylistService
     {
+        Task<List<Stylist>> GetAllStlistByBranchId(Guid id);
     }
 }
