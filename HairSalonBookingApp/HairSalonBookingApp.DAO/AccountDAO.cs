@@ -15,7 +15,7 @@ namespace HairSalonBookingApp.DAO
         public AccountDAO(ApplicationDbContext context) : base(context) { }
         public Account? GetByEmail(string email)
         {
-            return _dbSet.FirstOrDefault(a => a.Email == email);
+            return _set.FirstOrDefault(a => a.Email == email);
         }
     }
 }

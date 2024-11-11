@@ -11,7 +11,7 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
     {
         public AppointmentService() : base() { }
         [Key]
-        public Guid Id { get; set; }
+        public override Guid Id { get; set; }
         //FK from Service
         public Guid ServiceId { get; set; }
         //FK from Appointment

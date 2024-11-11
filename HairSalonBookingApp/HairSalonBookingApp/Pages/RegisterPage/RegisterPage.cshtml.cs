@@ -29,7 +29,7 @@ namespace HairSalonBookingApp.Pages.RegisterPage
         {
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)
             {
@@ -41,7 +41,7 @@ namespace HairSalonBookingApp.Pages.RegisterPage
                 ErrorMessage = "2 password are not the same!";
                 return Page();
             }
-            var isRegistered = _accountService.RegisterAccount(Email, Password);
+            var isRegistered = await _accountService.RegisterAccount(Email, Password);
             if (!isRegistered)
             {
                 ErrorMessage = "This Email is already exist!";

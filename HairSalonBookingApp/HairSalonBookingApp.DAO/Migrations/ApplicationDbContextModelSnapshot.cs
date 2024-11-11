@@ -24,9 +24,10 @@ namespace HairSalonBookingApp.DAO.Migrations
 
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.Account", b =>
                 {
-                    b.Property<Guid>("AccountId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("AccountId");
 
                     b.Property<bool>("DelFlg")
                         .HasColumnType("bit");
@@ -49,16 +50,17 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.Property<DateTime>("UpdDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("AccountId");
+                    b.HasKey("Id");
 
                     b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.Appointment", b =>
                 {
-                    b.Property<Guid>("AppointmentId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("AppointmentId");
 
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
@@ -88,7 +90,7 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.Property<DateTime>("UpdDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("AppointmentId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
@@ -99,9 +101,10 @@ namespace HairSalonBookingApp.DAO.Migrations
 
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.AppointmentCancellation", b =>
                 {
-                    b.Property<Guid>("CancellationId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CancellationId");
 
                     b.Property<Guid>("AppointmentId")
                         .HasColumnType("uniqueidentifier");
@@ -119,7 +122,7 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.Property<DateTime>("UpdDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("CancellationId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AppointmentId");
 
@@ -161,9 +164,10 @@ namespace HairSalonBookingApp.DAO.Migrations
 
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.Branch", b =>
                 {
-                    b.Property<Guid>("BranchID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("BranchID");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -189,7 +193,7 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.Property<DateTime>("UpdDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("BranchID");
+                    b.HasKey("Id");
 
                     b.HasIndex("StaffManagerID");
 
@@ -198,26 +202,25 @@ namespace HairSalonBookingApp.DAO.Migrations
 
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.Customer", b =>
                 {
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CustomerId");
 
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AvatarImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("DelFlg")
@@ -233,7 +236,7 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.Property<DateTime>("UpdDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("CustomerId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
@@ -242,9 +245,10 @@ namespace HairSalonBookingApp.DAO.Migrations
 
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.Notification", b =>
                 {
-                    b.Property<Guid>("NotificationId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("NotificationId");
 
                     b.Property<bool>("DelFlg")
                         .HasColumnType("bit");
@@ -262,7 +266,7 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.Property<DateTime>("UpdDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("NotificationId");
+                    b.HasKey("Id");
 
                     b.HasIndex("MemberId");
 
@@ -271,11 +275,10 @@ namespace HairSalonBookingApp.DAO.Migrations
 
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.Payment", b =>
                 {
-                    b.Property<int>("PaymentId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"), 1L, 1);
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("PaymentId");
 
                     b.Property<float>("Amount")
                         .HasColumnType("real");
@@ -299,7 +302,7 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.Property<DateTime>("UpdDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("PaymentId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AppointmentId");
 
@@ -308,9 +311,10 @@ namespace HairSalonBookingApp.DAO.Migrations
 
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.Service", b =>
                 {
-                    b.Property<Guid>("ServiceID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("ServiceID");
 
                     b.Property<string>("AvatarImage")
                         .HasColumnType("nvarchar(max)");
@@ -337,16 +341,17 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.Property<DateTime>("UpdDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ServiceID");
+                    b.HasKey("Id");
 
                     b.ToTable("Services");
                 });
 
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.StaffManager", b =>
                 {
-                    b.Property<Guid>("StaffManagerID")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("StaffManagerID");
 
                     b.Property<Guid>("AccountID")
                         .HasColumnType("uniqueidentifier");
@@ -382,7 +387,7 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.Property<DateTime>("UpdDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("StaffManagerID");
+                    b.HasKey("Id");
 
                     b.HasIndex("AccountID");
 
@@ -391,9 +396,10 @@ namespace HairSalonBookingApp.DAO.Migrations
 
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.StaffStylist", b =>
                 {
-                    b.Property<Guid>("StaffStylistId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("StaffStylistId");
 
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
@@ -429,7 +435,7 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.Property<DateTime>("UpdDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("StaffStylistId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
@@ -440,9 +446,10 @@ namespace HairSalonBookingApp.DAO.Migrations
 
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.Stylist", b =>
                 {
-                    b.Property<Guid>("StylistId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("StylistId");
 
                     b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
@@ -485,7 +492,7 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.Property<DateTime>("UpdDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("StylistId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
