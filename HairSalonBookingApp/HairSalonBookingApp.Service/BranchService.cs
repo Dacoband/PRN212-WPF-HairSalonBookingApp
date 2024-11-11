@@ -106,38 +106,46 @@ namespace HairSalonBookingApp.Services
         public async Task<(bool, string)> UpdateBranch(Guid branchId, UpdateBranchRequest updateBranchRequest)
         {
             string message;
-            var branch = await _branchRepository.GetAsync(branchId);
-            if (branch == null)
+            try
             {
-                message = "Branch not found";
+                var branch = await _branchRepository.GetAsync(branchId);
+                if (branch == null)
+                {
+                    message = "Branch not found";
+                    return (false, message);
+                }
+
+                var staffManager = await _staffManagerRepository.GetAsync(updateBranchRequest.StaffManagerID ?? default);
+                if (staffManager == null)
+                {
+                    message = "Staff Manager not found";
+                    return (false, message);
+                }
+
+                if (staffManager.BranchID != null)
+                {
+                    message = "Staff Manager was assigned to other branch";
+                    return (false, message);
+                }
+
+                branch.StaffManagerID = updateBranchRequest.StaffManagerID ?? branch.StaffManagerID;
+                branch.SalonBranches = updateBranchRequest.SalonBranches ?? branch.SalonBranches;
+                branch.Address = updateBranchRequest.Address ?? branch.Address;
+                branch.Phone = updateBranchRequest.Phone ?? branch.Phone;
+
+                if (_branchRepository.Update(branch))
+                {
+                    message = "Branch updated successfully";
+                    return (true, message);
+                }
+                message = "Branch update failed";
                 return (false, message);
             }
-
-            var staffManager = await _staffManagerRepository.GetAsync(updateBranchRequest.StaffManagerID ?? default);
-            if (staffManager == null)
+            catch(Exception ex)
             {
-                message = "Staff Manager not found";
+                message = ex.Message;
                 return (false, message);
             }
-                
-            if (staffManager.BranchID != null)
-            {
-                message = "Staff Manager was assigned to other branch";
-                return (false, message);
-            }
-
-            branch.StaffManagerID = updateBranchRequest.StaffManagerID ?? branch.StaffManagerID;
-            branch.SalonBranches = updateBranchRequest.SalonBranches ?? branch.SalonBranches;
-            branch.Address = updateBranchRequest.Address ?? branch.Address;
-            branch.Phone = updateBranchRequest.Phone ?? branch.Phone;
-
-            if (_branchRepository.Update(branch))
-            {
-                message = "Branch updated successfully";
-                return (true, message);
-            }
-            message = "Branch update failed";
-            return (false, message);
         }
     }
 }
