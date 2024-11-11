@@ -8,7 +8,7 @@ namespace HairSalonBookingApp.BusinessObjects.DTOs.Branch
 {
     public class UpdateBranchRequest
     {
-        public Guid StaffManagerID { get; set; }
+        public Guid? StaffManagerID { get; set; }
         public string? SalonBranches { get; set; }
         public string? Address { get; set; }
         public string? Phone { get; set; }
