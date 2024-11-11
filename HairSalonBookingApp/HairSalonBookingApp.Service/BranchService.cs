@@ -44,7 +44,7 @@ namespace HairSalonBookingApp.Services
                 Phone = createBracnh.Phone
 
             };
-           
+
             await _branchRepository.AddAsync(branch);
 
 
@@ -105,8 +105,8 @@ namespace HairSalonBookingApp.Services
                 message = "Staff Manager not found";
                 return (false, message);
             }
-            
-            if(staffManager.BranchID != null)
+
+            if (staffManager.BranchID != null)
             {
                 message = "Staff Manager was assigned to other branch";
                 return (false, message);

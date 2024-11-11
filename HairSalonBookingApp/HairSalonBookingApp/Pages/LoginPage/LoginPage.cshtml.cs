@@ -1,4 +1,5 @@
-using HairSalonBookingApp.Service.Interface;
+using HairSalonBookingApp.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
