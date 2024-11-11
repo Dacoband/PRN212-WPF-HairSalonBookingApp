@@ -29,6 +29,7 @@ namespace HairSalonBookingApp.DAO.Data
         public DbSet<StaffManager> StaffManagers { get; set; } = null!;
         public DbSet<StaffStylist> StaffStylists { get; set; } = null!;
         public DbSet<Stylist> Stylists { get; set; } = null!;
+        public DbSet<Feedback> Feedbacks { get; set; } = null!;
 
         private string? GetConnectionString()
         {
