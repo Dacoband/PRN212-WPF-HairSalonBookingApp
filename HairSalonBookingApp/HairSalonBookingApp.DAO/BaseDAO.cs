@@ -2,176 +2,154 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Linq;
+using System.Collections.Generic;
+using HairSalonBookingApp.BusinessObjects.Entities;
 
 namespace HairSalonBookingApp.DAO
 {
-    public class BaseDAO<T> where T : class
+    public class BaseDAO<T> where T : BaseEntity
     {
         protected ApplicationDbContext _context;
-        internal DbSet<T> _dbSet;
+        internal DbSet<T> _set;
 
         public BaseDAO(ApplicationDbContext context)
         {
             _context = context;
-            _dbSet = context.Set<T>();
+            _set = context.Set<T>();
         }
 
-        public bool Add(T entity)
+        public async Task<bool> AddAsync(T entity, CancellationToken cancellationToken = default)
         {
-            bool result = false;
-            try
+            if (entity != null)
             {
-                if (entity != null)
-                {
-                    _dbSet.Add(entity);
-                    _context.SaveChanges();
-                    result = true;
-                }
+                await _context.AddAsync(entity, cancellationToken);
+                return _context.SaveChangesAsync(cancellationToken).GetAwaiter().GetResult() > 0;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return result;
+            return false;
         }
 
-        public bool AddRange(IEnumerable<T> entities)
+        public async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
         {
-            bool result = false;
-            try
+            if (entities.Any())
             {
-                if (entities != null)
-                {
-                    _dbSet.AddRange(entities);
-                    _context.SaveChanges();
-                    result = true;
-                }
+                await _context.AddRangeAsync(entities, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return result;
         }
 
-        public bool Update(T entity)
+        public Task<int> CountAsync(Expression<Func<T, bool>>? filter = null, CancellationToken cancellationToken = default)
         {
-            bool result = false;
-            try
+            IQueryable<T> query = _set;
+            if (filter != null)
             {
-                if (entity != null)
-                {
-                    _dbSet.Update(entity);
-                    _context.SaveChanges();
-                    result = true;
-                }
+                query = query.Where(filter);
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return result;
+            return query.CountAsync(cancellationToken);
         }
 
-        public bool UpdateRange(IEnumerable<T> entities)
+        public bool Delete(params T[] entities)
         {
-            bool result = false;
-            try
+            if (entities != null)
             {
-                if (entities != null)
-                {
-                    _dbSet.UpdateRange(entities);
-                    _context.SaveChanges();
-                    result = true;
-                }
+                _context.RemoveRange(entities);
+                return _context.SaveChanges() > 0;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return result;
+            return false;
         }
 
-        public bool Delete(T entity)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, CancellationToken cancellationToken = default)
         {
-            bool result = false;
-            try
+            IQueryable<T> query = _set;
+            if (filter != null)
             {
-                if (entity != null)
-                {
-                    _dbSet.Remove(entity);
-                    _context.SaveChanges();
-                    result = true;
-                }
+                query = query.Where(filter);
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return result;
-        }
-
-        public bool DeleteRange(IEnumerable<T> entities)
-        {
-            bool result = false;
-            try
-            {
-                if (entities != null)
-                {
-                    _dbSet.RemoveRange(entities);
-                    _context.SaveChanges();
-                    result = true;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return result;
-        }
-
-        public T? Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
-        {
-            IQueryable<T> query = _dbSet.Where(filter);
-
             if (!string.IsNullOrEmpty(includeProperties))
             {
-                foreach (var includeProp in includeProperties
-                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var incluProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    query = query.Include(includeProp);
+                    query = query.Include(incluProp);
                 }
             }
-            return query.FirstOrDefault();
-
+            return await query.ToListAsync(cancellationToken);
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
+        public async Task<T?> GetAsync(Guid id, string? includeProperties = null, CancellationToken cancellationToken = default)
         {
-            IQueryable<T> query = _dbSet;
+            IQueryable<T> query = _set;
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var incluProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(incluProp);
+                }
+            }
+            return await query.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+        }
+
+        public async Task<T?> GetAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default)
+        {
+            return await _set.SingleOrDefaultAsync(filter, cancellationToken);
+        }
+
+
+        public async Task<IEnumerable<T>> GetWithPaginationAsync(int pageNum = 0, int pageSize = 0, Expression<Func<T, bool>>? filter = null, string? includeProperties = null, CancellationToken cancellationToken = default)
+        {
+            IQueryable<T> query = _set;
+
             if (filter != null)
             {
                 query = query.Where(filter);
             }
 
+            if (pageNum > 0 && pageSize > 0)
+            {
+                query = query.Skip((pageNum - 1) * pageSize).Take(pageSize);
+            }
+
             if (!string.IsNullOrEmpty(includeProperties))
             {
-                foreach (var includeProp in includeProperties
-                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var incluProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    query = query.Include(includeProp);
+                    query = query.Include(incluProp);
                 }
             }
-            return query.ToList();
+            return await query.ToListAsync(cancellationToken);
         }
 
-        public int Count(Expression<Func<T, bool>>? filter = null)
+        public bool Update(T entity)
         {
-            if (filter != null)
+            if (entity != null)
             {
-                return _dbSet.Count(filter);
+                _context.Update(entity);
+                return _context.SaveChanges() > 0;
             }
-            return _dbSet.Count();
+            return false;
+        }
+
+        public bool UpdateRange(IEnumerable<T> entities)
+        {
+            if (entities != null && entities.Any())
+            {
+                _context.UpdateRange(entities);
+                return _context.SaveChanges() == entities.Count();
+            }
+            return false;
+        }
+        public async Task DeleteAsync(Guid id)
+        {
+            var contest = await GetAsync(id);
+            if (contest != null)
+            {
+                _context.Remove(contest);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateAsync(T entity)
+        {
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }

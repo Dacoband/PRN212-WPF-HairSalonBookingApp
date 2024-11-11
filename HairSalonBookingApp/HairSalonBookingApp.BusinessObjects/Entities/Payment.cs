@@ -13,7 +13,8 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
         public Payment() : base() { }
         //PK
         [Key]
-        public int PaymentId { get; set; }
+        [Column("PaymentId")]
+        public override Guid Id { get; set; }
         //FK from Appointment
         public Guid AppointmentId { get; set; }
         public float Amount { get; set; }

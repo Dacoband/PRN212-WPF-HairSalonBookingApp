@@ -13,7 +13,8 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
         public StaffManager() : base() { }
         //PK
         [Key]
-        public Guid StaffManagerID { get; set; }
+        [Column("StaffManagerID")]
+        public override Guid Id { get; set; }
         //FK from Branch
         public Guid? BranchID { get; set; }
         //FK from Account

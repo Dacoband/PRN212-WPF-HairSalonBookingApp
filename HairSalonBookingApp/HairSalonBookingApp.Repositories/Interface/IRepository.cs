@@ -9,38 +9,22 @@ namespace HairSalonBookingApp.Repositories.Interface
 {
     public interface IRepository<T> where T : class
     {
-        bool Add(T entity);
-        bool AddRange(IEnumerable<T> entities);
+        Task<int> CountAsync(Expression<Func<T, bool>>? filter = null, CancellationToken cancellationToken = default);
+        Task<T?> GetAsync(Guid id, string? includeProperties = null, CancellationToken cancellationToken = default);
+
+        Task<T?> GetAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<T>> GetWithPaginationAsync(int pageNum = 0, int pageSize = 0, Expression<Func<T, bool>>? filter = null, string? includeProperties = null, CancellationToken cancellationToken = default);
+        Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
+
+        Task<bool> AddAsync(T entity, CancellationToken cancellationToken = default);
+
         bool Update(T entity);
+
         bool UpdateRange(IEnumerable<T> entities);
-        bool Delete(T entity);
-        bool DeleteRange(IEnumerable<T> entities);
 
-        /// <summary>
-        /// Count the number of entities in the database with optional filter
-        /// </summary>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        int Count(Expression<Func<T, bool>>? filter);
-
-        /// <summary>
-        /// Get entities from database with filter and include properties
-        /// includeProperties is a string that contains the properties that you want to include such as "Property1,Property2"
-        /// includeProperties string is separated by comma without space
-        /// </summary>
-        /// <param name="filter"></param>
-        /// <param name="includeProperties"></param>
-        /// <returns></returns>
-        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
-
-        /// <summary>
-        /// Get a specific from database with filter and include properties
-        /// includeProperties is a string that contains the properties that you want to include such as "Property1,Property2"
-        /// includeProperties string is separated by comma without space
-        /// </summary>
-        /// <param name="filter"></param>
-        /// <param name="includeProperties"></param>
-        /// <returns></returns>
-        T? Get(Expression<Func<T, bool>> filter, string? includeProperties = null);
+        bool Delete(params T[] entities);
     }
 }
