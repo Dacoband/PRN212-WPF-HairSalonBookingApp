@@ -12,7 +12,7 @@ namespace HairSalonBookingApp.Pages.StaffStylistPage
         private readonly IStaffStylistService _staffStylistService;
         private readonly IBranchRepository _branchRepository;
 
-        public EditModel(IStaffStylistService staffStylistService, IBranchRepository branchRepository)
+        public EditStaffStylistModel(IStaffStylistService staffStylistService, IBranchRepository branchRepository)
         {
             _staffStylistService = staffStylistService;
             _branchRepository = branchRepository;

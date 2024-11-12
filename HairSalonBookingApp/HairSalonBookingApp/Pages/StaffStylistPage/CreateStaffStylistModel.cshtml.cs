@@ -1,25 +1,29 @@
 using HairSalonBookingApp.BusinessObjects.DTOs.StaffStylist;
+using HairSalonBookingApp.BusinessObjects.Entities;
 using HairSalonBookingApp.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HairSalonBookingApp.Pages.StaffStylistPage
 {
-    public class CreateStaffStylistModel : PageModel
+    public class CreateStaffStylistModelModel : PageModel
     {
         private readonly IStaffStylistService _staffStylistService;
+        private readonly IBranchService _branchService;
 
-        public CreateStaffStylistModel(IStaffStylistService staffStylistService)
+        public CreateStaffStylistModelModel(IStaffStylistService staffStylistService, IBranchService branchService)
         {
             _staffStylistService = staffStylistService;
+            _branchService = branchService;
         }
 
+        public List<Branch> Branches { get; set; } = new List<Branch>();
         [BindProperty]
         public CreateStaffStylistRequest CreateStaffStylistRequest { get; set; }
 
-        public IActionResult OnGet()
+        public async Task OnGetAsync()
         {
-            return Page();
+            Branches = await _branchService.GetAllBranches();
         }
 
         public async Task<IActionResult> OnPostAsync()

@@ -1,6 +1,5 @@
 ﻿@page
-@model HairSalonBookingApp.Pages.StaffStylistPage.IndexModel
-
+@model HairSalonBookingApp.Pages.StaffStylistPage.Index1Model
 @{
     ViewData["Title"] = "Staff Stylist List";
 }
@@ -29,7 +28,7 @@
         {
             <tr>
                 <td>@staff.StaffStylistName</td>
-                <td>@staff.Branch.BranchName</td>
+                <td>@staff.Branch.SalonBranches</td>
                 <td>@staff.PhoneNumber</td>
                 <td>@staff.Account.Email</td>
                 <td>
@@ -43,5 +42,4 @@
     </tbody>
 </table>
 
-<a href="@Url.Page("Create")" class="btn btn-primary">Create New Staff Stylist</a>
-
+<a href="@Url.Page("CreateStaffStylistModel")" class="btn btn-primary">Create New Staff Stylist</a>

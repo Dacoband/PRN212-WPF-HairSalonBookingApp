@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HairSalonBookingApp.Pages.StaffStylistPage
 {
-    public class IndexModel : PageModel
+    public class Index1Model : PageModel
     {
         private readonly IStaffStylistService _staffStylistService;
 
-        public IndexModel(IStaffStylistService staffStylistService)
+        public Index1Model(IStaffStylistService staffStylistService)
         {
             _staffStylistService = staffStylistService;
         }
