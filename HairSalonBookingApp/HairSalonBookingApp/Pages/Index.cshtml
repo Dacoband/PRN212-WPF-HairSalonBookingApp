@@ -5,19 +5,16 @@
     Layout = "_Layout";  // Sử dụng Layout chung
 }
 
-
-<div class="bg-gradient-to-br from-blue-400 to-purple-800 to-pink-500 p-10">
-    
- 
-    <section class="py-10 text-center">
-        <h2 class="text-4xl font-bold text-gray-800 uppercase tracking-wider hover:text-purple-800 mb-10">
+<div class="bg-primary text-white p-5">
+    <section class="py-5 text-center">
+        <h2 class="display-4 font-weight-bold text-dark text-uppercase mb-4">
             Dịch Vụ
         </h2>
-        <div class="container mx-auto">
-            <div class="slick-slider flex justify-center flex-wrap">
-                <div class="service-card bg-white shadow-lg p-6 rounded-lg flex flex-col items-center text-center">
-                    <img src="~/images/image.jpg" alt="Service Image" class="w-1/2 rounded mb-4">
-                    <button onclick="navigateToService()" class="mt-4 bg-yellow-800 text-white py-2 px-4 rounded-full text-lg transition transform hover:scale-105 hover:bg-yellow-700">
+        <div class="container">
+            <div class="slick-slider d-flex justify-content-center flex-wrap">
+                <div class="card shadow-lg p-3 rounded d-flex flex-column align-items-center text-center" style="width: 18rem;">
+                    <img src="~/images/image.jpg" alt="Service Image" class="card-img-top rounded mb-3" style="width: 50%;">
+                    <button onclick="navigateToService()" class="btn btn-warning mt-3 text-lg transition-transform">
                         Đặt Lịch Hẹn Ngay!
                     </button>
                 </div>
@@ -25,47 +22,51 @@
         </div>
     </section>
 
-
-    <h2 class="text-center text-4xl font-bold text-gray-800 uppercase tracking-wider hover:text-purple-800 mb-10">Gói Dịch Vụ</h2>
-    <section class="bg-white shadow-lg p-6 rounded-lg flex-col">
-        <section class="py-10 bg-white text-center">
-
-            <div class="container mx-auto">
-               
-                <div class="flex flex-wrap justify-center space-x-4">
-                    <div class="bg-gradient-to-br from-blue-400 to-purple-400 to-pink-500e p-6 shadow-lg rounded-lg text-center w-80 mb-4 transition transform hover:scale-105">
-                        <img src="~/images/Cắt tóc và tạo kiểu.jpg" alt="Cắt Tóc Và Tạo Kiểu" class="w-full h-48 object-cover rounded mb-4">
-                        <button class="w-full bg-purple-800 text-white py-2 rounded hover:bg-gray-800">Cắt Tóc Và Tạo Kiểu</button>
+    <h2 class="text-center display-4 font-weight-bold text-dark text-uppercase mb-4">Gói Dịch Vụ</h2>
+    <section class="bg-light shadow-lg p-5 rounded">
+        <section class="py-5 bg-light text-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-primary text-white shadow-lg p-3 rounded text-center transition-transform">
+                            <img src="~/images/Cắt tóc và tạo kiểu.jpg" alt="Cắt Tóc Và Tạo Kiểu" class="card-img-top rounded mb-3" style="height: 200px;">
+                            <button class="btn btn-dark w-100">Cắt Tóc Và Tạo Kiểu</button>
+                        </div>
                     </div>
-                    <div class="bg-gradient-to-br from-blue-400 to-purple-800 to-pink-500 p-6 shadow-lg rounded-lg text-center w-80 mb-4 transition transform hover:scale-105">
-                        <img src="~/images/Nhuom toc va uon toc.jpg" alt="Nhuộm Tóc và Uốn Tóc" class="w-full h-48 object-cover rounded mb-4">
-                        <button class="w-full bg-purple-800 text-white py-2 rounded hover:bg-gray-800">Nhuộm Tóc và Uốn Tóc</button>
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-primary text-white shadow-lg p-3 rounded text-center transition-transform">
+                            <img src="~/images/Nhuom toc va uon toc.jpg" alt="Nhuộm Tóc và Uốn Tóc" class="card-img-top rounded mb-3" style="height: 200px;">
+                            <button class="btn btn-dark w-100">Nhuộm Tóc và Uốn Tóc</button>
+                        </div>
                     </div>
-                    <div class="bg-gradient-to-br from-blue-400 to-purple-500 to-pink-400 p-6 shadow-lg rounded-lg text-center w-80 mb-4 transition transform hover:scale-105">
-                        <img src="~/images/combo hot.jpg" alt="Combo Hot" class="w-full h-48 object-cover rounded mb-4">
-                        <button class="w-full bg-purple-800 text-white py-2 rounded hover:bg-gray-800">Combo Hot</button>
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-primary text-white shadow-lg p-3 rounded text-center transition-transform">
+                            <img src="~/images/combo hot.jpg" alt="Combo Hot" class="card-img-top rounded mb-3" style="height: 200px;">
+                            <button class="btn btn-dark w-100">Combo Hot</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-
-        <section class="bg-white py-10">
-            <div class="container mx-auto flex flex-wrap items-center">
-                <div class="w-full md:w-1/2 mb-4">
-                    <img src="~/images/about-img.jpg" alt="Salon Experience" class="w-full rounded-lg shadow-lg">
-                </div>
-                <div class="w-full md:w-1/2 px-4">
-                    <h2 class="text-4xl font-bold">HAIR SALON</h2>
-                    <h3 class="text-lg text-gray-700 mt-2">Sự hài lòng của quý khách là ưu tiên hàng đầu của <span class="text-yellow-800 font-bold">Hair Salon</span></h3>
-                    <ul class="list-none text-lg text-gray-600 mt-4 space-y-2">
-                        <li><span class="text-yellow-800 font-bold">✔</span> Đúng dịch vụ - Không kéo khách hay phí ẩn</li>
-                        <li><span class="text-yellow-800 font-bold">✔</span> Ưu tiên trải nghiệm khách hàng</li>
-                        <li><span class="text-yellow-800 font-bold">✔</span> Luôn đưa ra giải pháp phù hợp và chỉ bắt đầu khi đồng ý</li>
-                        <li><span class="text-yellow-800 font-bold">✔</span> Thấu hiểu nhu cầu, hỗ trợ nhiệt tình</li>
-                        <li><span class="text-yellow-800 font-bold">✔</span> Lắng nghe cẩn thận và đảm bảo dịch vụ tận tâm</li>
-                    </ul>
-                    <button onclick="navigateToBranch()" class="bg-yellow-800 text-white py-2 px-4 rounded-full mt-6 transition hover:bg-yellow-700">Tìm Hiểu Thêm Về Chúng Tôi</button>
+        <section class="bg-white py-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 mb-4">
+                        <img src="~/images/about-img.jpg" alt="Salon Experience" class="img-fluid rounded shadow-lg">
+                    </div>
+                    <div class="col-md-6">
+                        <h2 class="display-4 font-weight-bold">HAIR SALON</h2>
+                        <h3 class="lead text-muted mt-2">Sự hài lòng của quý khách là ưu tiên hàng đầu của <span class="text-warning font-weight-bold">Hair Salon</span></h3>
+                        <ul class="list-unstyled lead text-muted mt-3">
+                            <li><span class="text-warning font-weight-bold">✔</span> Đúng dịch vụ - Không kéo khách hay phí ẩn</li>
+                            <li><span class="text-warning font-weight-bold">✔</span> Ưu tiên trải nghiệm khách hàng</li>
+                            <li><span class="text-warning font-weight-bold">✔</span> Luôn đưa ra giải pháp phù hợp và chỉ bắt đầu khi đồng ý</li>
+                            <li><span class="text-warning font-weight-bold">✔</span> Thấu hiểu nhu cầu, hỗ trợ nhiệt tình</li>
+                            <li><span class="text-warning font-weight-bold">✔</span> Lắng nghe cẩn thận và đảm bảo dịch vụ tận tâm</li>
+                        </ul>
+                        <button onclick="navigateToBranch()" class="btn btn-warning mt-4">Tìm Hiểu Thêm Về Chúng Tôi</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -93,7 +94,7 @@
             if (userData && userData.role === "Member") {
                 window.location.href = "/service";
             } else {
-                window.location.href = "/LoginPage/LoginPage";
+                window.location.href = "/Account/Login";
             }
         }
 

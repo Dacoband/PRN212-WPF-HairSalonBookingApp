@@ -1,4 +1,5 @@
-﻿using HairSalonBookingApp.BusinessObjects.DTOs.Branch;
+﻿using FirebaseAdmin.Messaging;
+using HairSalonBookingApp.BusinessObjects.DTOs.Branch;
 using HairSalonBookingApp.BusinessObjects.Entities;
 using HairSalonBookingApp.Repositories.Interface;
 using HairSalonBookingApp.Services.Interface;
@@ -24,106 +25,127 @@ namespace HairSalonBookingApp.Services
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> AddBranch(CreateBracnhRequest createBracnh, HttpContext httpContext)
+        public async Task<bool> AddBranch(CreateBracnhRequest createBracnh, HttpContext httpContext)
         {
-            var staffManger = await _staffManagerRepository.GetAsync(createBracnh.StaffManagerID);
-            if (staffManger == null)
+            try
             {
-                return new BadRequestObjectResult("Staff Manager not found")
+                var staffManger = await _staffManagerRepository.GetAsync(createBracnh.StaffManagerID);
+                if (staffManger == null)
                 {
-                    StatusCode = StatusCodes.Status404NotFound
+                    return false;
+                }
+
+                var branch = new Branch
+                {
+                    Id = Guid.NewGuid(),
+                    StaffManagerID = createBracnh.StaffManagerID,
+                    SalonBranches = createBracnh.SalonBranches,
+                    Address = createBracnh.Address,
+                    Phone = createBracnh.Phone
+
                 };
+
+                await _branchRepository.AddAsync(branch);
             }
-
-            var branch = new Branch
+            catch (Exception ex)
             {
-                Id = Guid.NewGuid(),
-                StaffManagerID = createBracnh.StaffManagerID,
-                SalonBranches = createBracnh.SalonBranches,
-                Address = createBracnh.Address,
-                Phone = createBracnh.Phone
-
-            };
-
-            await _branchRepository.AddAsync(branch);
-
-
-            return new OkObjectResult("Branch created successfully");
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return true;
         }
 
         public async Task<bool> DeleteBranch(Guid branchId)
         {
-            var branch = await _branchRepository.GetAsync(branchId);
-            if (branch == null)
+            try
             {
+                var branch = await _branchRepository.GetAsync(branchId);
+                if (branch == null)
+                {
+                    return false;
+                }
+                branch.DelFlg = true;
+                _branchRepository.Update(branch);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
                 return false;
             }
-            branch.DelFlg = true;
-            _branchRepository.Update(branch);
             return true;
         }
 
-        public async Task<ActionResult<List<Branch>>> GetAllBranches()
+        public async Task<List<Branch>> GetAllBranches()
         {
-            var branches = await _branchRepository.GetAllAsync();
-            return new OkObjectResult(branches);
+            var branches = await _branchRepository.GetAllAsync(includeProperties:"StaffManager");
+            return branches.ToList();
         }
 
-        public async Task<ActionResult<Branch>> GetBranchById(Guid branch)
+        public async Task<Branch?> GetBranchById(Guid branch)
         {
             var branchs = await _branchRepository.GetAsync(branch);
             if (branchs == null)
             {
-                return new NotFoundObjectResult("Branch not found")
-                {
-                    StatusCode = StatusCodes.Status404NotFound
-                };
+                return null;
             }
-            return new OkObjectResult(branch);
+            return branchs;
 
         }
 
-        public Task<List<Branch>> GetBranchesByStaffManager(Guid staffManagerId)
+        public Task<Branch?> GetBranchesByStaffManager(Guid staffManagerId)
         {
-            var branches = _branchRepository.GetBranchByStaffManagerID(staffManagerId);
-            return branches;
+            var staffManager = _staffManagerRepository.GetAsync(staffManagerId);
+            if (staffManager == null)
+            {
+                return null;
+            }
+            var branch = _branchRepository.GetBranchByStaffManagerID(staffManagerId);
+            return branch;
         }
 
         public async Task<(bool, string)> UpdateBranch(Guid branchId, UpdateBranchRequest updateBranchRequest)
         {
             string message;
-            var branch = await _branchRepository.GetAsync(branchId);
-            if (branch == null)
+            try
             {
-                message = "Branch not found";
+                var branch = await _branchRepository.GetAsync(branchId);
+                if (branch == null)
+                {
+                    message = "Branch not found";
+                    return (false, message);
+                }
+
+                var staffManager = await _staffManagerRepository.GetAsync(updateBranchRequest.StaffManagerID ?? default);
+                if (staffManager == null)
+                {
+                    message = "Staff Manager not found";
+                    return (false, message);
+                }
+
+                if (staffManager.BranchID != null)
+                {
+                    message = "Staff Manager was assigned to other branch";
+                    return (false, message);
+                }
+
+                branch.StaffManagerID = updateBranchRequest.StaffManagerID ?? branch.StaffManagerID;
+                branch.SalonBranches = updateBranchRequest.SalonBranches ?? branch.SalonBranches;
+                branch.Address = updateBranchRequest.Address ?? branch.Address;
+                branch.Phone = updateBranchRequest.Phone ?? branch.Phone;
+
+                if (_branchRepository.Update(branch))
+                {
+                    message = "Branch updated successfully";
+                    return (true, message);
+                }
+                message = "Branch update failed";
                 return (false, message);
             }
-
-            var staffManager = await _staffManagerRepository.GetAsync(updateBranchRequest.StaffManagerID ?? default);
-            if (staffManager == null)
+            catch(Exception ex)
             {
-                message = "Staff Manager not found";
+                message = ex.Message;
                 return (false, message);
             }
-                
-            if (staffManager.BranchID != null)
-            {
-                message = "Staff Manager was assigned to other branch";
-                return (false, message);
-            }
-
-            branch.StaffManagerID = updateBranchRequest.StaffManagerID ?? branch.StaffManagerID;
-            branch.SalonBranches = updateBranchRequest.SalonBranches ?? branch.SalonBranches;
-            branch.Address = updateBranchRequest.Address ?? branch.Address;
-            branch.Phone = updateBranchRequest.Phone ?? branch.Phone;
-
-            if (_branchRepository.Update(branch))
-            {
-                message = "Branch updated successfully";
-                return (true, message);
-            }
-            message = "Branch update failed";
-            return (false, message);
         }
     }
 }

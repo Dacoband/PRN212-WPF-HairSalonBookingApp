@@ -48,11 +48,10 @@ namespace HairSalonBookingApp.Services
                 return false;
             }
 
-            // Nếu có ảnh mới được tải lên, thực hiện tải ảnh và cập nhật URL ảnh
             if (service.AvatarImage != null)
             {
-                var url = await _firebaseService.UploadFile(service.AvatarImage); // Giả sử bạn sử dụng _firebaseService để tải ảnh lên Firebase
-                oldService.AvatarImage = url; // Gán URL ảnh mới vào đối tượng oldService
+                var url = await _firebaseService.UploadFile(service.AvatarImage); 
+                oldService.AvatarImage = url; 
             }
 
             oldService.ServiceName = service.ServiceName ?? oldService.ServiceName;
@@ -61,7 +60,7 @@ namespace HairSalonBookingApp.Services
             oldService.Duration = (int)(service.Duration != 0 ? service.Duration : oldService.Duration);
             oldService.UpdDate = DateTime.Now;
 
-            return _serviceRepository.Update(oldService); // Cập nhật lại đối tượng vào cơ sở dữ liệu
+            return _serviceRepository.Update(oldService); 
         }
 
         public async Task<ActionResult<List<Service>>> GetServiceList(QueryService query)

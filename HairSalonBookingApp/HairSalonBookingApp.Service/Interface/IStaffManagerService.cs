@@ -12,8 +12,8 @@ namespace HairSalonBookingApp.Services.Interface
     public interface IStaffManagerService
     {
         Task<List<StaffManager>> GetAllStaffManager();
-        Task<ActionResult<StaffManager>> GetStaffManagerById(Guid managerId);
-        Task<ActionResult> CreateStaffManager(CreateStaffManagerRequest createStaffManagerRequest);
+        Task<StaffManager?> GetStaffManagerById(Guid managerId);
+        Task<bool> CreateStaffManager(CreateStaffManagerRequest createStaffManagerRequest);
         Task<(bool, string)> UpdateStaffManager(UpdateStaffManagerRequest updateStaffManagerRequest);
         Task<bool> DeleteStaffManager(Guid managerId);
     }
