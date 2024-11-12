@@ -1,0 +1,200 @@
+﻿@page
+@model HairSalonBookingApp.Pages.ServicePage.ListModel
+
+@{
+    ViewData["Title"] = "Service List";
+    var returnUrl = Url.Content("~/AdminPage/ListFunctions");
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Service List</h2>
+    <form method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="SearchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search by service name or description" aria-label="Search">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-page="Create" class="btn btn-primary mb-3">Create New Service</a>
+    }
+
+    <table class="table table-hover table-bordered shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Service Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Duration</th>
+                <th>Avatar</th>
+                <th>Status</th>
+                @if (User.IsInRole("Admin"))
+                {
+                    <th>Actions</th>
+                }
+                @if (User.IsInRole("Customer"))
+                {
+                    <th>Add Service</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var service in Model.Services)
+            {
+                // Nếu user là Customer, chỉ hiển thị dịch vụ có trạng thái "false" (đang hoạt động)
+                if (User.IsInRole("Admin") || (!service.DelFlg))
+                {
+                    <tr class="align-middle">
+                        <td>@service.ServiceName</td>
+                        <td>@service.Description</td>
+                        <td>
+                            @{
+                                // Hiển thị giá theo định dạng VND
+                                string formattedPrice = String.Format("{0:#,0}", service.Price);
+                                formattedPrice = formattedPrice + "₫";
+                                @formattedPrice
+                            }
+                        </td>
+                        <td>@service.Duration</td>
+                        <td>
+                            <img src="@service.AvatarImage" alt="@service.ServiceName" class="rounded img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" />
+                        </td>
+                        <td>
+                            @if (service.DelFlg)
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                        </td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                                <a asp-page="Details" asp-route-id="@service.Id" class="btn btn-info btn-sm m-1">View</a>
+                                <a asp-page="./Edit" asp-route-id="@service.Id" class="btn btn-warning btn-sm m-1">Edit</a>
+                                <a asp-page="Delete" asp-route-id="@service.Id" class="btn btn-danger btn-sm m-1">Delete</a>
+                            </td>
+                        }
+                        @if (User.IsInRole("Customer") && !service.DelFlg)
+                        {
+                            <td>
+                                <button class="btn btn-success btn-sm add-service" data-service-name="@service.ServiceName" data-service-id="@service.Id" data-service-description="@service.Description" data-service-price="@service.Price" data-service-duration="@service.Duration" data-service-avatar="@service.AvatarImage" onclick="addServiceToList(this)">Add</button>
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div id="selectedServicesContainer" class="mt-5 p-3 border rounded shadow-sm bg-light">
+        <h4>Selected Services</h4>
+        <div id="selectedServicesList" class="row"></div>
+        <a href="~/BranchPage/List" id="goToBranchPageBtn" class="btn btn-primary mt-3" style="display:none;">Go to Branch Page</a>
+    </div>
+
+    <div class="mt-3 text-center">
+        <a href="@returnUrl" class="btn btn-secondary">Quay lại trang quản trị</a>
+    </div>
+</div>
+
+<script>
+    let selectedServices = JSON.parse(sessionStorage.getItem('selectedServices')) || [];
+
+    function formatPriceToVND(price) {
+        // Định dạng giá trị thành VND với dấu phân cách hàng nghìn và ký hiệu VND
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        }).format(price);
+    }
+
+    function updateSelectedServicesDisplay() {
+        const selectedServicesContainer = document.getElementById("selectedServicesList");
+        selectedServicesContainer.innerHTML = ''; // Clear previous services
+
+        selectedServices.forEach(service => {
+            const serviceDiv = document.createElement("div");
+            serviceDiv.classList.add("col-md-4", "service-item", "mb-3");
+
+            serviceDiv.innerHTML = `
+                        <div class="card">
+                            <img src="${service.avatar}" alt="${service.name}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">${service.name}</h5>
+                                <p class="card-text"><strong>Description:</strong> ${service.description}</p>
+                                <p class="card-text"><strong>Price:</strong> ${formatPriceToVND(service.price)}</p>
+                                <p class="card-text"><strong>Duration:</strong> ${service.duration} minutes</p>
+                            </div>
+                        </div>
+                    `;
+
+            selectedServicesContainer.appendChild(serviceDiv);
+        });
+
+        // Toggle the "Go to Branch Page" button
+        document.getElementById('goToBranchPageBtn').style.display = selectedServices.length > 0 ? 'inline-block' : 'none';
+    }
+
+    function addServiceToList(button) {
+        const serviceName = button.getAttribute('data-service-name');
+        const serviceId = button.getAttribute('data-service-id');
+        const serviceDescription = button.getAttribute('data-service-description');
+        const servicePrice = button.getAttribute('data-service-price');
+        const serviceDuration = button.getAttribute('data-service-duration');
+        const serviceAvatar = button.getAttribute('data-service-avatar');
+
+        const service = {
+            id: serviceId,
+            name: serviceName,
+            description: serviceDescription,
+            price: servicePrice,
+            duration: serviceDuration,
+            avatar: serviceAvatar
+        };
+
+        // Check if the service already exists in the selectedServices array
+        if (!selectedServices.find(s => s.id === serviceId)) {
+            selectedServices.push(service);
+            // Save to sessionStorage
+            sessionStorage.setItem('selectedServices', JSON.stringify(selectedServices));
+        }
+
+        // Update the display of selected services
+        updateSelectedServicesDisplay();
+
+        // Disable the "Add" button after it has been clicked
+        button.disabled = true;
+        button.classList.add('btn-secondary');
+        button.classList.remove('btn-success');
+        button.innerText = 'Added';
+    }
+
+    // Load selected services from sessionStorage on page load
+    document.addEventListener("DOMContentLoaded", () => {
+        updateSelectedServicesDisplay();
+    });
+</script>
+
+<style>
+    #selectedServicesContainer {
+        border: 2px solid #ddd;
+        padding: 15px;
+        background-color: #f9f9f9;
+    }
+
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+</style>

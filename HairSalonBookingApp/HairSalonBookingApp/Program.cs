@@ -3,17 +3,50 @@ using HairSalonBookingApp.DAO.Data;
 using HairSalonBookingApp.DAO.DbInitializer;
 using HairSalonBookingApp.Repositories;
 using HairSalonBookingApp.Repositories.Interface;
-using HairSalonBookingApp.Service.Interface;
-using HairSalonBookingApp.Service;
+using HairSalonBookingApp.Services.Interface;
+using HairSalonBookingApp.Services;
 using Microsoft.EntityFrameworkCore;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using HairSalonBookingApp.BusinessObjects.DTOs;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+            options.LoginPath = "/Account/Login"; // Redirect here if not authenticated
+            options.LogoutPath = "/Account/Logout"; // Redirect here after logout
+            options.AccessDeniedPath = "/Account/AccessDenied"; // Redirect here if not authorized
+            options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Set cookie expiration
+            options.SlidingExpiration = true; // Reset the expiration time on each request
+        });
+
+//Add session to service
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(100);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IFirebaseService, FirebaseService>();
+builder.Services.AddScoped<IBranchService, BranchService>();
+builder.Services.AddScoped<IStaffManagerService, StaffManagerService>();
+builder.Services.AddScoped<IStaffStylistService, StaffStylistService>();
+builder.Services.AddScoped<IStylistService, StylistService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+
+builder.Services.AddSession();
+
 
 
 
@@ -60,8 +93,8 @@ builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IStaffManagerRepository, StaffManagerRepository>();
 builder.Services.AddScoped<IStaffStylistRepository, StaffStylistRepository>();
 builder.Services.AddScoped<IStylistRepository, StylistRepository>();
-builder.Services.AddScoped<IAccountService, AccountService>();
 #endregion
+
 var app = builder.Build();
 
 // Seed the database
@@ -74,11 +107,17 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+app.UseSession();
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
+app.UseSession(); // Enable session middleware
+
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

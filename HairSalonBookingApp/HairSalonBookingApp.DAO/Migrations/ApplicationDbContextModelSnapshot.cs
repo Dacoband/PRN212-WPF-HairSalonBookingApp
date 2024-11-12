@@ -243,6 +243,43 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.Feedback", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("FeedbackId");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("DelFlg")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("InsDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("StylistId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("StylistId");
+
+                    b.ToTable("Feedbacks");
+                });
+
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.Notification", b =>
                 {
                     b.Property<Guid>("Id")
@@ -391,6 +428,8 @@ namespace HairSalonBookingApp.DAO.Migrations
 
                     b.HasIndex("AccountID");
 
+                    b.HasIndex("BranchID");
+
                     b.ToTable("StaffManagers");
                 });
 
@@ -462,6 +501,9 @@ namespace HairSalonBookingApp.DAO.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("AverageRating")
+                        .HasColumnType("float");
+
                     b.Property<Guid>("BranchID")
                         .HasColumnType("uniqueidentifier");
 
@@ -470,13 +512,6 @@ namespace HairSalonBookingApp.DAO.Migrations
 
                     b.Property<DateTime>("InsDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Master")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -572,6 +607,25 @@ namespace HairSalonBookingApp.DAO.Migrations
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.Feedback", b =>
+                {
+                    b.HasOne("HairSalonBookingApp.BusinessObjects.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HairSalonBookingApp.BusinessObjects.Entities.StaffStylist", "StaffStylist")
+                        .WithMany()
+                        .HasForeignKey("StylistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("StaffStylist");
+                });
+
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.Notification", b =>
                 {
                     b.HasOne("HairSalonBookingApp.BusinessObjects.Entities.Customer", "Member")
@@ -602,7 +656,13 @@ namespace HairSalonBookingApp.DAO.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HairSalonBookingApp.BusinessObjects.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchID");
+
                     b.Navigation("Account");
+
+                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("HairSalonBookingApp.BusinessObjects.Entities.StaffStylist", b =>

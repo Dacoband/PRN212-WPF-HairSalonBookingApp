@@ -1,0 +1,55 @@
+﻿@page
+@model HairSalonBookingApp.Pages.ServicePage.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="ServiceName">Tên Dịch Vụ</label>
+        <input type="text" id="ServiceName" name="ServiceName" class="form-control" value="@Model.Service.ServiceName" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Price">Giá Dịch Vụ</label>
+        <input type="number" id="Price" name="Price" class="form-control" value="@Model.Service.Price" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Description">Mô Tả</label>
+        <textarea id="Description" name="Description" class="form-control">@Model.Service.Description</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="Duration">Thời Gian (phút)</label>
+        <input type="number" id="Duration" name="Duration" class="form-control" value="@Model.Service.Duration" required />
+    </div>
+
+    <div class="form-group">
+        <label for="AvatarImage">Ảnh Đại Diện</label>
+        <input type="file" id="AvatarImage" name="AvatarImage" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cập Nhật</button>
+</form>
+
+<a href="/Services/ServiceList" class="btn btn-secondary mt-3">Quay lại danh sách dịch vụ</a>
+
+

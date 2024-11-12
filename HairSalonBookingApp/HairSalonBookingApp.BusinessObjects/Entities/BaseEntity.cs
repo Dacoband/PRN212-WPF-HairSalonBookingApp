@@ -14,6 +14,7 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
             UpdDate = DateTime.Now;
             DelFlg = false;
         }
+
         public virtual Guid Id { get; set; }
         public DateTime InsDate { get; set; }
         public DateTime UpdDate { get; set; }
