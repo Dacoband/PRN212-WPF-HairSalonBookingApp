@@ -89,6 +89,7 @@ namespace HairSalonBookingApp.Services
                 Description = service.Description,
                 Duration = service.Duration,
                 AvatarImage = service.AvatarImage,
+                DelFlg  = service.DelFlg,
                 }).ToList();
 
             return new OkObjectResult(resList);
@@ -103,17 +104,8 @@ namespace HairSalonBookingApp.Services
             
             return service;
         }
-        public async Task<ActionResult> DeleteService(Guid serviceId)
+        public async Task<ActionResult> DeleteService(Service service)
         {
-            var service = await _serviceRepository.GetAsync(serviceId);
-
-            if (service == null)
-            {
-                return new ObjectResult("Không tìm thấy dịch vụ")
-                {
-                    StatusCode = StatusCodes.Status404NotFound
-                };
-            }
             service.DelFlg = true;
             service.UpdDate = DateTime.Now;
 
