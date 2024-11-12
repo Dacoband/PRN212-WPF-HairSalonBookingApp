@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using HairSalonBookingApp.Helper;
+using HairSalonBookingApp.Services;
 
 namespace HairSalonBookingApp.Pages.BranchPage
 {
@@ -54,5 +55,19 @@ namespace HairSalonBookingApp.Pages.BranchPage
             HttpContext.Session.SetInt32("SelectedBranchId", branchId);
             return RedirectToPage();
         }
+
+        public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+        {
+            var success = await _branchService.DeleteBranch(id);
+            if (success)
+            {
+                TempData["success"] = "Branch deleted successfully.";
+                return RedirectToPage();
+            }
+
+            TempData["error"] = "Failed to delete branch.";
+            return RedirectToPage();
+        }
+
     }
 }

@@ -65,7 +65,8 @@
                             {
                                 <td>
                                     <a asp-page="./EditBranch" asp-route-id="@branch.Id" class="btn btn-warning btn-sm">Edit</a>
-                                    <form method="post" asp-page-handler="DeleteBranch" asp-route-id="@branch.Id" class="d-inline">
+                                    <form method="post" asp-page-handler="DeleteBranch" class="d-inline">
+                                        <input type="hidden" name="id" value="@branch.Id" />
                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
                                 </td>
