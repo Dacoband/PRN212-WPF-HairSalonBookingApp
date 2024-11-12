@@ -6,11 +6,11 @@
 }
 
 <h2>Service List</h2>
+@if (User.IsInRole("Admin"))
+{
+    <a asp-page="Create" class="btn btn-primary mb-3">Create New Service</a>
+}
 
-<!-- Create Button to Add New Service -->
-<a asp-page="Create" class="btn btn-primary mb-3">Create New Service</a>
-
-<!-- Service List Table -->
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -19,8 +19,14 @@
             <th>Price</th>
             <th>Duration</th>
             <th>AvatarImage</th>
-            <th>Actions</th>
-            <th>Add Service</th> <!-- Thêm cột để thêm dịch vụ vào danh sách -->
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Actions</th>
+            }
+            @if (User.IsInRole("Customer"))
+            {
+                <th>Add Service</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -32,42 +38,65 @@
                 <td>@service.Price</td>
                 <td>@service.Duration</td>
                 <td>
-                    <!-- Display Image from Firebase URL -->
                     <img src="@service.AvatarImage" alt="@service.ServiceName" style="width: 100px; height: 100px; object-fit: cover;" />
                 </td>
-                <td>
-                    <!-- View Button -->
-                    <a asp-page="Details" asp-route-id="@service.Id" class="btn btn-info">View</a> |
-
-                    <!-- Edit Button -->
-                    <a asp-page="./Edit" asp-route-id="@service.Id" class="btn btn-warning">Edit</a>
-
-
-                    <!-- Delete Button -->
-                    <form method="post" asp-page="Delete" asp-route-id="@service.Id" class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this service?');">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
-                <td>
-                    <!-- Add Button for each service -->
-                    <button class="btn btn-success add-service" data-service-name="@service.ServiceName" data-service-id="@service.Id" data-service-description="@service.Description" data-service-price="@service.Price" data-service-duration="@service.Duration" data-service-avatar="@service.AvatarImage" onclick="addServiceToList(this)">Add</button>
-                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <a asp-page="Details" asp-route-id="@service.Id" class="btn btn-info">View</a> |
+                        <a asp-page="./Edit" asp-route-id="@service.Id" class="btn btn-warning">Edit</a>
+                        <form method="post" asp-page="Delete" asp-route-id="@service.Id" class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this service?');">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                }
+                @if (User.IsInRole("Customer"))
+                {
+                    <td>
+                        <button class="btn btn-success add-service" data-service-name="@service.ServiceName" data-service-id="@service.Id" data-service-description="@service.Description" data-service-price="@service.Price" data-service-duration="@service.Duration" data-service-avatar="@service.AvatarImage" onclick="addServiceToList(this)">Add</button>
+                    </td>
+                }
             </tr>
         }
     </tbody>
 </table>
 
-<!-- Container to show selected services -->
 <div id="selectedServicesContainer" class="mt-5">
     <h4>Selected Services</h4>
     <div id="selectedServicesList" class="row"></div>
+    <a href="~/BranchPage/List" id="goToBranchPageBtn" class="btn btn-primary mt-3" style="display:none;">Go to Branch Page</a>
 </div>
 
 <script>
-    // Array to keep track of added services to prevent duplicates
-    let selectedServices = [];
+    let selectedServices = JSON.parse(sessionStorage.getItem('selectedServices')) || [];
 
-    // Function to add a service to the selected services list
+    function updateSelectedServicesDisplay() {
+        const selectedServicesContainer = document.getElementById("selectedServicesList");
+        selectedServicesContainer.innerHTML = ''; // Clear previous services
+
+        selectedServices.forEach(service => {
+            const serviceDiv = document.createElement("div");
+            serviceDiv.classList.add("col-md-4", "service-item", "mb-3");
+
+            serviceDiv.innerHTML = `
+                <div class="card">
+                    <img src="${service.avatar}" alt="${service.name}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">${service.name}</h5>
+                        <p class="card-text"><strong>Description:</strong> ${service.description}</p>
+                        <p class="card-text"><strong>Price:</strong> $${service.price}</p>
+                        <p class="card-text"><strong>Duration:</strong> ${service.duration} minutes</p>
+                    </div>
+                </div>
+            `;
+
+            selectedServicesContainer.appendChild(serviceDiv);
+        });
+
+        // Toggle the "Go to Branch Page" button
+        document.getElementById('goToBranchPageBtn').style.display = selectedServices.length > 0 ? 'inline-block' : 'none';
+    }
+
     function addServiceToList(button) {
         const serviceName = button.getAttribute('data-service-name');
         const serviceId = button.getAttribute('data-service-id');
@@ -76,64 +105,39 @@
         const serviceDuration = button.getAttribute('data-service-duration');
         const serviceAvatar = button.getAttribute('data-service-avatar');
 
-        // Check if service has already been added
-        if (selectedServices.some(service => service.id === serviceId)) {
-            alert('This service has already been added!');
-            return;
+        const service = {
+            id: serviceId,
+            name: serviceName,
+            description: serviceDescription,
+            price: servicePrice,
+            duration: serviceDuration,
+            avatar: serviceAvatar
+        };
+
+        // Check if the service already exists in the selectedServices array
+        if (!selectedServices.find(s => s.id === serviceId)) {
+            selectedServices.push(service);
+            sessionStorage.setItem('selectedServices', JSON.stringify(selectedServices));  // Save to sessionStorage
         }
 
-        // Add service to selectedServices array
-        selectedServices.push({ id: serviceId, name: serviceName, description: serviceDescription, price: servicePrice, duration: serviceDuration, avatar: serviceAvatar });
+        // Update the display of selected services
+        updateSelectedServicesDisplay();
 
-        // Create a new div to hold the service details
-        const serviceDiv = document.createElement("div");
-        serviceDiv.classList.add("col-md-4", "service-item", "mb-3");
-
-        // Add service details inside the div
-        serviceDiv.innerHTML = `
-                <div class="card">
-                    <img src="${serviceAvatar}" alt="${serviceName}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title">${serviceName}</h5>
-                        <p class="card-text"><strong>Description:</strong> ${serviceDescription}</p>
-                        <p class="card-text"><strong>Price:</strong> $${servicePrice}</p>
-                        <p class="card-text"><strong>Duration:</strong> ${serviceDuration} minutes</p>
-                        <button class="btn btn-danger" onclick="removeServiceFromList(this)">Remove</button>
-                    </div>
-                </div>
-            `;
-
-        // Append the new service div to the selected services list
-        document.getElementById("selectedServicesList").appendChild(serviceDiv);
-
-        // Disable the Add button for the already added service
+        // Disable the "Add" button after it has been clicked
         button.disabled = true;
         button.classList.add('btn-secondary');
         button.classList.remove('btn-success');
         button.innerText = 'Added';
     }
 
-    // Function to remove a service from the selected services list
-    function removeServiceFromList(button) {
-        const serviceDiv = button.closest(".service-item");
-        const serviceId = serviceDiv.querySelector('.card-title').innerText;
+    // Initialize display
+    updateSelectedServicesDisplay();
 
-        // Remove the service from selectedServices array
-        selectedServices = selectedServices.filter(service => service.name !== serviceId);
 
-        serviceDiv.remove();
-
-        // Enable the Add button for this service again
-        const addButton = document.querySelector(`button[data-service-name='${serviceId}']`);
-        addButton.disabled = false;
-        addButton.classList.remove('btn-secondary');
-        addButton.classList.add('btn-success');
-        addButton.innerText = 'Add';
-    }
+    
 </script>
 
 <style>
-    /* Style for the selected services container */
     #selectedServicesContainer {
         border: 2px solid #ddd;
         padding: 15px;
@@ -144,7 +148,6 @@
             font-weight: bold;
         }
 
-    /* Style for each service card */
     .service-item {
         max-width: 300px;
         margin: 0 auto;
@@ -171,16 +174,6 @@
         margin-bottom: 10px;
     }
 
-    .btn-danger {
-        width: 100%;
-    }
-
-    /* Style for the Add button */
-    .add-service {
-        margin-top: 10px;
-    }
-
-    /* Disabled Add button style */
     .btn-secondary {
         background-color: #6c757d;
         border-color: #6c757d;

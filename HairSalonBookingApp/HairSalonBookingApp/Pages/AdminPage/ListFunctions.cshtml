@@ -1,0 +1,103 @@
+﻿@page
+@model HairSalonBookingApp.Pages.AdminPage.ListFunctionsModel
+
+@{
+    ViewData["Title"] = "Admin Functions";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <h3 class="text-center text-primary mb-4">Admin Dashboard</h3>
+
+    <div class="row">
+        <!-- Staff Manager Button -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="function-card">
+                <button class="btn btn-outline-primary w-100" onclick="window.location.href='/StaffManagerPage/Index'">
+                    <div class="card">
+                        <img src="~/images/staffmanager.jpg" class="card-img-top" alt="Staff Manager">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Staff Manager</h5>
+                            <p class="card-text text-center">Manage staff roles and assignments.</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Staff Stylist Button -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="function-card">
+                <button class="btn btn-outline-primary w-100" onclick="window.location.href='/StaffStylistPage/Index'">
+                    <div class="card">
+                        <img src="~/images/staffstylist.jpg" class="card-img-top" alt="Staff Stylist">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Staff Stylist</h5>
+                            <p class="card-text text-center">Manage and assign stylists.</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Stylist Button -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="function-card">
+                <button class="btn btn-outline-primary w-100" onclick="window.location.href='/StylistPage/Index'">
+                    <div class="card">
+                        <img src="~/images/stylist.jpg" class="card-img-top" alt="Stylist">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Stylist</h5>
+                            <p class="card-text text-center">Manage stylist profiles and schedules.</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Branch Salon Button -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="function-card">
+                <button class="btn btn-outline-primary w-100" onclick="window.location.href='/BranchPage/List'">
+                    <div class="card">
+                        <img src="~/images/branchsalon.jpg" class="card-img-top" alt="Branch Salon">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Branch Salon</h5>
+                            <p class="card-text text-center">Manage salon branches.</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Customer Button -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="function-card">
+                <button class="btn btn-outline-primary w-100" onclick="window.location.href='/CustomerPage/Index'">
+                    <div class="card">
+                        <img src="~/images/customer.jpg" class="card-img-top" alt="Customer">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Customer</h5>
+                            <p class="card-text text-center">Manage customer information.</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <!-- Service Page Button -->
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="function-card">
+                <button class="btn btn-outline-primary w-100" onclick="window.location.href='/ServicePage/List'">
+                    <div class="card">
+                        <img src="~/images/servicepage.jpg" class="card-img-top" alt="Service Page">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Service Page</h5>
+                            <p class="card-text text-center">Manage salon services.</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
