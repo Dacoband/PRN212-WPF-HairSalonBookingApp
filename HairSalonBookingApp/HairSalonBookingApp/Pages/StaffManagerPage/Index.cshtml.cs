@@ -13,6 +13,8 @@ namespace HairSalonBookingApp.Pages.StaffManagerPage
 
         [BindProperty]
         public List<StaffManager> StaffManagers { get; set; } = new List<StaffManager>();
+        [BindProperty(SupportsGet = true)]
+        public string SearchTerm { get; set; }
 
         public IndexModel(IStaffManagerService staffManagerService, IAccountService accountService)
         {
@@ -21,7 +23,18 @@ namespace HairSalonBookingApp.Pages.StaffManagerPage
         }
         public async Task OnGet()
         {
-            StaffManagers = await _staffManagerService.GetAllStaffManager();
+            var allStaff = await _staffManagerService.GetAllStaffManager();
+            if (!string.IsNullOrEmpty(SearchTerm))
+            {
+                StaffManagers = allStaff
+                    .Where(s => s.StaffManagerName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                                s.Account.Email.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+            else
+            {
+                StaffManagers = allStaff;
+            }
         }
     }
 }

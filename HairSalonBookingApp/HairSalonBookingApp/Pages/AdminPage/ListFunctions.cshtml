@@ -1,0 +1,158 @@
+﻿@page
+@model HairSalonBookingApp.Pages.AdminPage.ListFunctionsModel
+
+@{
+    ViewData["Title"] = "Admin Functions";
+    Layout = "_Layout";
+}
+
+<div class="container mt-5">
+    <h3 class="text-center text-primary mb-4">Management Dashboard</h3>
+    <div class="row">
+        @if (User.IsInRole("Admin"))
+        {
+            <!-- Admin - Quản lý toàn bộ chức năng -->
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow function-card border-0 text-center">
+                    <button class="btn w-100 p-0" onclick="window.location.href='/StaffManagerPage/Index'">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Staff Manager</h5>
+                            <p class="card-text">Quản lý toàn bộ nhân viên.</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow function-card border-0 text-center">
+                    <button class="btn w-100 p-0" onclick="window.location.href='/BranchPage/List'">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Salon Branch</h5>
+                            <p class="card-text">Quản lý các chi nhánh Salon.</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow function-card border-0 text-center">
+                    <button class="btn w-100 p-0" onclick="window.location.href='/ServicePage/List'">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Services</h5>
+                            <p class="card-text">Quản lý các dịch vụ salon.</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow function-card border-0 text-center">
+                    <button class="btn w-100 p-0" onclick="window.location.href='/StaffStylistPage/Index'">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Staff Stylist</h5>
+                            <p class="card-text">Quản lý và phân công stylist.</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow function-card border-0 text-center">
+                    <button class="btn w-100 p-0" onclick="window.location.href='/StylistPage/Index'">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Stylist</h5>
+                            <p class="card-text">Quản lý hồ sơ và lịch của stylist.</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow function-card border-0 text-center">
+                    <button class="btn w-100 p-0" onclick="window.location.href='/CustomerPage/Index'">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Customer</h5>
+                            <p class="card-text">Quản lý thông tin khách hàng.</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        }
+        else if (User.IsInRole("StaffManager"))
+        {
+            <!-- StaffManager - Quản lý một số chức năng -->
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow function-card border-0 text-center">
+                    <button class="btn w-100 p-0" onclick="window.location.href='/StaffStylistPage/Index'">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Nhân viên Stylist</h5>
+                            <p class="card-text">Quản lý và phân công stylist.</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow function-card border-0 text-center">
+                    <button class="btn w-100 p-0" onclick="window.location.href='/StylistPage/Index'">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Stylist</h5>
+                            <p class="card-text">Quản lý hồ sơ và lịch của stylist.</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow function-card border-0 text-center">
+                    <button class="btn w-100 p-0" onclick="window.location.href='/CustomerPage/Index'">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Khách hàng</h5>
+                            <p class="card-text">Quản lý thông tin khách hàng.</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        }
+        else if (User.IsInRole("StaffStylist"))
+        {
+            <!-- StaffStylist - Quản lý Stylist -->
+            <div class="col-md-6 col-lg-4 mb-4 mx-auto">
+                <div class="card shadow function-card border-0 text-center">
+                    <button class="btn w-100 p-0" onclick="window.location.href='/StylistPage/Index'">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Stylist</h5>
+                            <p class="card-text">Quản lý hồ sơ và lịch của stylist.</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .function-card {
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+        .function-card:hover {
+            transform: translateY(-10px) scale(1.1);
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+    .btn {
+        border: none;
+        background-color: transparent;
+    }
+
+        .btn:hover .card-body {
+            background-color: #f0f8ff;
+            color: #0056b3;
+        }
+
+    .card-title {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .card-text {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+</style>

@@ -32,6 +32,19 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// Add services to the container.
+builder.Services.AddRazorPages();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IFirebaseService, FirebaseService>();
+builder.Services.AddScoped<IBranchService, BranchService>();
+builder.Services.AddScoped<IStaffManagerService, StaffManagerService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddSession();
+
+
+
 
 // Load Firebase settings from configuration
 var firebaseSettings = builder.Configuration.GetSection("Firebase").Get<FirebaseSetting>();
@@ -62,9 +75,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 
 #region Dependency Injection
 
-// Add services to the container.
-builder.Services.AddRazorPages();
-
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -79,11 +89,6 @@ builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IStaffManagerRepository, StaffManagerRepository>();
 builder.Services.AddScoped<IStaffStylistRepository, StaffStylistRepository>();
 builder.Services.AddScoped<IStylistRepository, StylistRepository>();
-
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddScoped<IServiceService, ServiceService>();
-builder.Services.AddScoped<IFirebaseService, FirebaseService>();
 #endregion
 
 var app = builder.Build();
@@ -98,6 +103,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+app.UseSession();
 
 app.UseHttpsRedirection();
 

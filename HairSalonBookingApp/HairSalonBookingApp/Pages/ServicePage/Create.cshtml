@@ -4,31 +4,88 @@
     ViewData["Title"] = "Create Service";
 }
 
-<h2>Create Service</h2>
+<h2 class="text-center text-primary mb-4">Create Service</h2>
 
-<form method="post" enctype="multipart/form-data">
-    <div>
-        <label>Service Name</label>
-        <input type="text" asp-for="ServiceModel.ServiceName" required />
+<form method="post" enctype="multipart/form-data" class="form-container">
+    <div class="mb-3">
+        <label class="form-label">Service Name</label>
+        <input type="text" asp-for="ServiceModel.ServiceName" class="form-control" required />
     </div>
-    <div>
-        <label>Price</label>
-        <input type="number" asp-for="ServiceModel.Price" required />
+    <div class="mb-3">
+        <label class="form-label">Price</label>
+        <input type="number" asp-for="ServiceModel.Price" class="form-control" required />
     </div>
-    <div>
-        <label>Description</label>
-        <textarea asp-for="ServiceModel.Description"></textarea>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea asp-for="ServiceModel.Description" class="form-control" rows="4"></textarea>
     </div>
-    <div>
-        <label>Duration (mins)</label>
-        <input type="number" asp-for="ServiceModel.Duration" required />
+    <div class="mb-3">
+        <label class="form-label">Duration (mins)</label>
+        <input type="number" asp-for="ServiceModel.Duration" class="form-control" required />
     </div>
-    <div>
-        <label>Avatar Image</label>
-        <input type="file" asp-for="ServiceModel.AvatarImage" />
+    <div class="mb-3">
+        <label class="form-label">Avatar Image</label>
+        <input type="file" asp-for="ServiceModel.AvatarImage" class="form-control" />
     </div>
-    <button type="submit">Create Service</button>
+    <button type="submit" class="btn btn-primary">Create Service</button>
 </form>
 
-<div asp-validation-summary="ModelOnly"></div>
+<div asp-validation-summary="ModelOnly" class="text-danger mt-3"></div>
 
+<div class="mt-3">
+    <a href="~/ServicePage/List" class="btn btn-secondary">Back to Service List</a>
+</div>
+
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    input[type="text"], input[type="number"], textarea, input[type="file"] {
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        padding: 0.5rem;
+        width: 100%;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 1.2rem;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-secondary {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 1.2rem;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+        .btn-secondary:hover {
+            background-color: #6c757d;
+        }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
+</style>
