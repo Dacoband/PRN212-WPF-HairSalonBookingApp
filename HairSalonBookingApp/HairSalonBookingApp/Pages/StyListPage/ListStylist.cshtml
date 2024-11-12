@@ -1,0 +1,52 @@
+﻿@page
+@model HairSalonBookingApp.Pages.StyListPage.ListStylistModel
+
+@{
+    ViewData["Title"] = "Stylist List";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4">Our Stylists</h2>
+
+    <!-- Nút Create mới -->
+    <div class="mb-3">
+        <a href="@Url.Page("/StylistPage/Create")" class="btn btn-success">Create New Stylist</a>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-bordered table-hover align-middle text-center mb-0">
+            <thead class="table-primary text-secondary">
+                <tr>
+                    <th>Stylist Name</th>
+                    <th>Branch</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>Average Rating</th>
+                    <th>Staff Manager</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Stylists != null && Model.Stylists.Any())
+                {
+                    @foreach (var stylist in Model.Stylists)
+                    {
+                        <tr>
+                            <td>@stylist.StylistName</td>
+                            <td>@stylist.Branch.SalonBranches</td>
+                            <td>@stylist.PhoneNumber</td>
+                            <td>@stylist.Address</td>
+                            <td>@stylist.AverageRating</td>
+                            <td>@stylist.StaffStylist.StaffStylistName</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-muted">No stylists available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
