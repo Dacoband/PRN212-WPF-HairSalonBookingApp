@@ -78,7 +78,19 @@ namespace HairSalonBookingApp.Pages.Account
                 }
                 if (account.RoleName == "Customer")
                 {
-                    returnUrl = Url.Content("~/ServicePage/List");
+                    returnUrl = Url.Content("/Index");
+                }
+                if(account.RoleName == "StaffManager")
+                {
+                    returnUrl = Url.Content("~/AdminPage/ListFunctions");
+                }
+                if(account.RoleName == "StaffStylist")
+                {
+                    returnUrl = Url.Content("~/AdminPage/ListFunctions");
+                }
+                if(account.RoleName == "Stylist")
+                {
+                    returnUrl = Url.Content("~/StylistPage/ListStylist");
                 }
 
 

@@ -34,6 +34,7 @@ builder.Services.AddSession(options =>
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IFirebaseService, FirebaseService>();
 builder.Services.AddScoped<IBranchService, BranchService>();
@@ -91,7 +92,6 @@ builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IStaffManagerRepository, StaffManagerRepository>();
 builder.Services.AddScoped<IStaffStylistRepository, StaffStylistRepository>();
 builder.Services.AddScoped<IStylistRepository, StylistRepository>();
-builder.Services.AddScoped<IAccountService, AccountService>();
 #endregion
 
 var app = builder.Build();

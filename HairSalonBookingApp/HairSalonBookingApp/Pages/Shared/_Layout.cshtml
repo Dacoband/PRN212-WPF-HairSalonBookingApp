@@ -26,7 +26,7 @@
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
+        <nav id="layoutNav" style="padding: 1rem;" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow ">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-page="/Index">
                     <img src="~/images/Logo.jpg" width="100px" alt="Hair Salon Logo" />
@@ -50,7 +50,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container" id="containerDiv">
         <main role="main" class="pb-3">
             <partial name="_Notification" />
             @RenderBody()
@@ -59,7 +59,7 @@
 
     <footer class="border-top footer bg-primary text-white-50 text-center">
         <div class="container">
-            <p>&copy; 2023 Hair Salon Booking App</p>
+            <p>&copy; 2024 Hair Salon Booking App</p>
         </div>
     </footer>
     @* <header class="bg-gray-800 text-white py-3  shadow-md">
