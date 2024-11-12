@@ -1,4 +1,97 @@
 ﻿@page
 @model HairSalonBookingApp.Pages.ServicePage.DetailsModel
 @{
+    ViewData["Title"] = "Details Service";
 }
+
+<h2 class="text-center text-primary mb-4">Service Details</h2>
+
+<div class="form-container">
+    <div class="mb-3">
+        <label class="form-label">Service Name</label>
+        <p class="form-control text-dark bg-light">@Model.serviceModel.ServiceName</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Price</label>
+        <p class="form-control text-dark bg-light">$@Model.serviceModel.Price</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <p class="form-control text-dark bg-light">@Model.serviceModel.Description</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Duration (mins)</label>
+        <p class="form-control text-dark bg-light">@Model.serviceModel.Duration mins</p>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Avatar Image</label>
+        @if (!string.IsNullOrEmpty(Model.serviceModel.AvatarImage))
+        {
+            <img src="@Model.serviceModel.AvatarImage" class="img-thumbnail shadow" alt="Service Image" />
+        }
+        else
+        {
+            <p class="text-muted">No image available</p>
+        }
+    </div>
+
+    <div class="mt-3">
+        <a href="~/ServicePage/List" class="btn btn-secondary">Back to Service List</a>
+    </div>
+</div>
+
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fdfdfd;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .form-control {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 1rem;
+        color: #333;
+        background-color: #e9f5fc;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .form-control:hover {
+        background-color: #d0ebfa;
+        color: #0056b3;
+    }
+
+    .img-thumbnail {
+        width: 100%;
+        max-width: 300px;
+        margin-top: 10px;
+        border-radius: 10px;
+        border: 2px solid #007bff;
+    }
+
+    .btn-secondary {
+        display: block;
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #fff;
+        background-color: #6c757d;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+</style>

@@ -27,6 +27,7 @@
                 <th>Price</th>
                 <th>Duration</th>
                 <th>Avatar</th>
+                <th>Status</th>
                 @if (User.IsInRole("Admin"))
                 {
                     <th>Actions</th>
@@ -40,31 +41,50 @@
         <tbody>
             @foreach (var service in Model.Services)
             {
-                <tr class="align-middle">
-                    <td>@service.ServiceName</td>
-                    <td>@service.Description</td>
-                    <td>@service.Price</td>
-                    <td>@service.Duration</td>
-                    <td>
-                        <img src="@service.AvatarImage" alt="@service.ServiceName" class="rounded img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" />
-                    </td>
-                    @if (User.IsInRole("Admin"))
-                    {
+                // Nếu user là Customer, chỉ hiển thị dịch vụ có trạng thái "false" (đang hoạt động)
+                if (User.IsInRole("Admin") || (!service.DelFlg))
+                {
+                    <tr class="align-middle">
+                        <td>@service.ServiceName</td>
+                        <td>@service.Description</td>
                         <td>
-                            <a asp-page="Details" asp-route-id="@service.Id" class="btn btn-info btn-sm m-1">View</a>
-                            <a asp-page="./Edit" asp-route-id="@service.Id" class="btn btn-warning btn-sm m-1">Edit</a>
-                            <form method="post" asp-page="Delete" asp-route-id="@service.Id" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this service?');">
-                                <button type="submit" class="btn btn-danger btn-sm m-1">Delete</button>
-                            </form>
+                            @{
+                                // Hiển thị giá theo định dạng VND
+                                string formattedPrice = String.Format("{0:#,0}", service.Price);
+                                formattedPrice = formattedPrice + "₫";
+                                @formattedPrice
+                            }
                         </td>
-                    }
-                    @if (User.IsInRole("Customer"))
-                    {
+                        <td>@service.Duration</td>
                         <td>
-                            <button class="btn btn-success btn-sm add-service" data-service-name="@service.ServiceName" data-service-id="@service.Id" data-service-description="@service.Description" data-service-price="@service.Price" data-service-duration="@service.Duration" data-service-avatar="@service.AvatarImage" onclick="addServiceToList(this)">Add</button>
+                            <img src="@service.AvatarImage" alt="@service.ServiceName" class="rounded img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" />
                         </td>
-                    }
-                </tr>
+                        <td>
+                            @if (service.DelFlg)
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                        </td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                                <a asp-page="Details" asp-route-id="@service.Id" class="btn btn-info btn-sm m-1">View</a>
+                                <a asp-page="./Edit" asp-route-id="@service.Id" class="btn btn-warning btn-sm m-1">Edit</a>
+                                <a asp-page="Delete" asp-route-id="@service.Id" class="btn btn-danger btn-sm m-1">Delete</a>
+                            </td>
+                        }
+                        @if (User.IsInRole("Customer") && !service.DelFlg)
+                        {
+                            <td>
+                                <button class="btn btn-success btn-sm add-service" data-service-name="@service.ServiceName" data-service-id="@service.Id" data-service-description="@service.Description" data-service-price="@service.Price" data-service-duration="@service.Duration" data-service-avatar="@service.AvatarImage" onclick="addServiceToList(this)">Add</button>
+                            </td>
+                        }
+                    </tr>
+                }
             }
         </tbody>
     </table>
@@ -83,6 +103,14 @@
 <script>
     let selectedServices = JSON.parse(sessionStorage.getItem('selectedServices')) || [];
 
+    function formatPriceToVND(price) {
+        // Định dạng giá trị thành VND với dấu phân cách hàng nghìn và ký hiệu VND
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        }).format(price);
+    }
+
     function updateSelectedServicesDisplay() {
         const selectedServicesContainer = document.getElementById("selectedServicesList");
         selectedServicesContainer.innerHTML = ''; // Clear previous services
@@ -92,16 +120,16 @@
             serviceDiv.classList.add("col-md-4", "service-item", "mb-3");
 
             serviceDiv.innerHTML = `
-                    <div class="card">
-                        <img src="${service.avatar}" alt="${service.name}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title">${service.name}</h5>
-                            <p class="card-text"><strong>Description:</strong> ${service.description}</p>
-                            <p class="card-text"><strong>Price:</strong> $${service.price}</p>
-                            <p class="card-text"><strong>Duration:</strong> ${service.duration} minutes</p>
+                        <div class="card">
+                            <img src="${service.avatar}" alt="${service.name}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">${service.name}</h5>
+                                <p class="card-text"><strong>Description:</strong> ${service.description}</p>
+                                <p class="card-text"><strong>Price:</strong> ${formatPriceToVND(service.price)}</p>
+                                <p class="card-text"><strong>Duration:</strong> ${service.duration} minutes</p>
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
 
             selectedServicesContainer.appendChild(serviceDiv);
         });
@@ -149,7 +177,6 @@
         updateSelectedServicesDisplay();
     });
 </script>
-
 
 <style>
     #selectedServicesContainer {
