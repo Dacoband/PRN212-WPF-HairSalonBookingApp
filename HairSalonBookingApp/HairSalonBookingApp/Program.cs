@@ -40,6 +40,7 @@ builder.Services.AddScoped<IFirebaseService, FirebaseService>();
 builder.Services.AddScoped<IBranchService, BranchService>();
 builder.Services.AddScoped<IStaffManagerService, StaffManagerService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 builder.Services.AddSession();
 
