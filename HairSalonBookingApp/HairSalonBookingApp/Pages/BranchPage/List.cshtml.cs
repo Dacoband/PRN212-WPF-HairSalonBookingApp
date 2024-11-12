@@ -36,13 +36,14 @@ namespace HairSalonBookingApp.Pages.BranchPage
             if (!string.IsNullOrEmpty(SearchTerm))
             {
                 Branches = allBranches
-                    .Where(b => b.SalonBranches.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
-                                b.Address.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+                    .Where(b => (b.SalonBranches.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                                 b.Address.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)) &&
+                                 (User.IsInRole("Admin") || b.DelFlg == false)) // Hiển thị chi nhánh hoạt động hoặc tất cả cho Admin
                     .ToList();
             }
             else
             {
-                Branches = allBranches;
+                Branches = allBranches.Where(b => User.IsInRole("Admin") || b.DelFlg == false).ToList(); // Chỉ hiển thị chi nhánh hoạt động cho Customer
             }
 
             SelectedServices = HttpContext.Session.GetObjectFromJson<List<Service>>("selectedServices") ?? new List<Service>();
