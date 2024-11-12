@@ -8,7 +8,6 @@
 <div class="container mt-5">
     <h2 class="text-center text-primary mb-4">Our Salon Branches</h2>
 
-    
     @if (User.IsInRole("Admin"))
     {
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -22,13 +21,16 @@
         <table class="table table-bordered table-hover align-middle text-center mb-0">
             <thead class="table-primary text-secondary">
                 <tr>
-                    <th>Select</th>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th>Select</th>
+                    }
                     <th>Salon Branches</th>
                     <th>Address</th>
                     <th>Phone</th>
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Customer"))
                     {
-                        <th>Actions</th> 
+                        <th>Actions</th>
                     }
                 </tr>
             </thead>
@@ -38,12 +40,15 @@
                     @foreach (var branch in Model.Branches)
                     {
                         <tr>
-                            <td>
-                                <form method="post" asp-page-handler="SelectBranch">
-                                    <input type="hidden" name="branchId" value="@branch.Id" />
-                                    <button type="submit" class="btn btn-primary btn-sm">Select</button>
-                                </form>
-                            </td>
+                            @if (User.IsInRole("Customer"))
+                            {
+                                <td>
+                                    <form method="post" asp-page-handler="SelectBranch">
+                                        <input type="hidden" name="branchId" value="@branch.Id" />
+                                        <button type="submit" class="btn btn-primary btn-sm">Select</button>
+                                    </form>
+                                </td>
+                            }
                             <td>@branch.SalonBranches</td>
                             <td>@branch.Address</td>
                             <td>@branch.Phone</td>
@@ -71,30 +76,45 @@
         </table>
         <div id="selectedServicesContainer" class="mt-5">
             <h4>Selected Services</h4>
-            <div id="selectedServicesList" class="row">
-                @foreach (var service in Model.SelectedServices)
-                {
-                    <div class="col-md-6 col-lg-3 mb-4">
-                        <div class="function-card">
-                            <button class="btn btn-outline-primary w-100" onclick="window.location.href='/ServicePage/Details?id=@service.Id'">
-                                <div class="card">
-                                    <img src="@service.AvatarImage" class="card-img-top" alt="@service.ServiceName">
-                                    <div class="card-body">
-                                        <h5 class="card-title text-center">@service.ServiceName</h5>
-                                        <p class="card-text text-center">@service.Description</p>
-                                        <p class="card-text text-center"><strong>Price:</strong> $@service.Price</p>
-                                        <p class="card-text text-center"><strong>Duration:</strong> @service.Duration minutes</p>
-                                    </div>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                }
-            </div>
-
+            <div id="selectedServicesList" class="row"></div>
+        </div>
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy danh sách dịch vụ từ sessionStorage
+        const selectedServices = JSON.parse(sessionStorage.getItem('selectedServices')) || [];
+
+        // Phần tử chứa danh sách dịch vụ
+        const selectedServicesContainer = document.getElementById("selectedServicesList");
+
+        // Hiển thị danh sách dịch vụ đã chọn
+        selectedServices.forEach(service => {
+            const serviceDiv = document.createElement("div");
+            serviceDiv.classList.add("col-md-4", "service-item", "mb-3");
+
+            serviceDiv.innerHTML = `
+                    <div class="card">
+                        <img src="${service.avatar}" alt="${service.name}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">${service.name}</h5>
+                            <p class="card-text"><strong>Description:</strong> ${service.description}</p>
+                            <p class="card-text"><strong>Price:</strong> $${service.price}</p>
+                            <p class="card-text"><strong>Duration:</strong> ${service.duration} minutes</p>
+                        </div>
+                    </div>
+                `;
+
+            selectedServicesContainer.appendChild(serviceDiv);
+        });
+
+        // Hiển thị thông báo nếu không có dịch vụ nào được chọn
+        if (selectedServices.length === 0) {
+            selectedServicesContainer.innerHTML = "<p>No services selected.</p>";
+        }
+    });
+</script>
 
 <style>
     .container {
@@ -125,4 +145,30 @@
             background-color: #28a745;
             color: white;
         }
+
+    .service-item {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
 </style>

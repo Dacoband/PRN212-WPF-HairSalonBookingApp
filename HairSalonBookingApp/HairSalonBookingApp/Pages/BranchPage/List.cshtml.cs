@@ -33,7 +33,8 @@ namespace HairSalonBookingApp.Pages.BranchPage
             Branches = await _branchService.GetAllBranches();
 
             // Lấy danh sách dịch vụ đã chọn từ session
-            SelectedServices = _httpContextAccessor.HttpContext.Session.GetObjectFromJson<List<Service>>("selectedServices") ?? new List<Service>();
+            SelectedServices = HttpContext.Session.GetObjectFromJson<List<Service>>("selectedServices") ?? new List<Service>();
+
         }
 
         // Chọn chi nhánh và lưu vào session
