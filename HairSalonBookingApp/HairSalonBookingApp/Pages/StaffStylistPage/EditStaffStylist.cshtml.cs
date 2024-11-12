@@ -1,5 +1,6 @@
 using HairSalonBookingApp.BusinessObjects.DTOs.StaffStylist;
 using HairSalonBookingApp.BusinessObjects.Entities;
+using HairSalonBookingApp.Repositories.Interface;
 using HairSalonBookingApp.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,30 +10,26 @@ namespace HairSalonBookingApp.Pages.StaffStylistPage
     public class EditStaffStylistModel : PageModel
     {
         private readonly IStaffStylistService _staffStylistService;
-        private readonly IBranchService _branchService;
+        private readonly IBranchRepository _branchRepository;
 
-        public EditStaffStylistModel(IStaffStylistService staffStylistService, IBranchService branchService)
+        public EditModel(IStaffStylistService staffStylistService, IBranchRepository branchRepository)
         {
             _staffStylistService = staffStylistService;
-            _branchService = branchService;
+            _branchRepository = branchRepository;
         }
 
         [BindProperty]
-        public StaffStylist StaffStylist { get; set; }
+        public UpdateStaffStylistRequest UpdateStaffStylistRequest { get; set; }
 
-        public List<Branch> Branches { get; set; }
+        public StaffStylist StaffStylist { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            // Get staff stylist information by ID
             StaffStylist = await _staffStylistService.GetStaffStylistById(id);
             if (StaffStylist == null)
             {
                 return NotFound();
             }
-
-            // Get list of branches for dropdown
-            Branches = await _branchService.GetAllBranches();
             return Page();
         }
 
@@ -43,29 +40,15 @@ namespace HairSalonBookingApp.Pages.StaffStylistPage
                 return Page();
             }
 
-            var updateRequest = new UpdateStaffStylistRequest
+            var success = await _staffStylistService.UpdateStaffStylist(UpdateStaffStylistRequest);
+            if (success.Item1)
             {
-                Id = id,
-                StaffStylistName = StaffStylist.StaffStylistName,
-                DateOfBirth = StaffStylist.DateOfBirth,
-                PhoneNumber = StaffStylist.PhoneNumber,
-                Address = StaffStylist.Address,
-                BranchID = StaffStylist.BranchID,
-                AvatarImage = Request.Form.Files.FirstOrDefault() // AvatarImage file can be retrieved here
-            };
-
-            // Call update method
-            var (success, message) = await _staffStylistService.UpdateStaffStylist(updateRequest);
-
-            TempData["Message"] = message;
-
-            // Redirect based on result
-            if (success)
-            {
-                return RedirectToPage("StaffStylistList"); // Redirect to list page after update
+                return RedirectToPage("Index");
             }
 
-            return RedirectToPage();
+            TempData["ErrorMessage"] = success.Item2;
+            return Page();
         }
+    
     }
 }

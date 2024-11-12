@@ -1,4 +1,47 @@
 ﻿@page
 @model HairSalonBookingApp.Pages.StaffStylistPage.IndexModel
+
 @{
+    ViewData["Title"] = "Staff Stylist List";
 }
+
+<h1>Staff Stylist List</h1>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Staff Stylist Name</th>
+            <th>Branch</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var staff in Model.StaffStylists)
+        {
+            <tr>
+                <td>@staff.StaffStylistName</td>
+                <td>@staff.Branch.BranchName</td>
+                <td>@staff.PhoneNumber</td>
+                <td>@staff.Account.Email</td>
+                <td>
+                    <a href="@Url.Page("Edit", new { id = staff.Id })" class="btn btn-warning">Edit</a>
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@staff.Id" class="d-inline">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Page("Create")" class="btn btn-primary">Create New Staff Stylist</a>
+
