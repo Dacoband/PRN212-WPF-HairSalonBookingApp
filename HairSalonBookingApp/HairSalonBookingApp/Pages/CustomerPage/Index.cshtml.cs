@@ -1,4 +1,5 @@
 using HairSalonBookingApp.BusinessObjects.Entities;
+using HairSalonBookingApp.Repositories;
 using HairSalonBookingApp.Repositories.Interface;
 using HairSalonBookingApp.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,17 @@ namespace HairSalonBookingApp.Pages.CustomerPage
         public async Task OnGetAsync()
         {
             Customers = await _customerService.GetAllCustomers();
+        }
+        public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+        {
+            var success = await _customerService.DeleteCustomer(id);
+            if (success)
+            {
+                return RedirectToPage();
+            }
+
+            TempData["ErrorMessage"] = "Failed to delete customer.";
+            return RedirectToPage();
         }
     }
 }
