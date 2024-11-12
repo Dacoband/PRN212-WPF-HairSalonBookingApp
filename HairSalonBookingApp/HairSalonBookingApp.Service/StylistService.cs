@@ -71,6 +71,7 @@ namespace HairSalonBookingApp.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                message = ex.Message;
                 return false;
             }
             message = "Create stylist successfully";
