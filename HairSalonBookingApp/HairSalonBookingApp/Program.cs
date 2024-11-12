@@ -43,6 +43,7 @@ builder.Services.AddScoped<IStaffStylistService, StaffStylistService>();
 builder.Services.AddScoped<IStylistService, StylistService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 builder.Services.AddSession();
 
