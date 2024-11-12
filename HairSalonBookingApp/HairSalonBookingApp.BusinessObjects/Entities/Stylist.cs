@@ -19,7 +19,7 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
         //FK from Branch
         public Guid BranchID { get; set; }
         //FK from StaffStylist
-        public Guid StaffStylistId { get; set; }
+        public Guid? StaffStylistId { get; set; }
         public string StylistName { get; set; } = string.Empty;
         public double AverageRating { get; set; }
         public string PhoneNumber { get; set; } = string.Empty;
