@@ -57,7 +57,7 @@ namespace HairSalonBookingApp.Pages.BranchPage
             return RedirectToPage();
         }
 
-        public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+        public async Task<IActionResult> OnPostDeleteBranchAsync(Guid id)
         {
             var success = await _branchService.DeleteBranch(id);
             if (success)
