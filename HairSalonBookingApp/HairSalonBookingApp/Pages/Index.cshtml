@@ -31,6 +31,8 @@
         text-transform: uppercase;
         color: #fff;
         font-size: 36px;
+        text-decoration: none;
+        cursor: pointer;
     }
     #mainImage {
         width: 100%;
@@ -58,9 +60,9 @@
    @* <div class="bg-primary text-white p-5"> *@
     <section class=" text-center position-relative ">
     <img src="~/images/back.jpg" style="" id="mainImage"/>
-    <button type="button" id="backButton" class="spectral-bold">
+    <a asp-page="/ServicePage/List" id="backButton" class="spectral-bold">
         ĐẶT LỊCH
-    </button>
+    </a>
 @*          <h2 class="display-4 font-weight-bold text-dark text-uppercase mb-4">
              Dịch Vụ
          </h2>

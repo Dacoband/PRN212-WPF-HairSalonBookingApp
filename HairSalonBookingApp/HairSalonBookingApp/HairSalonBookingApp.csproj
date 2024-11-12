@@ -26,4 +26,8 @@
     <ProjectReference Include="..\HairSalonBookingApp.Service\HairSalonBookingApp.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\BookingAppointment\" />
+  </ItemGroup>
+
 </Project>
