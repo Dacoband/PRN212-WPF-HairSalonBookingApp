@@ -24,10 +24,12 @@ namespace HairSalonBookingApp.Pages.ServicePage
             var result = await _serviceService.AddService(ServiceModel);
             if (result)
             {
+                TempData["success"] = "Service created successfully.";
                 return RedirectToPage("List");
             }
 
             ModelState.AddModelError(string.Empty, "Error creating service.");
+
             return RedirectToPage("List");
         }
         
