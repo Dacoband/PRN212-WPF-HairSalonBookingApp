@@ -16,7 +16,7 @@ namespace HairSalonBookingApp.BusinessObjects.Entities
         public override Guid Id { get; set; }
 
         //FK from StaffManager
-        public Guid StaffManagerID { get; set; }
+        public Guid? StaffManagerID { get; set; }
         public string SalonBranches { get; set; } = null!;
         public string Address { get; set; } = null!;
         public string Phone { get; set; } = null!;

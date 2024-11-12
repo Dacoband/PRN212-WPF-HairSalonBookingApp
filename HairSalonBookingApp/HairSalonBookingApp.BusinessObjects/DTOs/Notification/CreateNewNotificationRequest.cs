@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace HairSalonBookingApp.BusinessObjects.DTOs.Notification
 {
-    public class UpdateNotificationRequest
+    public class CreateNewNotificationRequest
     {
+        public Guid MemberId { get; set; }
         public string Message { get; set; }
     }
 }
