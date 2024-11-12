@@ -13,7 +13,7 @@ namespace HairSalonBookingApp.Services.Interface
         Task<List<Notification>> GetAllNotification();
         Task<Notification> GetNotificationById(Guid id);
         Task<bool> CreateNotification(CreateNewNotificationRequest notificationRequest);
-        Task<bool> UpdateNotification(Guid id, UpdateNotificationRequest notificationRequest);
+        Task<(bool, string)> UpdateNotification(Guid id, UpdateNotificationRequest notificationRequest);
         Task<bool> DeleteNotification(Guid id);
         
     }
