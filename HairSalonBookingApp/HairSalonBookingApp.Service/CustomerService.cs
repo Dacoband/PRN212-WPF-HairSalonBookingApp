@@ -22,14 +22,17 @@ namespace HairSalonBookingApp.Services
         public CustomerService(ICustomerRepository customerRepository, IFirebaseService firebaseService, IAccountRepository accountRepository)
         {
             _customerRepository = customerRepository;
+            _firebaseService = firebaseService;
+            _accountRepository = accountRepository;
         }
 
-        public async Task<bool> CreateCustomer(CreateCustomerRequest createCustomerRequest)
+        public async Task<(Account?, string)> CreateCustomer(CreateCustomerRequest createCustomerRequest)
         {
             string message;
+            Account? account = null;
             try
             {
-                var account = new Account
+                account = new Account
                 {
                     Id = Guid.NewGuid(),
                     Email = createCustomerRequest.Email,
@@ -37,26 +40,33 @@ namespace HairSalonBookingApp.Services
                     RoleName = RoleEnum.Customer.ToString(),
                 };
                 await _accountRepository.AddAsync(account);
-                var url = await _firebaseService.UploadFile(createCustomerRequest.AvatarImage);
+
+                string? url = null;
+                if (createCustomerRequest.AvatarImage != null)
+                {
+                    url = await _firebaseService.UploadFile(createCustomerRequest.AvatarImage);
+                }
+
                 var customer = new Customer
                 {
                     Id = Guid.NewGuid(),
                     AccountId = account.Id,
-                    CustomerName = createCustomerRequest.CustomerName,
+                    CustomerName = createCustomerRequest.Name ?? string.Empty,
                     DateOfBirth = createCustomerRequest.DateOfBirth,
                     PhoneNumber = createCustomerRequest.PhoneNumber,
                     Address = createCustomerRequest.Address,
-                    AvatarImage = url
+                    AvatarImage = url,
                 };
                 await _customerRepository.AddAsync(customer);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
                 message = ex.Message;
-                return false;
+                Console.WriteLine(message);
+                return (null, message);
             }
-            return true;
+            message = "Create customer successfully";
+            return (account, message) ;
         }
 
         public async Task<bool> DeleteCustomer(Guid customerId)

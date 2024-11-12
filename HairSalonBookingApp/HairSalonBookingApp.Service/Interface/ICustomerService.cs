@@ -12,7 +12,7 @@ namespace HairSalonBookingApp.Services.Interface
     {
         Task<Customer?> GetCustomerById(Guid customerId);
         Task<List<Customer>> GetAllCustomers();
-        Task<bool> CreateCustomer(CreateCustomerRequest createCustomerRequest);
+        Task<(Account?, string)> CreateCustomer(CreateCustomerRequest createCustomerRequest);
         Task<(bool, string)> UpdateCustomer(UpdateCustomerRequest updateCustomerRequest);
         Task<bool> DeleteCustomer(Guid customerId);
     }

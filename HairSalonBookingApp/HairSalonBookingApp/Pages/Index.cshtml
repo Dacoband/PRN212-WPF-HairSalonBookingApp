@@ -4,44 +4,99 @@
     ViewData["Title"] = "Trang Chủ";
     Layout = "_Layout";  // Sử dụng Layout chung
 }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+    #containerDiv {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+    }
 
-<div class="bg-primary text-white p-5">
-    <section class="py-5 text-center">
-        <h2 class="display-4 font-weight-bold text-dark text-uppercase mb-4">
-            Dịch Vụ
-        </h2>
-        <div class="container">
-            <div class="slick-slider d-flex justify-content-center flex-wrap">
-                <div class="card shadow-lg p-3 rounded d-flex flex-column align-items-center text-center" style="width: 18rem;">
-                    <img src="~/images/image.jpg" alt="Service Image" class="card-img-top rounded mb-3" style="width: 50%;">
-                    <button onclick="navigateToService()" class="btn btn-warning mt-3 text-lg transition-transform">
-                        Đặt Lịch Hẹn Ngay!
-                    </button>
-                </div>
-            </div>
-        </div>
+    #layoutNav {
+        border-bottom: 0px !important;
+    }
+
+    #backButton {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Rye vh';
+        padding: 10px 45px;
+        border: 1px solid #fff;
+        background-color: rgb(106 98 98 / 50%);
+        text-transform: uppercase;
+        color: #fff;
+        font-size: 36px;
+    }
+    #mainImage {
+        width: 100%;
+        height: calc(100vh - 85.33px);
+         /* opacity: 1; */
+    }
+
+    .spectral-bold {
+        font-family: "Spectral", serif;
+        font-weight: 700;
+        font-style: normal;
+    }
+
+    .spectral-medium {
+        font-family: "Spectral", serif;
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    .height300 {
+        height: 350px;
+    }
+</style>
+
+   @* <div class="bg-primary text-white p-5"> *@
+    <section class=" text-center position-relative ">
+    <img src="~/images/back.jpg" style="" id="mainImage"/>
+    <button type="button" id="backButton" class="spectral-bold">
+        ĐẶT LỊCH
+    </button>
+@*          <h2 class="display-4 font-weight-bold text-dark text-uppercase mb-4">
+             Dịch Vụ
+         </h2>
+         <div class="container">
+             <div class="slick-slider d-flex justify-content-center flex-wrap">
+                 <div class="card shadow-lg p-3 rounded d-flex flex-column align-items-center text-center" style="width: 18rem;">
+                     <img src="~/images/image.jpg" alt="Service Image" class="card-img-top rounded mb-3" style="width: 50%;">
+                     <button onclick="navigateToService()" class="btn btn-warning mt-3 text-lg transition-transform">
+                         Đặt Lịch Hẹn Ngay!
+                     </button>
+                 </div>
+             </div>
+         </div> *@
     </section>
 
-    <h2 class="text-center display-4 font-weight-bold text-dark text-uppercase mb-4">Gói Dịch Vụ</h2>
-    <section class="bg-light shadow-lg p-5 rounded">
-        <section class="py-5 bg-light text-center">
+     @* <section class="bg-light shadow-lg p-5 rounded "> *@
+        <section class="py-3  text-center my-5">
             <div class="container">
-                <div class="row justify-content-center">
+                <div class="row justify-content-center p-3">
+                    <h2 class="text-center display-4 font-weight-bold text-dark text-uppercase mb-5 spectral-bold">Gói Dịch Vụ</h2>
+
                     <div class="col-md-4 mb-4">
                         <div class="card bg-primary text-white shadow-lg p-3 rounded text-center transition-transform">
-                            <img src="~/images/Cắt tóc và tạo kiểu.jpg" alt="Cắt Tóc Và Tạo Kiểu" class="card-img-top rounded mb-3" style="height: 200px;">
+                    <img src="~/images/catToc.jpeg" alt="Cắt Tóc Và Tạo Kiểu" class="card-img-top rounded mb-3 height300">
                             <button class="btn btn-dark w-100">Cắt Tóc Và Tạo Kiểu</button>
                         </div>
                     </div>
                     <div class="col-md-4 mb-4">
                         <div class="card bg-primary text-white shadow-lg p-3 rounded text-center transition-transform">
-                            <img src="~/images/Nhuom toc va uon toc.jpg" alt="Nhuộm Tóc và Uốn Tóc" class="card-img-top rounded mb-3" style="height: 200px;">
+                    <img src="~/images/nhuomToc.jpg" alt="Nhuộm Tóc và Uốn Tóc" class="card-img-top rounded mb-3 height300" >
                             <button class="btn btn-dark w-100">Nhuộm Tóc và Uốn Tóc</button>
                         </div>
                     </div>
                     <div class="col-md-4 mb-4">
                         <div class="card bg-primary text-white shadow-lg p-3 rounded text-center transition-transform">
-                            <img src="~/images/combo hot.jpg" alt="Combo Hot" class="card-img-top rounded mb-3" style="height: 200px;">
+                    <img src="~/images/combo.jpeg" alt="Combo Hot" class="card-img-top rounded mb-3 height300" >
                             <button class="btn btn-dark w-100">Combo Hot</button>
                         </div>
                     </div>
@@ -51,12 +106,12 @@
 
         <section class="bg-white py-5">
             <div class="container">
-                <div class="row align-items-center">
+                <div class="row justify-content-around">
                     <div class="col-md-6 mb-4">
                         <img src="~/images/about-img.jpg" alt="Salon Experience" class="img-fluid rounded shadow-lg">
                     </div>
-                    <div class="col-md-6">
-                        <h2 class="display-4 font-weight-bold">HAIR SALON</h2>
+                    <div class="col-md-5 p-2 mx-4">
+                <h2 class="display-4  spectral-bold">HAIR SALON</h2>
                         <h3 class="lead text-muted mt-2">Sự hài lòng của quý khách là ưu tiên hàng đầu của <span class="text-warning font-weight-bold">Hair Salon</span></h3>
                         <ul class="list-unstyled lead text-muted mt-3">
                             <li><span class="text-warning font-weight-bold">✔</span> Đúng dịch vụ - Không kéo khách hay phí ẩn</li>
@@ -65,29 +120,29 @@
                             <li><span class="text-warning font-weight-bold">✔</span> Thấu hiểu nhu cầu, hỗ trợ nhiệt tình</li>
                             <li><span class="text-warning font-weight-bold">✔</span> Lắng nghe cẩn thận và đảm bảo dịch vụ tận tâm</li>
                         </ul>
-                        <button onclick="navigateToBranch()" class="btn btn-warning mt-4">Tìm Hiểu Thêm Về Chúng Tôi</button>
+                        <button onclick="navigateToBranch()" class="btn btn-outline-primary mt-4">Tìm Hiểu Thêm Về Chúng Tôi</button>
                     </div>
                 </div>
             </div>
         </section>
-    </section>
-</div>
+    @* </section> *@
+@* </div> *@
 
 @section Scripts {
     <script>
-        $(document).ready(function () {
-            $('.slick-slider').slick({
-                dots: true,
-                infinite: true,
-                speed: 500,
-                slidesToShow: 3,
-                slidesToScroll: 1,
-                responsive: [
-                    { breakpoint: 768, settings: { slidesToShow: 2 } },
-                    { breakpoint: 576, settings: { slidesToShow: 1 } }
-                ]
-            });
-        });
+        // $(document).ready(function () {
+        //     $('.slick-slider').slick({
+        //         dots: true,
+        //         infinite: true,
+        //         speed: 500,
+        //         slidesToShow: 3,
+        //         slidesToScroll: 1,
+        //         responsive: [
+        //             { breakpoint: 768, settings: { slidesToShow: 2 } },
+        //             { breakpoint: 576, settings: { slidesToShow: 1 } }
+        //         ]
+        //     });
+        // });
 
         function navigateToService() {
             const userData = JSON.parse(localStorage.getItem("userData") || "{}");
