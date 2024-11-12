@@ -3,10 +3,18 @@
 
 @{
     ViewData["Title"] = "Branch List";
+    var returnUrl = Url.Content("~/AdminPage/ListFunctions");
 }
 
 <div class="container mt-5">
     <h2 class="text-center text-primary mb-4">Our Salon Branches</h2>
+
+    <form method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="SearchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search by branch name or address" aria-label="Search">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
 
     @if (User.IsInRole("Admin"))
     {
@@ -56,7 +64,6 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <td>
-                                    <!-- Edit and Delete buttons for Admin -->
                                     <a asp-page="./EditBranch" asp-route-id="@branch.Id" class="btn btn-warning btn-sm">Edit</a>
                                     <form method="post" asp-page-handler="DeleteBranch" asp-route-id="@branch.Id" class="d-inline">
                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -74,81 +81,99 @@
                 }
             </tbody>
         </table>
-        <div id="selectedServicesContainer" class="mt-5">
-            <h4>Selected Services</h4>
-            <div id="selectedServicesList" class="row"></div>
+    </div>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="mt-3 text-center">
+            <a href="@returnUrl" class="btn btn-secondary">Quay lại trang quản trị</a>
         </div>
+    }
+
+    <div id="selectedServicesContainer" class="mt-5">
+        <h4>Selected Services</h4>
+        <div id="selectedServicesList" class="row"></div>
     </div>
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Lấy danh sách dịch vụ từ sessionStorage
-        const selectedServices = JSON.parse(sessionStorage.getItem('selectedServices')) || [];
-
-        // Phần tử chứa danh sách dịch vụ
-        const selectedServicesContainer = document.getElementById("selectedServicesList");
-
-        // Hiển thị danh sách dịch vụ đã chọn
-        selectedServices.forEach(service => {
-            const serviceDiv = document.createElement("div");
-            serviceDiv.classList.add("col-md-4", "service-item", "mb-3");
-
-            serviceDiv.innerHTML = `
-                    <div class="card">
-                        <img src="${service.avatar}" alt="${service.name}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title">${service.name}</h5>
-                            <p class="card-text"><strong>Description:</strong> ${service.description}</p>
-                            <p class="card-text"><strong>Price:</strong> $${service.price}</p>
-                            <p class="card-text"><strong>Duration:</strong> ${service.duration} minutes</p>
-                        </div>
-                    </div>
-                `;
-
-            selectedServicesContainer.appendChild(serviceDiv);
-        });
-
-        // Hiển thị thông báo nếu không có dịch vụ nào được chọn
-        if (selectedServices.length === 0) {
-            selectedServicesContainer.innerHTML = "<p>No services selected.</p>";
-        }
-    });
-</script>
-
 <style>
+    /* General container styling */
     .container {
         max-width: 900px;
     }
 
+    /* Title styling */
+    h2 {
+        color: #007bff;
+        font-weight: bold;
+        font-size: 2rem;
+    }
+
+    /* Table styling */
     .table {
         border-radius: 0.25rem;
         overflow: hidden;
+        margin-bottom: 0;
     }
 
-        .table thead {
-            background-color: #007bff;
-            color: white;
-        }
+    .table thead {
+        background-color: #007bff;
+        color: white;
+    }
 
     .table-hover tbody tr:hover {
         background-color: #f1f4f9;
     }
 
-    .btn-outline-success {
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    /* Button styling */
+    .btn-primary, .btn-outline-success {
         font-size: 1rem;
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 1.25rem;
         transition: all 0.3s ease;
     }
 
-        .btn-outline-success:hover {
-            background-color: #28a745;
-            color: white;
-        }
+    .btn-primary:hover, .btn-outline-success:hover {
+        background-color: #0056b3;
+        color: white;
+    }
+
+    .btn-secondary {
+        font-size: 1rem;
+        padding: 0.5rem 1.25rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        color: white;
+    }
+
+    /* Add New Branch button styling */
+    .btn-outline-success i {
+        font-size: 1.25rem;
+    }
+
+    /* Selected Services section */
+    #selectedServicesContainer {
+        border: 2px solid #ddd;
+        padding: 15px;
+        background-color: #f9f9f9;
+        margin-top: 30px;
+    }
+
+    #selectedServicesList {
+        display: flex;
+        flex-wrap: wrap;
+    }
 
     .service-item {
         max-width: 300px;
-        margin: 0 auto;
+        margin: 10px;
+        text-align: center;
     }
 
     .card {
@@ -156,6 +181,12 @@
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .card-body {
@@ -171,4 +202,10 @@
         font-size: 1rem;
         margin-bottom: 10px;
     }
+
+    .btn-secondary[disabled] {
+        background-color: #6c757d;
+        cursor: not-allowed;
+    }
+
 </style>
