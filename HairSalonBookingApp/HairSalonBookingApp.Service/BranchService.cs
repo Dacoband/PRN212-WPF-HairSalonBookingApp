@@ -25,7 +25,7 @@ namespace HairSalonBookingApp.Services
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<bool> AddBranch(CreateBracnhRequest createBracnh, HttpContext httpContext)
+        public async Task<bool> AddBranch(CreateBracnhRequest createBracnh)
         {
             try
             {
@@ -44,8 +44,11 @@ namespace HairSalonBookingApp.Services
                     Phone = createBracnh.Phone
 
                 };
-
                 await _branchRepository.AddAsync(branch);
+                staffManger.BranchID = branch.Id;
+                _staffManagerRepository.Update(staffManger);
+
+               
             }
             catch (Exception ex)
             {

@@ -1,0 +1,46 @@
+﻿@page
+@model HairSalonBookingApp.Pages.BranchPage.CreateBranchModel
+@{
+    ViewData["Title"] = "Create New Branch";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4">Create New Branch</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="Branch.StaffManagerID" class="form-label">Staff Manager</label>
+            <select asp-for="Branch.StaffManagerID" class="form-control">
+                <option value="">Select Staff Manager</option>
+                @foreach (var staffManager in Model.StaffManagers)
+                {
+                    <option value="@staffManager.Id">@staffManager.StaffManagerName</option>
+                }
+            </select>
+            <span asp-validation-for="Branch.StaffManagerID" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Branch.SalonBranches" class="form-label">Salon Branch Name</label>
+            <input asp-for="Branch.SalonBranches" class="form-control" />
+            <span asp-validation-for="Branch.SalonBranches" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Branch.Address" class="form-label">Address</label>
+            <input asp-for="Branch.Address" class="form-control" />
+            <span asp-validation-for="Branch.Address" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Branch.Phone" class="form-label">Phone</label>
+            <input asp-for="Branch.Phone" class="form-control" />
+            <span asp-validation-for="Branch.Phone" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary">Create Branch</button>
+        </div>
+    </form>
+</div>
+
