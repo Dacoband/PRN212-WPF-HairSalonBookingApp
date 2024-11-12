@@ -5,42 +5,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using HairSalonBookingApp.BusinessObjects.DTOs.Customer;
 
 namespace HairSalonBookingApp.Pages.Account
 {
     public class RegisterPageModel : PageModel
     {
         private readonly IAccountService _accountService;
+        private readonly ICustomerService _customerService;
+
         [BindProperty]
-        public InputModel Input { get; set; } = new InputModel();
+        public CreateCustomerRequest Input { get; set; } = new ();
         public string ReturnUrl { get; set; } = string.Empty;
         [TempData]
         public string ErrorMessage { get; set; } = string.Empty;
 
-        public class InputModel
-        {
-            [Required(ErrorMessage = "Vui lòng nhập email")]
-            [EmailAddress]
-            public string Email { get; set; } = string.Empty;
-
-            [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
-            [DataType(DataType.Password)]
-            public string Password { get; set; } = string.Empty;
-
-            public string? Name { get; set; }
-            public DateTime? DateOfBirth { get; set; }
-
-            [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
-            [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải có chính xác 10 số")]
-            [RegularExpression(@"^(03|05|07|08|09)\d{8}$", ErrorMessage = "Số điện thoại phải là số điện thoại Viet Nam")]
-            public string PhoneNumber { get; set; } = string.Empty;
-            public string? Address { get; set; } = string.Empty;
-            public string? AvatarImage { get; set; } = string.Empty;
-        }
-
-        public RegisterPageModel(IAccountService accountService)
+        public RegisterPageModel(IAccountService accountService, ICustomerService customerService)
         {
             _accountService = accountService;
+            _customerService = customerService;
         }
         public void OnGet(string? returnUrl = null)
         {
@@ -58,10 +41,16 @@ namespace HairSalonBookingApp.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var account = _accountService.Register(Input.Email, Input.Password, Input.Name, out string message);
-                if (account == null)
+                if (file != null)
+                {
+                    Input.AvatarImage = file;
+                }
+
+                var (account, message) = await _customerService.CreateCustomer(Input);
+                if(account == null)
                 {
                     ModelState.AddModelError(string.Empty, message);
+                    TempData["error"] = message;
                     return Page();
                 }
 
@@ -77,6 +66,7 @@ namespace HairSalonBookingApp.Pages.Account
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
+                TempData["success"] = "Account created successfully";
                 return LocalRedirect(returnUrl);
             }
 
