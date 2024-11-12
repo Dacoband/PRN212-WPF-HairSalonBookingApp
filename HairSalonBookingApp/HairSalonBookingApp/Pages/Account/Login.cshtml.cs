@@ -56,12 +56,12 @@ namespace HairSalonBookingApp.Pages.Account
                     return Page();
                 }
 
-                // Create claims (you can add more if needed, like role, name, etc.)
+                
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
                     new Claim(ClaimTypes.Name, account.Email),
-                    new Claim(ClaimTypes.Role, account.RoleName) // If you have roles
+                    new Claim(ClaimTypes.Role, account.RoleName) 
                 };
 
                 // Create identity
@@ -72,6 +72,15 @@ namespace HairSalonBookingApp.Pages.Account
 
                 // Sign in the user
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+                if (account.RoleName == "Admin")
+                {
+                    returnUrl = Url.Content("~/AdminPage/ListFunctions");
+                }
+                if (account.RoleName == "Customer")
+                {
+                    returnUrl = Url.Content("~/ServicePage/List");
+                }
+
 
                 return Redirect(returnUrl);
             }
