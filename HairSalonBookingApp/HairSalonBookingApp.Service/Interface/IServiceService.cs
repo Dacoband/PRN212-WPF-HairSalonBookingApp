@@ -12,7 +12,7 @@ namespace HairSalonBookingApp.Services.Interface
     public interface IServiceService
     {
 
-        Task<(bool, string)> AddService(CreateNewServiceRequest service);
+        Task<bool> AddService(CreateNewServiceRequest service);
         Task<bool> UpdateService(Guid id, UpdateNewServiceRequest service);
         Task<ActionResult<List<Service>>> GetServiceList(QueryService query);
         Task<Service?> GetServiceById(Guid serviceId);

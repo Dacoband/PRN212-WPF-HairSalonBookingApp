@@ -25,17 +25,14 @@
     </div>
     <div class="mb-3">
         <label class="form-label">Avatar Image</label>
-        <div>
-            @if (!string.IsNullOrEmpty(Model.serviceModel.AvatarImage))
-            {
-                <img src="@Model.serviceModel.AvatarImage" class="img-thumbnail shadow" alt="Service Image" />
-            }
-            else
-            {
-                <p class="text-muted">No image available</p>
-            }
-        </div>
-        
+        @if (!string.IsNullOrEmpty(Model.serviceModel.AvatarImage))
+        {
+            <img src="@Model.serviceModel.AvatarImage" class="img-thumbnail shadow" alt="Service Image" />
+        }
+        else
+        {
+            <p class="text-muted">No image available</p>
+        }
     </div>
 
     <div class="mt-3">

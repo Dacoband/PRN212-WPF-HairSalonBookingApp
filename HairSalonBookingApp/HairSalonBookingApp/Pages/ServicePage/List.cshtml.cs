@@ -6,11 +6,9 @@ using HairSalonBookingApp.BusinessObjects.Entities;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using HairSalonBookingApp.Helper;
-using Microsoft.AspNetCore.Authorization;
 
 namespace HairSalonBookingApp.Pages.ServicePage
 {
-    [Authorize(Roles = "Admin,Customer")]
     public class ListModel : PageModel
     {
         private readonly IServiceService _serviceService;
@@ -38,12 +36,12 @@ namespace HairSalonBookingApp.Pages.ServicePage
                 {
                     Services = allServices
                         .Where(s => s.ServiceName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
-                                    (s.Description != null && s.Description.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)))
+                                    s.Description.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
                         .ToList();
                 }
                 else
                 {
-                    Services = allServices ?? new List<Service>();
+                    Services = allServices;
                 }
             }
             else

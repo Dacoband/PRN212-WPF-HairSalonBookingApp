@@ -3,11 +3,6 @@
 @{
     ViewData["Title"] = "Trang Chủ";
     Layout = "_Layout";  // Sử dụng Layout chung
-
-    if (!User.IsInRole("Customer"))
-    {
-        RedirectToPage("/AdminPage/ListFunction");
-    }
 }
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,8 +31,6 @@
         text-transform: uppercase;
         color: #fff;
         font-size: 36px;
-        text-decoration: none;
-        cursor: pointer;
     }
     #mainImage {
         width: 100%;
@@ -65,9 +58,9 @@
    @* <div class="bg-primary text-white p-5"> *@
     <section class=" text-center position-relative ">
     <img src="~/images/back.jpg" style="" id="mainImage"/>
-    <a asp-page="/ServicePage/List" id="backButton" class="spectral-bold">
+    <button type="button" id="backButton" class="spectral-bold">
         ĐẶT LỊCH
-    </a>
+    </button>
 @*          <h2 class="display-4 font-weight-bold text-dark text-uppercase mb-4">
              Dịch Vụ
          </h2>
