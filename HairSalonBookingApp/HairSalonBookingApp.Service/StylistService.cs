@@ -49,7 +49,7 @@ namespace HairSalonBookingApp.Services
                     message = "Branch not found";
                     return false;
                 }
-                var staffStylist = await _staffStylistRepository.GetAsync(createStylistRequest.StaffStylistId);
+                var staffStylist = await _staffStylistRepository.GetAsync((Guid)createStylistRequest.StaffStylistId);
                 if (staffStylist == null)
                 {
                     message = "Staff Stylist not found";

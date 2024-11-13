@@ -17,7 +17,7 @@ namespace HairSalonBookingApp.BusinessObjects.DTOs.Stylist
         [Required(ErrorMessage ="Vui lòng nhập Password")]
         public string Password { get; set; }
         public Guid BranchID { get; set; }
-        public Guid StaffStylistId { get; set; }
+        public Guid? StaffStylistId { get; set; }
         [Required]
         public string StylistName { get; set; }
         public double AverageRating { get; set; } = 0;

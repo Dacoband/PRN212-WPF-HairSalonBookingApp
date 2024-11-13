@@ -12,7 +12,7 @@ namespace HairSalonBookingApp.Services.Interface
 {
     public interface IBranchService
     {
-        Task<bool> AddBranch(CreateBracnhRequest createBracnh, HttpContext httpContext);
+        Task<bool> AddBranch(CreateBracnhRequest createBracnh);
         Task<(bool, string)> UpdateBranch(Guid branchId, UpdateBranchRequest updateBranchRequest);
         Task<bool> DeleteBranch(Guid branchId);
         Task<List<Branch>> GetAllBranches();
