@@ -3,6 +3,11 @@
 @{
     ViewData["Title"] = "Trang Chủ";
     Layout = "_Layout";  // Sử dụng Layout chung
+
+    if (!User.IsInRole("Customer"))
+    {
+        RedirectToPage("/AdminPage/ListFunction");
+    }
 }
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

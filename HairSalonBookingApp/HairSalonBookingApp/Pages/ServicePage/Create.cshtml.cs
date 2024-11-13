@@ -22,13 +22,14 @@ namespace HairSalonBookingApp.Pages.ServicePage
         public async Task<IActionResult> OnPostAsync()
         {
 
-            var result = await _serviceService.AddService(ServiceModel);
-            if (result)
+            var (isSuceed, message) = await _serviceService.AddService(ServiceModel);
+            if (isSuceed)
             {
+                TempData["success"] = message;
                 return RedirectToPage("List");
             }
 
-            TempData["error"] = "Error creating service.";
+            TempData["error"] = message;
             return Page();
         }
         
