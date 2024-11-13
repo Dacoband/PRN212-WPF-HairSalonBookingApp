@@ -92,8 +92,14 @@
     <div id="selectedServicesContainer" class="mt-5 p-3 border rounded shadow-sm bg-light">
         <h4>Selected Services</h4>
         <div id="selectedServicesList" class="row"></div>
-        <a href="~/BranchPage/List" id="goToBranchPageBtn" class="btn btn-primary mt-3" style="display:none;">Go to Branch Page</a>
     </div>
+    <div id="goToButtonContainer" class="mb-3">
+        <a href="~/BranchPage/List" id="goToBranchPageBtn" class="btn btn-primary mt-3" style="display:none;">Next</a>
+    </div>
+
+
+
+
 
     @if (User.IsInRole("Admin"))
     {
@@ -108,7 +114,6 @@
     let selectedServices = JSON.parse(sessionStorage.getItem('selectedServices')) || [];
 
     function formatPriceToVND(price) {
-        // Định dạng giá trị thành VND với dấu phân cách hàng nghìn và ký hiệu VND
         return new Intl.NumberFormat('vi-VN', {
             style: 'currency',
             currency: 'VND'
@@ -119,68 +124,76 @@
         const selectedServicesContainer = document.getElementById("selectedServicesList");
         selectedServicesContainer.innerHTML = ''; // Clear previous services
 
-        selectedServices.forEach(service => {
+        selectedServices.forEach((service, index) => {
             const serviceDiv = document.createElement("div");
             serviceDiv.classList.add("col-md-4", "service-item", "mb-3");
 
             serviceDiv.innerHTML = `
-                        <div class="card">
-                            <img src="${service.avatar}" alt="${service.name}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                            <div class="card-body">
-                                <h5 class="card-title">${service.name}</h5>
-                                <p class="card-text"><strong>Description:</strong> ${service.description}</p>
-                                <p class="card-text"><strong>Price:</strong> ${formatPriceToVND(service.price)}</p>
-                                <p class="card-text"><strong>Duration:</strong> ${service.duration} minutes</p>
+                    <div class="card">
+                        <img src="${service.avatar}" alt="${service.name}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">${service.name}</h5>
+                            <p class="card-text"><strong>Description:</strong> ${service.description}</p>
+                            <p class="card-text"><strong>Price:</strong> ${formatPriceToVND(service.price)}</p>
+                            <p class="card-text"><strong>Duration:</strong> ${service.duration} minutes</p>
+                            <div class="d-flex justify-content-center mt-3">
+                                <button class="btn btn-danger" onclick="removeServiceFromList('${service.id}')">Remove</button>
                             </div>
                         </div>
-                    `;
+                    </div>
+                `;
 
             selectedServicesContainer.appendChild(serviceDiv);
         });
 
-        // Toggle the "Go to Branch Page" button
         document.getElementById('goToBranchPageBtn').style.display = selectedServices.length > 0 ? 'inline-block' : 'none';
     }
 
     function addServiceToList(button) {
-        const serviceName = button.getAttribute('data-service-name');
-        const serviceId = button.getAttribute('data-service-id');
-        const serviceDescription = button.getAttribute('data-service-description');
-        const servicePrice = button.getAttribute('data-service-price');
-        const serviceDuration = button.getAttribute('data-service-duration');
-        const serviceAvatar = button.getAttribute('data-service-avatar');
-
         const service = {
-            id: serviceId,
-            name: serviceName,
-            description: serviceDescription,
-            price: servicePrice,
-            duration: serviceDuration,
-            avatar: serviceAvatar
+            id: button.getAttribute('data-service-id'),
+            name: button.getAttribute('data-service-name'),
+            description: button.getAttribute('data-service-description'),
+            price: button.getAttribute('data-service-price'),
+            duration: button.getAttribute('data-service-duration'),
+            avatar: button.getAttribute('data-service-avatar')
         };
 
         // Check if the service already exists in the selectedServices array
-        if (!selectedServices.find(s => s.id === serviceId)) {
+        if (!selectedServices.find(s => s.id === service.id)) {
             selectedServices.push(service);
-            // Save to sessionStorage
             sessionStorage.setItem('selectedServices', JSON.stringify(selectedServices));
+
+            // Update the display and button appearance
+            updateSelectedServicesDisplay();
+            button.disabled = true;
+            button.classList.add('btn-secondary');
+            button.classList.remove('btn-success');
+            button.innerText = 'Added';
         }
-
-        // Update the display of selected services
-        updateSelectedServicesDisplay();
-
-        // Disable the "Add" button after it has been clicked
-        button.disabled = true;
-        button.classList.add('btn-secondary');
-        button.classList.remove('btn-success');
-        button.innerText = 'Added';
     }
 
-    // Load selected services from sessionStorage on page load
+    function removeServiceFromList(serviceId) {
+        // Remove the service from the selectedServices array
+        selectedServices = selectedServices.filter(s => s.id !== serviceId);
+        sessionStorage.setItem('selectedServices', JSON.stringify(selectedServices));
+        updateSelectedServicesDisplay();
+
+        // Now, find the corresponding "Add" button and reset it
+        const addButton = document.querySelector(`button[data-service-id="${serviceId}"]`);
+        if (addButton) {
+            addButton.disabled = false;
+            addButton.classList.remove('btn-secondary');
+            addButton.classList.add('btn-success');
+            addButton.innerText = 'Add';
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
         updateSelectedServicesDisplay();
     });
 </script>
+
 
 <style>
     #selectedServicesContainer {
@@ -201,4 +214,17 @@
     .btn-secondary:hover {
         background-color: #5a6268;
     }
+
+
+    #goToButtonContainer {
+        display: flex;
+        justify-content: flex-end; /* Align the button to the right */
+        width: 100%; /* Ensure it spans the full width */
+    }
+
+    #goToBranchPageBtn {
+        width: auto; /* Allow the button to take up only the space it needs */
+    }
+
+
 </style>

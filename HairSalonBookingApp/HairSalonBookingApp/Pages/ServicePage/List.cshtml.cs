@@ -38,12 +38,12 @@ namespace HairSalonBookingApp.Pages.ServicePage
                 {
                     Services = allServices
                         .Where(s => s.ServiceName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
-                                    s.Description.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+                                    (s.Description != null && s.Description.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)))
                         .ToList();
                 }
                 else
                 {
-                    Services = allServices;
+                    Services = allServices ?? new List<Service>();
                 }
             }
             else
