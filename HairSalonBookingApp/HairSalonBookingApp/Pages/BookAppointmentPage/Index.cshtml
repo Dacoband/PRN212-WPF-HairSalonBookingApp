@@ -1,0 +1,115 @@
+﻿@page
+@model HairSalonBookingApp.Pages.BookAppointmentPage.IndexModel
+@{
+    ViewData["Title"] = "Check Available Slots";
+}
+
+<h1 class="text-center my-4">Check Available Slots</h1>
+
+<div class="container" style="max-width: 600px;">
+    <form class="border p-4 shadow-sm rounded">
+        <div class="form-group mb-3">
+            <label for="stylistId" class="form-label">Select Stylist</label>
+            <select id="stylistId" class="form-control" required>
+                <option value="">-- Select Stylist --</option>
+                <!-- Placeholder items for stylist selection -->
+                <option value="1">Stylist A</option>
+                <option value="2">Stylist B</option>
+                <option value="3">Stylist C</option>
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="serviceIds" class="form-label">Select Service(s)</label>
+            <select id="serviceIds" class="form-control" multiple required>
+                <!-- Placeholder items for service selection -->
+                <option value="1">Haircut</option>
+                <option value="2">Coloring</option>
+                <option value="3">Styling</option>
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="date" class="form-label">Select Date</label>
+            <input id="date" type="date" class="form-control" required />
+        </div>
+
+        <button type="button" class="btn btn-primary w-100 mt-3">Check Availability</button>
+    </form>
+
+    <div class="available-slots mt-4">
+        <h2 class="mb-3">Available Slots</h2>
+        <div class="d-flex flex-wrap justify-content-start">
+            <!-- Clickable items for available slots -->
+            <button class="slot-btn" onclick="selectSlot('09:00 AM')">09:00 AM</button>
+            <button class="slot-btn" onclick="selectSlot('10:30 AM')">10:30 AM</button>
+            <button class="slot-btn" onclick="selectSlot('01:00 PM')">01:00 PM</button>
+            <button class="slot-btn" onclick="selectSlot('03:30 PM')">03:30 PM</button>
+        </div>
+    </div>
+
+    <p class="mt-4 text-danger" id="noSlotsMessage" style="display:none;">No slots available for the selected date and stylist.</p>
+</div>
+
+ 
+    <style>
+        .slot-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 130px;
+        }
+
+            .slot-btn:hover {
+                background-color: #0056b3;
+                transform: translateY(-2px);
+            }
+
+            .slot-btn:active {
+                background-color: #003c8f;
+                transform: translateY(0);
+            }
+
+            .slot-btn.selected {
+                background-color: #28a745;
+                border-color: #28a745;
+            }
+
+            .slot-btn:disabled {
+                background-color: #ccc;
+                color: #888;
+                cursor: not-allowed;
+            }
+
+        .available-slots {
+            margin-top: 30px;
+        }
+    </style>
+
+    <script>
+        // Function to handle slot selection
+        function selectSlot(slotTime) {
+            alert('You have selected the slot: ' + slotTime);
+            // Change the selected button style to indicate the selected slot
+            const buttons = document.querySelectorAll('.slot-btn');
+            buttons.forEach(button => {
+                button.classList.remove('selected'); // Remove selection from other buttons
+            });
+
+            // Add selected class to clicked button
+            const selectedButton = Array.from(buttons).find(button => button.innerText === slotTime);
+            selectedButton.classList.add('selected');
+        }
+
+        // Optional: Handle displaying message for no available slots
+        function showNoSlotsMessage() {
+            document.getElementById("noSlotsMessage").style.display = "block";
+        }
+    </script>
+}
