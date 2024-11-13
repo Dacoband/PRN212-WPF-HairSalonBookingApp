@@ -95,9 +95,13 @@
         <a href="~/BranchPage/List" id="goToBranchPageBtn" class="btn btn-primary mt-3" style="display:none;">Go to Branch Page</a>
     </div>
 
-    <div class="mt-3 text-center">
-        <a href="@returnUrl" class="btn btn-secondary">Quay lại trang quản trị</a>
-    </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="mt-3 text-center">
+            <a href="@returnUrl" class="btn btn-secondary">Quay lại trang quản trị</a>
+        </div>
+    }
+    
 </div>
 
 <script>

@@ -27,7 +27,7 @@ namespace HairSalonBookingApp.Services
 
         public async Task<bool> AddService(CreateNewServiceRequest service)
         {
-           var url = await _firebaseService.UploadFile(service.AvatarImage);
+            var url = await _firebaseService.UploadFile(service.AvatarImage);
             var newService = new Service
             {
                 Id = Guid.NewGuid(),
