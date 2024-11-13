@@ -5,25 +5,24 @@
     ViewData["Title"] = "Branch List";
     var returnUrl = Url.Content("~/AdminPage/ListFunctions");
 }
+<style>
+    #selectedServicesContainer {
+        border: 2px solid #ddd;
+        padding: 15px;
+        background-color: #f9f9f9;
+    }
+</style>
 
 <div class="container mt-5">
     <h2 class="text-center text-primary mb-4">Our Salon Branches</h2>
 
-    <form method="get" class="mb-4">
-        <div class="input-group">
-            <input type="text" name="SearchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search by branch name or address" aria-label="Search">
-            <button class="btn btn-primary" type="submit">Search</button>
-        </div>
-    </form>
+     <form method="get" class="mb-4">
+         <div class="input-group">
+             <input type="text" name="SearchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search by branch name or address" aria-label="Search">
+             <button class="btn btn-primary" type="submit">Search</button>
+         </div>
+     </form>
 
-    @if (User.IsInRole("Admin"))
-    {
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <a asp-page="./AddBranch" class="btn btn-outline-success shadow-sm d-flex align-items-center gap-2">
-                <i class="bi bi-plus-circle"></i> Add New Branch
-            </a>
-        </div>
-    }
 
     <div class="table-responsive shadow-sm rounded">
         <table class="table table-bordered table-hover align-middle text-center mb-0">
@@ -33,7 +32,7 @@
                     {
                         <th>Select</th>
                     }
-                    <th>Salon Branches</th>
+                    <th>Salon Branch</th>
                     <th>Address</th>
                     <th>Phone</th>
                     @if (User.IsInRole("Customer"))
@@ -51,9 +50,8 @@
                             @if (User.IsInRole("Customer"))
                             {
                                 <td>
-                                    <form method="post" asp-page-handler="SelectBranch">
-                                        <input type="hidden" name="branchId" value="@branch.Id" />
-                                        <button type="submit" class="btn btn-primary btn-sm">Select</button>
+                                    <form method="post" asp-page="/BookingAppointment/SelectStylist">
+                                        <button type="submit" asp-route-branchId="@branch.Id.ToString()" class="btn btn-primary btn-sm">Select</button>
                                     </form>
                                 </td>
                             }
@@ -90,10 +88,11 @@
         </div>
     }
 
-    <div id="selectedServicesContainer" class="mt-5">
+    <div id="selectedServicesContainer" class="my-5">
         <h4>Selected Services</h4>
         <div id="selectedServicesList" class="row"></div>
     </div>
+
 </div>
 
 <style>
@@ -209,3 +208,53 @@
     }
 
 </style>
+
+@section Scripts {
+    <script>
+        function formatPriceToVND(price) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(price);
+        }
+
+        // When the page loads, retrieve the selected services from sessionStorage
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const selectedServices = JSON.parse(sessionStorage.getItem('selectedServices')) || [];
+
+            const selectedServicesList = document.getElementById('selectedServicesList');
+
+            console.log(selectedServices);
+            // Clear the list before rendering
+            selectedServicesList.innerHTML = '';
+
+            if (selectedServices.length > 0) {
+                selectedServices.forEach(service => {
+                    // Create a div element for each selected service
+                    const serviceItem = document.createElement('div');
+                    serviceItem.classList.add('col-md-4', 'service-item');
+
+                    // Create a card to display the service details
+                    serviceItem.innerHTML = `
+                        <div class="card">
+                            <img src="${service.avatar}" alt="${service.name}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">${service.name}</h5>
+                                <p class="card-text"><strong>Description:</strong> ${service.description}</p>
+                                <p class="card-text"><strong>Price:</strong> ${formatPriceToVND(service.price)}</p>
+                                <p class="card-text"><strong>Duration:</strong> ${service.duration} minutes</p>
+                            </div>
+                        </div>
+                    `;
+
+                    // Append the service item to the list
+                    selectedServicesList.appendChild(serviceItem);
+                });
+            } else {
+                selectedServicesList.innerHTML = '<p class="text-muted">No services selected.</p>';
+            }
+        });
+    </script>
+}
+
