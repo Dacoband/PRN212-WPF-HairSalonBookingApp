@@ -1,0 +1,69 @@
+﻿@page
+@model HairSalonBookingApp.Pages.StaffManagerPage.CreateModel
+
+@{
+    ViewData["Title"] = "Create Staff Manager";
+}
+
+
+<h1>Create Staff Manager</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="CreateStaffManagerRequest.StaffManagerName" class="form-label">Staff Manager Name</label>
+        <input asp-for="CreateStaffManagerRequest.StaffManagerName" class="form-control" type="text" required />
+        <span asp-validation-for="CreateStaffManagerRequest.StaffManagerName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CreateStaffManagerRequest.BranchID" class="form-label">Branch</label>
+        <select asp-for="CreateStaffManagerRequest.BranchID" class="form-control">
+            <option value="">-- Select Branch --</option>
+            @foreach (var branch in Model.Branches)
+            {
+                <option value="@branch.Id">@branch.SalonBranches</option>
+            }
+        </select>
+        <span asp-validation-for="CreateStaffManagerRequest.BranchID" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CreateStaffManagerRequest.Email" class="form-label">Email</label>
+        <input asp-for="CreateStaffManagerRequest.Email" class="form-control" type="email" required />
+        <span asp-validation-for="CreateStaffManagerRequest.Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CreateStaffManagerRequest.Password" class="form-label">Password</label>
+        <input asp-for="CreateStaffManagerRequest.Password" class="form-control" type="password" required />
+        <span asp-validation-for="CreateStaffManagerRequest.Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CreateStaffManagerRequest.PhoneNumber" class="form-label">Phone Number</label>
+        <input asp-for="CreateStaffManagerRequest.PhoneNumber" class="form-control" required />
+        <span asp-validation-for="CreateStaffManagerRequest.PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CreateStaffManagerRequest.Address" class="form-label">Address</label>
+        <input asp-for="CreateStaffManagerRequest.Address" class="form-control" required />
+        <span asp-validation-for="CreateStaffManagerRequest.Address" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CreateStaffManagerRequest.AvatarImage" class="form-label">Avatar Image</label>
+        <input asp-for="CreateStaffManagerRequest.AvatarImage" class="form-control" type="file" />
+        <span asp-validation-for="CreateStaffManagerRequest.AvatarImage" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+<div class="mt-3">
+    <a href="/StaffManagerPage/List" class="btn btn-secondary">Back to Staff Manager List</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -18,5 +18,6 @@ namespace HairSalonBookingApp.Services.Interface
         Task<List<Branch>> GetAllBranches();
         Task<Branch?> GetBranchById(Guid branch);
         Task<Branch?> GetBranchesByStaffManager(Guid staffManagerId);
+        Task<List<Branch>> GetAllBranchNotStaffManager();   
     }
 }
