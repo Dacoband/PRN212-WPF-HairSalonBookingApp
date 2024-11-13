@@ -7,6 +7,7 @@ using HairSalonBookingApp.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -105,6 +106,20 @@ namespace HairSalonBookingApp.Services
         {
             var stylists = await _stylistRepository.GetAllAsync(includeProperties:"Account,Branch,StaffStylist");
             return stylists.ToList();
+        }
+
+        public async Task<List<Stylist>> GetAllStylists(Expression<Func<Stylist, bool>>? filter = null, string? includeProperties = null)
+        {
+            try
+            {
+                var result = await _stylistRepository.GetAllAsync(filter, includeProperties);
+                return result.ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new List<Stylist>();
+            }
         }
 
         public async Task<Stylist?> GetStylistById(Guid stylistId)
