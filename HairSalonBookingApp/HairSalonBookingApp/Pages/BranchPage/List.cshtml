@@ -40,6 +40,10 @@
                     {
                         <th>Actions</th>
                     }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th>Status</th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -50,12 +54,15 @@
                         <tr>
                             @if (User.IsInRole("Customer"))
                             {
-                                <td>
-                                    <form method="post" asp-page-handler="SelectBranch">
-                                        <input type="hidden" name="branchId" value="@branch.Id" />
-                                        <button type="submit" class="btn btn-primary btn-sm">Select</button>
-                                    </form>
-                                </td>
+                                @if (branch.DelFlg == false) // Customer chỉ thấy chi nhánh hoạt động
+                                {
+                                    <td>
+                                        <form method="post" asp-page-handler="SelectBranch">
+                                            <input type="hidden" name="branchId" value="@branch.Id" />
+                                            <button type="submit" class="btn btn-primary btn-sm">Select</button>
+                                        </form>
+                                    </td>
+                                }
                             }
                             <td>@branch.SalonBranches</td>
                             <td>@branch.Address</td>
@@ -65,9 +72,20 @@
                             {
                                 <td>
                                     <a asp-page="./EditBranch" asp-route-id="@branch.Id" class="btn btn-warning btn-sm">Edit</a>
-                                    <form method="post" asp-page-handler="DeleteBranch" asp-route-id="@branch.Id" class="d-inline">
+                                    <form method="post" asp-page-handler="DeleteBranch" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this branch?');">
+                                        <input type="hidden" name="id" value="@branch.Id" />
                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
+                                </td>
+                                <td>
+                                    @if (branch.DelFlg == false)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Inactive</span>
+                                    }
                                 </td>
                             }
                         </tr>

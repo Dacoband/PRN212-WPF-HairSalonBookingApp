@@ -27,10 +27,11 @@ namespace HairSalonBookingApp.Pages.CustomerPage
             var success = await _customerService.DeleteCustomer(id);
             if (success)
             {
+                TempData["success"] = "Customer deleted successfully.";
                 return RedirectToPage();
             }
 
-            TempData["ErrorMessage"] = "Failed to delete customer.";
+            TempData["error"] = "Failed to delete customer.";
             return RedirectToPage();
         }
     }

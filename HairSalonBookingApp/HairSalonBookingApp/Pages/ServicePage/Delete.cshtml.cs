@@ -36,7 +36,12 @@ namespace HairSalonBookingApp.Pages.ServicePage
             try
             {
                 var service = await _serviceService.GetServiceById(id);
-                await _serviceService.DeleteService(id);
+                if (service == null)
+                {
+                    TempData["error"] = "Service not found";
+                    return Page();
+                }
+                await _serviceService.DeleteService(service);
                 return RedirectToPage("List");
             }
             catch(Exception ex)

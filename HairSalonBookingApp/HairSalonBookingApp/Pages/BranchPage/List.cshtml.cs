@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using HairSalonBookingApp.Helper;
+using HairSalonBookingApp.Services;
 
 namespace HairSalonBookingApp.Pages.BranchPage
 {
@@ -35,13 +36,14 @@ namespace HairSalonBookingApp.Pages.BranchPage
             if (!string.IsNullOrEmpty(SearchTerm))
             {
                 Branches = allBranches
-                    .Where(b => b.SalonBranches.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
-                                b.Address.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+                    .Where(b => (b.SalonBranches.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                                 b.Address.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)) &&
+                                 (User.IsInRole("Admin") || b.DelFlg == false)) // Hiển thị chi nhánh hoạt động hoặc tất cả cho Admin
                     .ToList();
             }
             else
             {
-                Branches = allBranches;
+                Branches = allBranches.Where(b => User.IsInRole("Admin") || b.DelFlg == false).ToList(); // Chỉ hiển thị chi nhánh hoạt động cho Customer
             }
 
             SelectedServices = HttpContext.Session.GetObjectFromJson<List<Service>>("selectedServices") ?? new List<Service>();
@@ -54,5 +56,19 @@ namespace HairSalonBookingApp.Pages.BranchPage
             HttpContext.Session.SetInt32("SelectedBranchId", branchId);
             return RedirectToPage();
         }
+
+        public async Task<IActionResult> OnPostDeleteBranchAsync(Guid id)
+        {
+            var success = await _branchService.DeleteBranch(id);
+            if (success)
+            {
+                TempData["success"] = "Branch deleted successfully.";
+                return RedirectToPage();
+            }
+
+            TempData["error"] = "Failed to delete branch.";
+            return RedirectToPage();
+        }
+
     }
 }
