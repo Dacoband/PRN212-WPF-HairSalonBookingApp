@@ -1,0 +1,141 @@
+﻿@page
+@model HairSalonBookingApp.Pages.StyListPage.IndexModel
+
+@{
+    ViewData["Title"] = "Stylist List";
+    var returnUrl = Url.Content("~/AdminPage/ListFunctions");
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Stylist List</h2>
+
+    <form method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="SearchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Search by name or branch" aria-label="Search">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-page="Create" class="btn btn-primary mb-3">Create New Stylist</a>
+    }
+
+    <table class="table table-hover table-bordered shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Stylist Name</th>
+                <th>Branch</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Avatar</th>
+                <th>Status</th>
+                @if (User.IsInRole("Admin"))
+                {
+                    <th>Actions</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stylist in Model.Stylists)
+            {
+                // Nếu user là Admin hoặc stylist đang hoạt động
+                if (User.IsInRole("Admin") || (!stylist.DelFlg))
+                {
+                    <tr class="align-middle">
+                        <td>@stylist.StylistName</td>
+                        <td>@stylist.Branch.SalonBranches</td>
+                        <td>@stylist.PhoneNumber</td>
+                        <td>@stylist.Address</td>
+                        <td>
+                            <img src="@stylist.AvatarImage" alt="@stylist.StylistName" class="rounded img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;" />
+                        </td>
+                        <td>
+                            @if (stylist.DelFlg)
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                        </td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                                <a asp-page="Details" asp-route-id="@stylist.Id" class="btn btn-info btn-sm m-1">View</a>
+                                <a asp-page="./Edit" asp-route-id="@stylist.Id" class="btn btn-warning btn-sm m-1">Edit</a>
+                                <a asp-page="Delete" asp-route-id="@stylist.Id" class="btn btn-danger btn-sm m-1">Delete</a>
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="mt-3 text-center">
+            <a href="@returnUrl" class="btn btn-secondary">Quay lại trang quản trị</a>
+        </div>
+    }
+
+</div>
+
+<style>
+    /* Style cho bảng và các phần tử */
+    .table {
+        margin-top: 20px;
+    }
+
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .img-thumbnail {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+
+    /* Nút quay lại */
+    #returnBtnContainer {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .badge.bg-success {
+        background-color: #28a745;
+    }
+
+    .badge.bg-danger {
+        background-color: #dc3545;
+    }
+
+    /* Chỉnh sửa nút và bảng */
+    .btn-primary {
+        background-color: #007bff;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+    }
+</style>

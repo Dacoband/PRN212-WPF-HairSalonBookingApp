@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace HairSalonBookingApp.Pages.StaffStylistPage
+namespace HairSalonBookingApp.Pages.BookAppointmentPage
 {
-    public class CreateStaffStylistModel : PageModel
+    public class IndexModel : PageModel
     {
         public void OnGet()
         {

@@ -84,6 +84,12 @@ namespace HairSalonBookingApp.Services
             return branches.ToList();
         }
 
+        public async Task<List<Branch>> GetAllBranchNotStaffManager()
+        {
+            var branches = await _branchRepository.GetAllAsync(includeProperties: "StaffManager");
+            return branches.Where(x => x.StaffManagerID == null).ToList();
+        }
+
         public async Task<Branch?> GetBranchById(Guid branch)
         {
             var branchs = await _branchRepository.GetAsync(branch);

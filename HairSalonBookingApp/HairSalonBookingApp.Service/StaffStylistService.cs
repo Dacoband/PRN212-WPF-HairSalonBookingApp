@@ -57,6 +57,7 @@ namespace HairSalonBookingApp.Services
                     Address = createStaffStylistRequest.Address,
                     AvatarImage = url
                 };
+                await _staffStylistRepository.AddAsync(staffStylist);
             }
             catch(Exception ex)
             {
@@ -64,6 +65,7 @@ namespace HairSalonBookingApp.Services
                 message = ex.Message;
                 return false;
             }
+            message = "Staff Stylist created successfully";
             return true;
         }
 
