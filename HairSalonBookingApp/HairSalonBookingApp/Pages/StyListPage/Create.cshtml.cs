@@ -36,20 +36,15 @@ namespace HairSalonBookingApp.Pages.StyListPage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
             var success = await _stylistService.CreateStylist(Stylist);
 
             if (success)
             {
-                TempData["SuccessMessage"] = "Stylist created successfully!";
-                return RedirectToPage("/StylistPage/ListStylist");
+                TempData["success"] = "Stylist created successfully!";
+                return RedirectToPage("/StyListPage/Index");
             }
 
-            ModelState.AddModelError(string.Empty, "Failed to create stylist. Please try again.");
+            TempData["error"] = "Failed to create Stylist";
             return Page();
         }
     }

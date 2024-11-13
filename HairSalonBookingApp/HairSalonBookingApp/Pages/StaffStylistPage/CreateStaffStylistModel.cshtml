@@ -8,12 +8,14 @@
 
 <form method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="StaffStylistName">Name</label>
-        <input type="text" class="form-control" id="StaffStylistName" name="StaffStylistName" required />
+        <label asp-for="CreateStaffStylistRequest.StaffStylistName" class="form-label">Name</label>
+        <input asp-for="CreateStaffStylistRequest.StaffStylistName" class="form-control" type="text" required />
+        <span asp-validation-for="CreateStaffStylistRequest.StaffStylistName" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label for="BranchID">Branch</label>
-        <select class="form-control" id="BranchID" name="StaffStylist.BranchID" required>
+        <label asp-for="CreateStaffStylistRequest.BranchID" class="form-label">Branch</label>
+        <select asp-for="CreateStaffStylistRequest.BranchID" class="form-control">
             <option value="">-- Select Branch --</option>
             @foreach (var branch in Model.Branches)
             {
@@ -23,20 +25,33 @@
         <span asp-validation-for="CreateStaffStylistRequest.BranchID" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="Email">Email</label>
-        <input type="email" class="form-control" id="Email" name="Email" required />
+        <label asp-for="CreateStaffStylistRequest.Email" class="form-label">Email</label>
+        <input asp-for="CreateStaffStylistRequest.Email" class="form-control" type="email" required />
+        <span asp-validation-for="CreateStaffStylistRequest.Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CreateStaffStylistRequest.Password" class="form-label">Password</label>
+        <input asp-for="CreateStaffStylistRequest.Password" class="form-control" type="password" required />
+        <span asp-validation-for="CreateStaffStylistRequest.Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CreateStaffStylistRequest.PhoneNumber" class="form-label">Phone Number</label>
+        <input asp-for="CreateStaffStylistRequest.PhoneNumber" class="form-control" required />
+        <span asp-validation-for="CreateStaffStylistRequest.PhoneNumber" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="Password">Password</label>
-        <input type="password" class="form-control" id="Password" name="Password" required />
+        <label asp-for="CreateStaffStylistRequest.Address" class="form-label">Address</label>
+        <input asp-for="CreateStaffStylistRequest.Address" class="form-control" required />
+        <span asp-validation-for="CreateStaffStylistRequest.Address" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label for="PhoneNumber">Phone Number</label>
-        <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" required />
+        <label asp-for="CreateStaffStylistRequest.AvatarImage" class="form-label">Avatar</label>
+        <input asp-for="CreateStaffStylistRequest.AvatarImage" class="form-control" type="file" />
+        <span asp-validation-for="CreateStaffStylistRequest.AvatarImage" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label for="AvatarImage">Avatar</label>
-        <input type="file" class="form-control" id="AvatarImage" name="AvatarImage" />
-    </div>
+
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
