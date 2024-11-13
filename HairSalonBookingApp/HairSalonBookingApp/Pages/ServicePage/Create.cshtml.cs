@@ -1,16 +1,18 @@
 using HairSalonBookingApp.BusinessObjects.DTOs.Service;
 using HairSalonBookingApp.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HairSalonBookingApp.Pages.ServicePage
 {
+    [Authorize(Roles = "Admin")]
     public class CreateModel : PageModel
     {
         private readonly IServiceService _serviceService;
 
         [BindProperty]
-        public CreateNewServiceRequest ServiceModel { get; set; }
+        public CreateNewServiceRequest ServiceModel { get; set; } = null!;
 
         public CreateModel(IServiceService serviceService)
         {
@@ -19,18 +21,16 @@ namespace HairSalonBookingApp.Pages.ServicePage
 
         public async Task<IActionResult> OnPostAsync()
         {
-           
 
-            var result = await _serviceService.AddService(ServiceModel);
-            if (result)
+            var (isSuceed, message) = await _serviceService.AddService(ServiceModel);
+            if (isSuceed)
             {
-                TempData["success"] = "Service created successfully.";
+                TempData["success"] = message;
                 return RedirectToPage("List");
             }
 
-            ModelState.AddModelError(string.Empty, "Error creating service.");
-
-            return RedirectToPage("List");
+            TempData["error"] = message;
+            return Page();
         }
         
     }

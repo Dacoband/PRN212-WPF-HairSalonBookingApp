@@ -7,30 +7,35 @@
 <h2 class="text-center text-primary mb-4">Create Service</h2>
 
 <form method="post" enctype="multipart/form-data" class="form-container">
+    <div asp-validation-summary="ModelOnly" class="text-danger mt-3"></div>
     <div class="mb-3">
-        <label class="form-label">Service Name</label>
-        <input type="text" asp-for="ServiceModel.ServiceName" class="form-control" required />
+        <label class="form-label">Service Name<span class="text-danger">*</span></label>
+        <input type="text" asp-for="ServiceModel.ServiceName" class="form-control" />
+        <span asp-validation-for="ServiceModel.ServiceName" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label class="form-label">Price</label>
-        <input type="number" asp-for="ServiceModel.Price" class="form-control" required />
+        <label class="form-label">Price (VND)<span class="text-danger">*</span></label>
+        <input type="number" asp-for="ServiceModel.Price" class="form-control" />
+        <span asp-validation-for="ServiceModel.Price" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label class="form-label">Description</label>
         <textarea asp-for="ServiceModel.Description" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="ServiceModel.Description" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label class="form-label">Duration (mins)</label>
-        <input type="number" asp-for="ServiceModel.Duration" class="form-control" required />
+        <label class="form-label">Duration (mins)<span class="text-danger">*</span></label>
+        <input type="number" asp-for="ServiceModel.Duration" class="form-control" />
+        <span asp-validation-for="ServiceModel.Duration" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label class="form-label">Avatar Image</label>
+        <label class="form-label">Avatar Image<span class="text-danger">*</span></label>
         <input type="file" asp-for="ServiceModel.AvatarImage" class="form-control" />
+        <span asp-validation-for="ServiceModel.AvatarImage" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Create Service</button>
 </form>
 
-<div asp-validation-summary="ModelOnly" class="text-danger mt-3"></div>
 
 <div class="mt-3">
     <a href="~/ServicePage/List" class="btn btn-secondary">Back to Service List</a>
@@ -89,3 +94,7 @@
         margin-bottom: 1rem;
     }
 </style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

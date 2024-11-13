@@ -25,20 +25,35 @@ namespace HairSalonBookingApp.Services
             _firebaseService = firebaseService;
         }
 
-        public async Task<bool> AddService(CreateNewServiceRequest service)
+        public async Task<(bool, string)> AddService(CreateNewServiceRequest service)
         {
-           var url = await _firebaseService.UploadFile(service.AvatarImage);
-            var newService = new Service
+            try
             {
-                Id = Guid.NewGuid(),
-                ServiceName = service.ServiceName,
-                Price = service.Price,
-                Description = service.Description,
-                Duration = service.Duration,
-                AvatarImage = url,
-            };
+                var url = await _firebaseService.UploadFile(service.AvatarImage);
+                var newService = new Service
+                {
+                    Id = Guid.NewGuid(),
+                    ServiceName = service.ServiceName,
+                    Price = service.Price,
+                    Description = service.Description,
+                    Duration = service.Duration,
+                    AvatarImage = url,
+                };
 
-            return await _serviceRepository.AddAsync(newService);
+                bool isSuccess = await _serviceRepository.AddAsync(newService);
+
+                if (isSuccess)
+                {
+                    return (true, "Thêm dịch vụ thành công");
+                }
+                return (false, "Thêm dịch vụ không thành công");
+
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return (false, e.Message);
+            }
+            
         }
         public async Task<bool> UpdateService(Guid id, UpdateNewServiceRequest service)
         {
